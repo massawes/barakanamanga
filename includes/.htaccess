@@ -1,0 +1,2 @@
+# Deny all direct web access to include files.
+Require all denied

@@ -1,0 +1,18 @@
+# User-uploaded content (large, machine-specific, not source code)
+/uploads/*/*
+!/uploads/*/.gitkeep
+/uploads/.sync_marker
+
+# XAMPP / PHP local artifacts
+*.log
+error_log
+*.tmp
+
+# OS / editor junk
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Environment-specific config overrides (if you ever add one)
+.env

@@ -1,0 +1,2 @@
+# Deny all direct web access to the SQL dump.
+Require all denied

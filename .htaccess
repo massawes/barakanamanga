@@ -1,0 +1,39 @@
+# Namanga Digital Resource Centre
+# Removes PHP's upload limits for this project only (does not affect any
+# other site on the same XAMPP install). post_max_size 0 tells PHP to stop
+# checking the total request size entirely (PHP's own documented way of
+# saying "no limit"); upload_max_filesize is pushed to an enormous number
+# since PHP does not accept 0/unlimited there — 1,000,000 MB (~1000 GB) is
+# far beyond anything that will ever be uploaded here, so in practice there
+# is no ceiling at all. The only real limit left is your server's free disk
+# space. This works automatically as long as Apache's AllowOverride is set
+# to "All" for htdocs — which is XAMPP's default. If large uploads still
+# fail after this, the php.ini values themselves need raising instead (see
+# the admin panel's upload pages for the manual steps).
+
+<IfModule mod_php.c>
+    php_value upload_max_filesize 1000000M
+    php_value post_max_size 0
+    php_value memory_limit -1
+    php_value max_execution_time 0
+    php_value max_input_time -1
+</IfModule>
+<IfModule mod_php7.c>
+    php_value upload_max_filesize 1000000M
+    php_value post_max_size 0
+    php_value memory_limit -1
+    php_value max_execution_time 0
+    php_value max_input_time -1
+</IfModule>
+<IfModule mod_php8.c>
+    php_value upload_max_filesize 1000000M
+    php_value post_max_size 0
+    php_value memory_limit -1
+    php_value max_execution_time 0
+    php_value max_input_time -1
+</IfModule>
+
+# Apache 2.4.54+ caps every request body at 1 GiB by default, no matter what
+# php.ini says. 0 = unlimited, so large software uploads are not rejected
+# with "413 Request Entity Too Large" / ERR_CONNECTION_ABORTED.
+LimitRequestBody 0

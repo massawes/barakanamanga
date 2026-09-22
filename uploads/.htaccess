@@ -1,0 +1,21 @@
+# Prevent any script execution inside the uploads folder.
+# Uploaded files must only ever be served as static files,
+# never executed, no matter what extension ends up here.
+
+<IfModule mod_php.c>
+    php_flag engine off
+</IfModule>
+<IfModule mod_php7.c>
+    php_flag engine off
+</IfModule>
+<IfModule mod_php8.c>
+    php_flag engine off
+</IfModule>
+
+# Apache 2.4+ handler-based PHP (FPM/CGI setups)
+<FilesMatch "\.(php|php3|php4|php5|php7|phtml|pht|phar|cgi|pl|py|asp|aspx|sh|exe)$">
+    Require all denied
+</FilesMatch>
+
+Options -ExecCGI
+AddHandler cgi-script .php .php3 .php4 .php5 .php7 .phtml .pht .phar .cgi .pl .py .asp .aspx .sh .exe
