@@ -11,6 +11,7 @@ $navLinks = [
     'software.php'  => 'Software',
     'others.php'    => 'Others',
     'gallery.php'   => 'Gallery',
+    'results.php'   => 'Results',
     // 'about.php'  => 'About',   // temporarily removed from navigation
     // 'contact.php' => 'Contact', // temporarily removed from navigation
 ];
