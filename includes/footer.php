@@ -21,15 +21,6 @@
             </ul>
         </div>
 
-        <div class="footer-contact">
-            <h4>Contact Us</h4>
-            <ul>
-                <li>Phone: <a href="tel:+255695389537">0695389537</a></li>
-                <li>Email: <a href="mailto:massawes269@gmail.com">massawes269@gmail.com</a></li>
-                <li>Location: Namanga, Arusha, Tanzania</li>
-            </ul>
-        </div>
-
         <div class="footer-admin">
             <h4>Staff</h4>
             <ul>

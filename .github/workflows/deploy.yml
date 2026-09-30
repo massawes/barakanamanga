@@ -1,0 +1,56 @@
+name: Deploy to InfinityFree
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-infinityfree
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Build config/env.php from repository secrets/variables so real
+      # credentials never live in the repo. var_export() quotes values
+      # safely even if a password contains quotes or backslashes.
+      - name: Generate config/env.php
+        env:
+          DB_HOST: ${{ vars.DB_HOST }}
+          DB_NAME: ${{ vars.DB_NAME }}
+          DB_USER: ${{ vars.DB_USER }}
+          DB_PASS: ${{ secrets.DB_PASS }}
+        run: |
+          php -r '
+            $out = "<?php\n";
+            foreach (["DB_HOST", "DB_NAME", "DB_USER", "DB_PASS"] as $k) {
+                $v = getenv($k);
+                if ($v === false || $v === "") { fwrite(STDERR, "Missing $k\n"); exit(1); }
+                $out .= "define(" . var_export($k, true) . ", " . var_export($v, true) . ");\n";
+            }
+            $out .= "define(\x27APP_DEBUG\x27, false);\n";
+            file_put_contents("config/env.php", $out);
+          '
+
+      - name: Upload via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ vars.FTP_SERVER }}
+          username: ${{ vars.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftp
+          port: 21
+          server-dir: htdocs/
+          timeout: 120000
+          exclude: |
+            **/.git*
+            **/.git*/**
+            .github/**
+            README.md
+            database/**
+            config/database.production.php
+            uploads/**

@@ -22,6 +22,9 @@ include __DIR__ . '/includes/header.php';
     <div class="container">
         <h1>Software</h1>
         <p>Educational and programming software used in ICT and Computer Science practical lessons.</p>
+        <?php if (!empty($softwareList)): ?>
+            <a href="<?= e($base) ?>/download-all.php?category=software" class="btn btn-gold download-all-btn">Download All</a>
+        <?php endif; ?>
     </div>
 </section>
 

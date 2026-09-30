@@ -47,10 +47,15 @@ $paginationBaseUrl = 'gallery.php' . ($typeFilter !== '' ? '?type=' . $typeFilte
 
 <section class="page-content">
     <div class="container">
-        <div class="filter-tabs">
-            <a href="<?= e($base) ?>/gallery.php" class="<?= $typeFilter === '' ? 'active' : '' ?>">All</a>
-            <a href="<?= e($base) ?>/gallery.php?type=image" class="<?= $typeFilter === 'image' ? 'active' : '' ?>">Photos</a>
-            <a href="<?= e($base) ?>/gallery.php?type=video" class="<?= $typeFilter === 'video' ? 'active' : '' ?>">Videos</a>
+        <div class="filter-tabs-row">
+            <div class="filter-tabs">
+                <a href="<?= e($base) ?>/gallery.php" class="<?= $typeFilter === '' ? 'active' : '' ?>">All</a>
+                <a href="<?= e($base) ?>/gallery.php?type=image" class="<?= $typeFilter === 'image' ? 'active' : '' ?>">Photos</a>
+                <a href="<?= e($base) ?>/gallery.php?type=video" class="<?= $typeFilter === 'video' ? 'active' : '' ?>">Videos</a>
+            </div>
+            <?php if (!empty($items)): ?>
+                <a href="<?= e($base) ?>/download-all.php?category=gallery<?= $typeFilter !== '' ? '&amp;media=' . e($typeFilter) : '' ?>" class="btn btn-outline btn-small">Download All</a>
+            <?php endif; ?>
         </div>
 
         <?php if (empty($items)): ?>

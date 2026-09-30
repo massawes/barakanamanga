@@ -343,32 +343,7 @@ deleting requires confirmation.
 | I copied a file into `uploads/` but it isn't on the site yet | Wait a few seconds and refresh — the sync check only runs once every few seconds, not on every page view. Also double check it's in the correct Form sub-folder (see the table in section 6) and is an allowed file type. |
 | Logo doesn't show | Add `assets/images/school-logo.png` — see `assets/images/README.txt`. |
 
-## 13. SEO (search engine visibility)
-
-The site ships with the basics that help search engines find and
-understand it once it is deployed on a **public, live domain**:
-
-- Per-page `<title>` and `<meta name="description">` (set via `$pageTitle`
-  / `$pageDescription` before including `includes/header.php`).
-- Canonical URL, Open Graph and Twitter Card tags on every page (link
-  previews on WhatsApp/Facebook/X look correct).
-- `EducationalOrganization` structured data (JSON-LD) on the homepage.
-- `robots.txt` and a dynamic `sitemap.php` that lists every page and every
-  individual resource from the database, so search engines can crawl and
-  index them directly.
-
-**Important, honestly:** none of this — or anything else — can guarantee
-a "#1 on Google" result. Search ranking depends on far more than a
-site's own code: how long the site has been live, how many other sites
-link to it, how much genuine traffic and engagement it gets, how it
-compares to competing sites, and Google's own algorithm changes over
-time. What's included here gives the site a correct, crawlable
-foundation; ranking itself is earned over time, not something a codebase
-can promise. Once the site has a real public domain, submitting
-`sitemap.php` in [Google Search Console](https://search.google.com/search-console)
-is the next concrete step to speed up indexing.
-
-## 14. Future Improvements (not built now, by design)
+## 13. Future Improvements (not built now, by design)
 
 Announcements/news, download statistics, multiple administrators with
 roles, admin activity logs, featured resources, additional resource

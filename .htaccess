@@ -32,8 +32,3 @@
     php_value max_execution_time 0
     php_value max_input_time -1
 </IfModule>
-
-# Apache 2.4.54+ caps every request body at 1 GiB by default, no matter what
-# php.ini says. 0 = unlimited, so large software uploads are not rejected
-# with "413 Request Entity Too Large" / ERR_CONNECTION_ABORTED.
-LimitRequestBody 0

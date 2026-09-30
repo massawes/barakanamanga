@@ -29,21 +29,9 @@ try {
 }
 
 $pageTitle = 'Namanga Secondary School — Digital Resource Centre';
-$pageDescription = 'Namanga Secondary School ICT & Computer Science Digital Resource Centre — free notes, summaries, theory past papers, Form 4 practicals and software for Form 1 to Form 4 students.';
 $base = base_url();
 include __DIR__ . '/includes/header.php';
 ?>
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "EducationalOrganization",
-  "name": "Namanga Secondary School",
-  "alternateName": "Namanga Secondary School ICT & Computer Science Digital Resource Centre",
-  "description": "<?= e($pageDescription) ?>",
-  "url": "<?= e($currentUrl) ?>"
-}
-</script>
 
 <section class="hero <?= !empty($slides) ? 'hero-has-slides' : '' ?>">
     <div class="hero-inner">

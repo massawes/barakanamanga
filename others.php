@@ -22,6 +22,9 @@ include __DIR__ . '/includes/header.php';
     <div class="container">
         <h1>Others</h1>
         <p>Additional resources that don't fall under Notes, Summary, Theory Past Papers, Practical or Software.</p>
+        <?php if (!empty($othersList)): ?>
+            <a href="<?= e($base) ?>/download-all.php?category=others" class="btn btn-gold download-all-btn">Download All</a>
+        <?php endif; ?>
     </div>
 </section>
 

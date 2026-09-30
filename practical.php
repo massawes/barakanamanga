@@ -22,6 +22,9 @@ include __DIR__ . '/includes/header.php';
     <div class="container">
         <h1>Form 4 Practical</h1>
         <p>Complete Form 4 computer practical examination papers.</p>
+        <?php if (!empty($practicals)): ?>
+            <a href="<?= e($base) ?>/download-all.php?category=practical" class="btn btn-gold download-all-btn">Download All</a>
+        <?php endif; ?>
     </div>
 </section>
 

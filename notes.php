@@ -63,7 +63,12 @@ include __DIR__ . '/includes/header.php';
         <?php else: ?>
 
             <p><a href="<?= e($base) ?>/notes.php" class="back-link">&larr; Back to Form selection</a></p>
-            <h2 class="section-title-left"><?= e(form_label($selectedForm)) ?> Notes</h2>
+            <div class="section-title-row">
+                <h2 class="section-title-left"><?= e(form_label($selectedForm)) ?> Notes</h2>
+                <?php if (!empty($items)): ?>
+                    <a href="<?= e($base) ?>/download-all.php?category=notes&amp;form=<?= e($selectedForm) ?>" class="btn btn-outline btn-small">Download All</a>
+                <?php endif; ?>
+            </div>
 
             <?php if (empty($items)): ?>
                 <p class="empty-state">No <?= e(form_label($selectedForm)) ?> notes are currently available. Please check again later.</p>
