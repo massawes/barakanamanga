@@ -101,10 +101,10 @@ include __DIR__ . '/includes/header.php';
 
             <a href="<?= e($base) ?>/others.php" class="category-card">
                 <div class="category-icon"><?= svg_icon('others') ?></div>
-                <h3>Others</h3>
-                <p>Additional resources that don't fit the categories above.</p>
+                <h3>Other Subjects</h3>
+                <p>Resources for other subjects beyond ICT and Computer Science.</p>
                 <span class="card-count"><?= $counts['others'] ?> file<?= $counts['others'] === 1 ? '' : 's' ?></span>
-                <span class="btn btn-outline">View Others</span>
+                <span class="btn btn-outline">View Other Subjects</span>
             </a>
 
             <a href="<?= e($base) ?>/gallery.php" class="category-card">

@@ -222,7 +222,7 @@ function type_label(string $type): string
         'theory'    => 'Theory Past Paper',
         'practical' => 'Form 4 Practical',
         'software'  => 'Software',
-        'others'    => 'Others',
+        'others'    => 'Other Subjects',
     ];
     return $map[$type] ?? ucfirst($type);
 }

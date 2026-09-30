@@ -16,7 +16,7 @@
                 <li><a href="<?= e($base) ?>/theory.php">Theory Past Papers</a></li>
                 <li><a href="<?= e($base) ?>/practical.php">Form 4 Practical</a></li>
                 <li><a href="<?= e($base) ?>/software.php">Software</a></li>
-                <li><a href="<?= e($base) ?>/others.php">Others</a></li>
+                <li><a href="<?= e($base) ?>/others.php">Other Subjects</a></li>
                 <li><a href="<?= e($base) ?>/gallery.php">Gallery</a></li>
             </ul>
         </div>

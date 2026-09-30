@@ -13,15 +13,15 @@ $stmt = $pdo->prepare(
 $stmt->execute();
 $othersList = $stmt->fetchAll();
 
-$pageTitle = 'Others — Namanga Digital Resource Centre';
+$pageTitle = 'Other Subjects — Namanga Digital Resource Centre';
 $base = base_url();
 include __DIR__ . '/includes/header.php';
 ?>
 
 <section class="page-header">
     <div class="container">
-        <h1>Others</h1>
-        <p>Additional resources that don't fall under Notes, Summary, Theory Past Papers, Practical or Software.</p>
+        <h1>Other Subjects</h1>
+        <p>Resources for other subjects such as Geography, History, Kiswahili and more.</p>
         <?php if (!empty($othersList)): ?>
             <a href="<?= e($base) ?>/download-all.php?category=others" class="btn btn-gold download-all-btn">Download All</a>
         <?php endif; ?>
