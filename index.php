@@ -36,9 +36,8 @@ include __DIR__ . '/includes/header.php';
 <section class="hero <?= !empty($slides) ? 'hero-has-slides' : '' ?>">
     <div class="hero-inner">
         <div class="hero-content">
-            <h1>NAMANGA SECONDARY SCHOOL</h1>
-            <h2>ICT &amp; Computer Science<br>Digital Resource Centre</h2>
-            <p>Access your learning resources in one place.</p>
+            <h1>NAMANGA SECONDARY SCHOOL WEBSITE</h1>
+            <p>Made by Form 4 ICS 2026</p>
             <a href="#resources" class="btn btn-gold btn-large">Explore Resources</a>
         </div>
         <?php if (!empty($slides)): ?>
