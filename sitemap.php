@@ -8,13 +8,14 @@ require_once __DIR__ . '/includes/bootstrap.php';
 
 header('Content-Type: application/xml; charset=utf-8');
 
-$scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
-$origin = $scheme . '://' . ($_SERVER['HTTP_HOST'] ?? 'localhost');
-$base = base_url();
+// Always list the public live address, never localhost or http://.
+$origin = SITE_URL;
+$base = '';
 
 // Static, always-present pages.
 $staticPages = [
-    ['loc' => '/index.php', 'priority' => '1.0'],
+    ['loc' => '/', 'priority' => '1.0'],
+    ['loc' => '/results.php', 'priority' => '0.8'],
     ['loc' => '/notes.php', 'priority' => '0.8'],
     ['loc' => '/summaries.php', 'priority' => '0.8'],
     ['loc' => '/theory.php', 'priority' => '0.8'],

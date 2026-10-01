@@ -28,7 +28,8 @@ try {
     // hero_slides table not created yet (older installs) — fail quietly, plain banner shows instead.
 }
 
-$pageTitle = 'Namanga Secondary School — Digital Resource Centre';
+$pageTitle = 'Namanga Secondary School Website | Digital Resource Centre';
+$pageDescription = 'Welcome to the Namanga Secondary School website (Namanga, Arusha, Tanzania). Free ICT & Computer Science notes, summaries, past papers, NECTA results and software for Form 1 to Form 4.';
 $base = base_url();
 include __DIR__ . '/includes/header.php';
 ?>
@@ -115,6 +116,17 @@ include __DIR__ . '/includes/header.php';
             </a>
 
         </div>
+    </div>
+</section>
+
+<section class="home-intro">
+    <div class="container narrow">
+        <h2 class="section-title">About the Namanga Secondary School Website</h2>
+        <p>This is the official website of <strong>Namanga Secondary School</strong> in Namanga, Arusha, Tanzania.
+        It is the school's Digital Resource Centre, built by the Form 4 ICS class of 2026, where students can
+        download ICT and Computer Science notes, revision summaries, theory and practical past papers,
+        and educational software for Form 1 to Form 4. You can also find links to the school's
+        <a href="<?= e($base) ?>/results.php">NECTA Form 2 and Form 4 results</a>.</p>
     </div>
 </section>
 

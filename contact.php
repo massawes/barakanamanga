@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/includes/bootstrap.php';
-$pageTitle = 'Contact — Namanga Digital Resource Centre';
+$pageTitle = 'Contact | Namanga Secondary School';
 $base = base_url();
 include __DIR__ . '/includes/header.php';
 ?>

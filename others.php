@@ -13,7 +13,7 @@ $stmt = $pdo->prepare(
 $stmt->execute();
 $othersList = $stmt->fetchAll();
 
-$pageTitle = 'Other Subjects — Namanga Digital Resource Centre';
+$pageTitle = 'Other Subjects | Namanga Secondary School';
 $base = base_url();
 include __DIR__ . '/includes/header.php';
 ?>

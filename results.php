@@ -35,9 +35,10 @@ $base = base_url();
 if ($examSelected) {
     $exam = $exams[$selected];
     $linksByYear = array_column($resultsLinks[$selected], 'url', 'year');
-    $pageTitle = $exam['label'] . ' Results — Namanga Digital Resource Centre';
+    $pageTitle = $exam['label'] . ' Results | Namanga Secondary School';
 } else {
-    $pageTitle = 'Results — Namanga Digital Resource Centre';
+    $pageTitle = 'Results | Namanga Secondary School';
+    $pageDescription = 'Namanga Secondary School (S2911) NECTA results — Form 4 CSEE and Form 2 FTNA results by year, with direct links to the official NECTA pages.';
 }
 
 include __DIR__ . '/includes/header.php';

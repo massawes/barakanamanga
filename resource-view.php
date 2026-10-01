@@ -33,7 +33,8 @@ if ($resource) {
     }
 }
 
-$pageTitle = $resource ? e($resource['title']) . ' — Namanga Digital Resource Centre' : 'Resource Not Found';
+$pageTitle = $resource ? $resource['title'] . ' | Namanga Secondary School' : 'Resource Not Found';
+$noindex = !$resource;
 include __DIR__ . '/includes/header.php';
 ?>
 

@@ -13,7 +13,7 @@ $stmt = $pdo->prepare(
 $stmt->execute();
 $practicals = $stmt->fetchAll();
 
-$pageTitle = 'Form 4 Practical — Namanga Digital Resource Centre';
+$pageTitle = 'Form 4 Practical | Namanga Secondary School';
 $base = base_url();
 include __DIR__ . '/includes/header.php';
 ?>

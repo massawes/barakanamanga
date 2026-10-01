@@ -286,6 +286,10 @@ img { max-width: 100%; display: block; }
     margin-bottom: 36px;
 }
 
+.home-intro { padding: 0 0 56px; }
+.home-intro .section-title { margin-bottom: 18px; }
+.home-intro p { line-height: 1.7; text-align: center; }
+
 .cards-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));

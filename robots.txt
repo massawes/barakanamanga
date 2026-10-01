@@ -5,4 +5,4 @@ Disallow: /config/
 Disallow: /database/
 Disallow: /uploads/_needs_review/
 
-Sitemap: /sitemap.php
+Sitemap: https://namangawebsite.freepage.cc/sitemap.php

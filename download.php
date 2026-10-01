@@ -64,7 +64,8 @@ exit;
 function render_download_error(string $message): void
 {
     global $pageTitle, $base;
-    $pageTitle = 'File Unavailable — Namanga Digital Resource Centre';
+    $pageTitle = 'File Unavailable | Namanga Secondary School';
+    $noindex = true;
     $base = base_url();
     include __DIR__ . '/includes/header.php';
     echo '<section class="page-content"><div class="container narrow">';

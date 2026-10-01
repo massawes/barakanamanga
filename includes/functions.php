@@ -91,6 +91,36 @@ function base_url(): string
     return rtrim($scriptDir, '/');
 }
 
+// ------------------------------------------------------------
+// SEO helpers
+// ------------------------------------------------------------
+
+// The one public address of the live site. Canonical links, the sitemap
+// and structured data always point here (even when browsing on XAMPP),
+// so Google only ever sees a single URL for each page.
+const SITE_URL = 'https://namangawebsite.freepage.cc';
+
+/**
+ * Absolute public URL of the page being viewed, for <link rel="canonical">.
+ * index.php collapses to "/", and junk query parameters (InfinityFree's
+ * "?i=1" bot-check redirect, tracking tags) are dropped so duplicates
+ * don't get indexed separately.
+ */
+function canonical_url(): string
+{
+    $path = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
+    $path = substr($path, strlen(base_url())) ?: '/';
+    if (basename($path) === 'index.php') {
+        $path = substr($path, 0, -strlen('index.php'));
+    }
+
+    $keep = array_intersect_key($_GET, array_flip(['form', 'id']));
+    ksort($keep);
+    $query = $keep ? '?' . http_build_query($keep) : '';
+
+    return SITE_URL . $path . $query;
+}
+
 function redirect(string $path): void
 {
     header('Location: ' . $path);

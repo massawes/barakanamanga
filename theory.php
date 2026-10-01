@@ -20,7 +20,7 @@ if ($formSelected) {
     );
     $stmt->execute(['form' => $selectedForm]);
     $papers = $stmt->fetchAll();
-    $pageTitle = form_label($selectedForm) . ' Theory Past Papers — Namanga Digital Resource Centre';
+    $pageTitle = form_label($selectedForm) . ' Theory Past Papers | Namanga Secondary School';
 } else {
     // Counts per Form, shown on the selection menu.
     $counts = ['form1' => 0, 'form2' => 0, 'form3' => 0, 'form4' => 0];
@@ -30,7 +30,7 @@ if ($formSelected) {
             $counts[$row['form_level']] = (int) $row['total'];
         }
     }
-    $pageTitle = 'Theory Past Papers — Namanga Digital Resource Centre';
+    $pageTitle = 'Theory Past Papers | Namanga Secondary School';
 }
 
 include __DIR__ . '/includes/header.php';

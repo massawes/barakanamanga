@@ -31,7 +31,7 @@ if ($totalItems > 0) {
     $items = $stmt->fetchAll();
 }
 
-$pageTitle = 'Gallery — Namanga Digital Resource Centre';
+$pageTitle = 'Gallery | Namanga Secondary School';
 $base = base_url();
 include __DIR__ . '/includes/header.php';
 

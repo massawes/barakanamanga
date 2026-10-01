@@ -15,7 +15,8 @@ if ($query !== '') {
     $results = $stmt->fetchAll();
 }
 
-$pageTitle = 'Search Results — Namanga Digital Resource Centre';
+$pageTitle = 'Search Results | Namanga Secondary School';
+$noindex = true;
 $base = base_url();
 include __DIR__ . '/includes/header.php';
 ?>
