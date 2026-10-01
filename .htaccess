@@ -32,3 +32,9 @@
     php_value max_execution_time 0
     php_value max_input_time -1
 </IfModule>
+
+# Serve the dynamic sitemap at the conventional /sitemap.xml address too.
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^sitemap\.xml$ sitemap.php [L]
+</IfModule>
