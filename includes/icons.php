@@ -50,6 +50,36 @@ function svg_icon(string $name, string $class = 'icon-svg'): string
 
         // Paper-plane send arrow — Site Assistant send button
         'send' => '<path d="M4 12 20 4l-6 16-2.5-7L4 12z"/>',
+
+        // Trophy — NECTA Results
+        'results' => '<path d="M7 4h10v3a5 5 0 0 1-10 0V4z"/><path d="M7 5H4.5A2.5 2.5 0 0 0 7 8.5"/><path d="M17 5h2.5A2.5 2.5 0 0 1 17 8.5"/><path d="M12 11v4"/><path d="M9 20h6"/><path d="M10.5 15h3v1.5a1.5 1.5 0 0 1-1.5 1.5 1.5 1.5 0 0 1-1.5-1.5V15z"/>',
+
+        // Document with an upward upload arrow — Upload Tasks
+        'task' => '<path d="M6 3h8.5L19 7.5V20a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v4.5h5"/><path d="M12 18v-6M9.2 14.6 12 11.8l2.8 2.8"/>',
+
+        // Target with arrow — Mission
+        'target' => '<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/><path d="M12 12l7-7M16.5 4.5H19.5V7.5"/>',
+
+        // Star — Core values
+        'star' => '<path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/>',
+
+        // Clock — History
+        'history' => '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',
+
+        // Two people — Our Students
+        'students' => '<circle cx="9" cy="8" r="3"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0"/><circle cx="16.5" cy="9" r="2.5"/><path d="M15.5 14.2A4.5 4.5 0 0 1 21 18.5"/>',
+
+        // School building with flag — Our School
+        'school' => '<path d="M3 20.5h18"/><path d="M5 20.5V10l7-4 7 4v10.5"/><path d="M10 20.5v-5h4v5"/><path d="M12 6V2.5h3"/><circle cx="12" cy="11" r="1.5"/>',
+
+        // Heart — care / inclusion
+        'heart' => '<path d="M12 20s-7.5-4.6-7.5-10A4.3 4.3 0 0 1 12 7.4 4.3 4.3 0 0 1 19.5 10c0 5.4-7.5 10-7.5 10z"/>',
+
+        // Map pin — location
+        'pin' => '<path d="M12 21s-6.5-6-6.5-11a6.5 6.5 0 0 1 13 0c0 5-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/>',
+
+        // Small down chevron — dropdown menus
+        'chevron-down' => '<path d="M6 9l6 6 6-6"/>',
     ];
 
     $inner = $icons[$name] ?? '';

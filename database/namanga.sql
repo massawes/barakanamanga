@@ -82,6 +82,25 @@ CREATE TABLE IF NOT EXISTS gallery_items (
     INDEX idx_media_type (media_type)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- ------------------------------------------------------------
+-- tasks (student task/assignment submissions — public upload,
+-- no login required; see upload-task.php and tasks.php)
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS tasks (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    uploader_name VARCHAR(150) NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    form_level ENUM('form1','form2','form3','form4') NOT NULL,
+    file_name VARCHAR(255) NOT NULL,
+    file_path VARCHAR(500) NOT NULL,
+    file_size BIGINT UNSIGNED NOT NULL,
+    original_name VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    INDEX idx_form_level (form_level),
+    INDEX idx_created_at (created_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 -- ============================================================
 -- NOTE ON THE FIRST ADMIN ACCOUNT
 -- ============================================================

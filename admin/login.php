@@ -47,14 +47,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-$pageTitle = 'Admin Login — Namanga Digital Resource Centre';
+$pageTitle = 'Staff Login — Namanga Digital Resource Centre';
 include __DIR__ . '/../includes/header.php';
 ?>
 
 <section class="page-content">
     <div class="container narrow">
         <div class="auth-card">
-            <h1>Admin Login</h1>
+            <h1>Staff Login</h1>
             <p class="muted">Sign in to manage learning resources.</p>
 
             <?php if ($msg = flash_get('success')): ?>
@@ -65,15 +65,15 @@ include __DIR__ . '/../includes/header.php';
                 <div class="alert alert-error"><?= e($error) ?></div>
             <?php endif; ?>
 
-            <form method="post" action="">
+            <form method="post" action="" autocomplete="off">
                 <?= csrf_field() ?>
                 <label for="username">Username</label>
-                <input type="text" id="username" name="username" required autofocus
+                <input type="text" id="username" name="username" required autofocus autocomplete="off"
                        value="<?= e($_POST['username'] ?? '') ?>">
 
                 <label for="password">Password</label>
                 <div class="password-field">
-                    <input type="password" id="password" name="password" required>
+                    <input type="password" id="password" name="password" required autocomplete="new-password">
                     <button type="button" class="password-toggle-btn" aria-label="Show password" tabindex="-1">
                         <?= svg_icon('eye', 'icon-svg icon-eye') ?>
                         <?= svg_icon('eye-off', 'icon-svg icon-eye-off') ?>

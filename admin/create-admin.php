@@ -63,13 +63,13 @@ include __DIR__ . '/../includes/header.php';
                 <div class="alert alert-error">
                     An admin account already exists. This setup page is now disabled for security.
                 </div>
-                <a href="<?= e(base_url()) ?>/admin/login.php" class="btn btn-primary">Go to Admin Login</a>
+                <a href="<?= e(base_url()) ?>/admin/login.php" class="btn btn-primary">Go to Staff Login</a>
 
             <?php elseif ($success): ?>
                 <div class="alert alert-success">
                     Admin account created successfully. You can now log in.
                 </div>
-                <a href="<?= e(base_url()) ?>/admin/login.php" class="btn btn-primary">Go to Admin Login</a>
+                <a href="<?= e(base_url()) ?>/admin/login.php" class="btn btn-primary">Go to Staff Login</a>
 
             <?php else: ?>
                 <?php foreach ($errors as $error): ?>

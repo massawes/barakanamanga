@@ -19,3 +19,13 @@
 
 Options -ExecCGI
 AddHandler cgi-script .php .php3 .php4 .php5 .php7 .phtml .pht .phar .cgi .pl .py .asp .aspx .sh .exe
+
+# HTML/SVG files (e.g. student task uploads) must never be rendered as a
+# page on this site — always force them to download as a file instead.
+<FilesMatch "\.(html|htm|svg)$">
+    ForceType application/octet-stream
+    <IfModule mod_headers.c>
+        Header set Content-Disposition attachment
+        Header set X-Content-Type-Options nosniff
+    </IfModule>
+</FilesMatch>

@@ -4,30 +4,84 @@ require_admin_login();
 
 $errors = [];
 
-// ---- Handle upload ----
+// ---- Handle upload (a single image, or every image in a chosen folder) ----
+// The page's script sends a folder one image per request (ajax=1, JSON
+// reply) so PHP's max_file_uploads limit never truncates a large folder;
+// without JavaScript the whole form posts normally.
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'upload') {
+    $isAjax = ($_POST['ajax'] ?? '') === '1';
+    $failures = [];
+    $successCount = 0;
+
     if (!csrf_verify()) {
-        $errors[] = 'Your session expired. Please try again.';
+        $failures[] = 'Your session expired. Please try again.';
     } else {
         $caption = trim($_POST['caption'] ?? '');
-        [$ok, $message, $imageData] = handle_slide_image_upload($_FILES['slide_image'] ?? []);
-        if (!$ok) {
-            $errors[] = $message;
-        } else {
+        $folderFiles = normalize_uploaded_files_field($_FILES['slide_folder'] ?? null);
+        $singleFile  = normalize_uploaded_files_field($_FILES['slide_image'] ?? null);
+
+        // Folders often hold non-image extras (Thumbs.db, desktop.ini…):
+        // skip those quietly instead of reporting them as failures.
+        $folderFiles = array_values(array_filter(
+            $folderFiles,
+            static fn(array $f): bool => in_array(strtolower(pathinfo($f['name'], PATHINFO_EXTENSION)), ['jpg', 'jpeg', 'png', 'webp', 'gif'], true)
+        ));
+        $files = array_merge($folderFiles, $singleFile);
+
+        if (empty($files)) {
+            $failures[] = 'Please choose a folder, or a single image, to upload.';
+        }
+
+        $insert = $pdo->prepare(
+            'INSERT INTO hero_slides (image_name, image_path, caption, sort_order) VALUES (:name, :path, :caption, :order)'
+        );
+        // The caption only makes sense for a single image.
+        $useCaption = count($files) === 1 && $caption !== '';
+
+        foreach ($files as $file) {
+            [$ok, $message, $imageData] = handle_slide_image_upload($file);
+            if (!$ok) {
+                $failures[] = $file['name'] . ': ' . $message;
+                continue;
+            }
             $nextOrder = (int) $pdo->query('SELECT COALESCE(MAX(sort_order), 0) + 1 AS next_order FROM hero_slides')->fetch()['next_order'];
-            $insert = $pdo->prepare(
-                'INSERT INTO hero_slides (image_name, image_path, caption, sort_order) VALUES (:name, :path, :caption, :order)'
-            );
             $insert->execute([
                 'name'    => $imageData['image_name'],
                 'path'    => $imageData['image_path'],
-                'caption' => $caption ?: null,
+                'caption' => $useCaption ? $caption : null,
                 'order'   => $nextOrder,
             ]);
-            flash_set('success', 'Slide uploaded successfully.');
-            redirect(base_url() . '/admin/manage-slides.php');
+            $successCount++;
         }
     }
+
+    if ($isAjax) {
+        header('Content-Type: application/json');
+        echo json_encode(['ok' => $successCount > 0, 'uploaded' => $successCount, 'errors' => $failures]);
+        exit;
+    }
+
+    if ($successCount > 0) {
+        flash_set('success', $successCount === 1 ? 'Slide uploaded successfully.' : $successCount . ' slides uploaded successfully.');
+        if (!empty($failures)) {
+            flash_set('error', implode(' | ', $failures));
+        }
+        redirect(base_url() . '/admin/manage-slides.php');
+    }
+    $errors = $failures;
+}
+
+// Summary message after the page's script finishes uploading a folder.
+if (isset($_GET['uploaded'])) {
+    $uploaded = max(0, (int) $_GET['uploaded']);
+    $failed = max(0, (int) ($_GET['failed'] ?? 0));
+    if ($uploaded > 0) {
+        flash_set('success', $uploaded === 1 ? 'Slide uploaded successfully.' : $uploaded . ' slides uploaded successfully.');
+    }
+    if ($failed > 0) {
+        flash_set('error', $failed . ' file(s) could not be uploaded (not a valid image or larger than 10 MB).');
+    }
+    redirect(base_url() . '/admin/manage-slides.php');
 }
 
 // ---- Handle delete ----
@@ -96,19 +150,81 @@ include __DIR__ . '/../includes/admin-header.php';
     <div class="alert alert-error"><?= e($error) ?></div>
 <?php endforeach; ?>
 
-<form method="post" action="" enctype="multipart/form-data" class="upload-form">
+<form method="post" action="" enctype="multipart/form-data" class="upload-form" id="slideUploadForm">
     <input type="hidden" name="action" value="upload">
     <?= csrf_field() ?>
 
-    <label for="slide_image">Image</label>
-    <input type="file" id="slide_image" name="slide_image" required accept=".jpg,.jpeg,.png,.webp,.gif">
-    <p class="field-hint">Allowed types: JPG, PNG, WEBP, GIF. Maximum size: 10 MB. A wide photo (landscape, at least 1200px wide) looks best.</p>
+    <label for="slide_folder">Select Folder</label>
+    <input type="file" id="slide_folder" name="slide_folder[]" multiple webkitdirectory>
+    <p class="field-hint">Every image inside the selected folder is added to the slideshow. Other files in the folder are skipped.</p>
 
-    <label for="caption">Caption (optional)</label>
+    <label for="slide_image">Or Select a Single Image</label>
+    <input type="file" id="slide_image" name="slide_image" accept=".jpg,.jpeg,.png,.webp,.gif">
+    <p class="field-hint">Allowed types: JPG, PNG, WEBP, GIF. Maximum size: 10 MB per image. A wide photo (landscape, at least 1200px wide) looks best.</p>
+
+    <label for="caption">Caption (optional, only used for a single image)</label>
     <input type="text" id="caption" name="caption" placeholder="e.g. Our ICT Computer Lab">
 
-    <button type="submit" class="btn btn-primary">Upload Slide</button>
+    <button type="submit" class="btn btn-primary" id="slideUploadBtn">Upload</button>
+    <p class="field-hint" id="slideUploadStatus" aria-live="polite"></p>
 </form>
+
+<script>
+// Uploads a chosen folder one image per request, so folders with any
+// number of photos work (PHP only accepts ~20 files in a single request).
+(function () {
+    var form = document.getElementById('slideUploadForm');
+    var folderInput = document.getElementById('slide_folder');
+    var singleInput = document.getElementById('slide_image');
+    var button = document.getElementById('slideUploadBtn');
+    var status = document.getElementById('slideUploadStatus');
+    var imagePattern = /\.(jpe?g|png|webp|gif)$/i;
+
+    form.addEventListener('submit', function (event) {
+        var files = Array.prototype.filter.call(folderInput.files, function (f) { return imagePattern.test(f.name); });
+        if (singleInput.files.length) {
+            files.push(singleInput.files[0]);
+        }
+        if (!files.length) {
+            event.preventDefault();
+            status.textContent = folderInput.files.length
+                ? 'The selected folder has no JPG, PNG, WEBP or GIF images.'
+                : 'Please choose a folder, or a single image, to upload.';
+            return;
+        }
+        if (!window.fetch || !window.FormData) {
+            return; // very old browser: fall back to a normal form post
+        }
+        event.preventDefault();
+        button.disabled = true;
+
+        var token = form.querySelector('input[name="csrf_token"]');
+        var caption = files.length === 1 ? document.getElementById('caption').value : '';
+        var uploaded = 0, failed = 0, index = 0;
+
+        function next() {
+            if (index >= files.length) {
+                window.location.href = window.location.pathname + '?uploaded=' + uploaded + '&failed=' + failed;
+                return;
+            }
+            var file = files[index++];
+            status.textContent = 'Uploading ' + index + ' of ' + files.length + ': ' + file.name + '…';
+            var data = new FormData();
+            data.append('action', 'upload');
+            data.append('ajax', '1');
+            if (token) { data.append('csrf_token', token.value); }
+            data.append('caption', caption);
+            data.append('slide_image', file);
+            fetch(window.location.pathname, { method: 'POST', body: data, credentials: 'same-origin' })
+                .then(function (r) { return r.json(); })
+                .then(function (result) { if (result.ok) { uploaded++; } else { failed++; } })
+                .catch(function () { failed++; })
+                .then(next);
+        }
+        next();
+    });
+})();
+</script>
 
 <h2 style="margin-top:32px;">Current Slides (<?= count($slides) ?>)</h2>
 
@@ -118,7 +234,7 @@ include __DIR__ . '/../includes/admin-header.php';
     <div class="slides-grid">
         <?php foreach ($slides as $i => $slide): ?>
             <div class="slide-item">
-                <img src="<?= e($base) ?>/<?= e($slide['image_path']) ?>" alt="<?= e($slide['caption'] ?? 'Homepage slide') ?>">
+                <img src="<?= e($base) ?>/<?= e(optimized_image($slide['image_path'], 600)) ?>" alt="<?= e($slide['caption'] ?? 'Homepage slide') ?>" loading="lazy">
                 <div class="slide-item-body">
                     <p class="slide-caption"><?= e($slide['caption'] ?: '(no caption)') ?></p>
                     <div class="slide-actions">

@@ -114,7 +114,7 @@ function canonical_url(): string
         $path = substr($path, 0, -strlen('index.php'));
     }
 
-    $keep = array_intersect_key($_GET, array_flip(['form', 'id']));
+    $keep = array_intersect_key($_GET, array_flip(['form', 'id', 'exam', 'subject', 'view']));
     ksort($keep);
     $query = $keep ? '?' . http_build_query($keep) : '';
 
@@ -351,6 +351,8 @@ function upload_subdirectory(string $resourceType, ?string $formLevel): string
             return 'software';
         case 'others':
             return 'others';
+        case 'task':
+            return 'tasks/' . $formLevel;
         default:
             throw new InvalidArgumentException('Unknown resource type.');
     }
@@ -364,17 +366,26 @@ function upload_subdirectory(string $resourceType, ?string $formLevel): string
  */
 function allowed_extensions_for_type(string $resourceType): array
 {
-    $documentExtensions = ['pdf', 'doc', 'docx', 'ppt', 'pptx', 'zip', 'rar'];
+    $documentExtensions = ['pdf', 'doc', 'docx', 'accdb', 'pub', 'ppt', 'pptx', 'zip', 'rar'];
     $softwareExtensions = ['zip', 'rar', 'exe', 'msi', '7z', 'iso', 'img'];
     // "Others" is a catch-all for anything that doesn't fit the categories
     // above, so it accepts a wider set of common document/image types too.
     $otherExtensions = ['pdf', 'doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx', 'zip', 'rar', 'jpg', 'jpeg', 'png', 'txt'];
+    // Public, no-login student task uploads: deliberately a narrower,
+    // office-document-only whitelist (no zip/rar/exe) since this form
+    // can be used by anyone, not just a logged-in admin.
+    // html/htm are allowed here too; they are always served as a forced
+    // download (see uploads/.htaccess and task-download.php), never rendered.
+    $taskExtensions = ['pdf', 'doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx', 'odt', 'ods', 'odp', 'rtf', 'txt', 'html', 'htm', 'accdb', 'pub'];
 
     if ($resourceType === 'software') {
         return $softwareExtensions;
     }
     if ($resourceType === 'others') {
         return $otherExtensions;
+    }
+    if ($resourceType === 'task') {
+        return $taskExtensions;
     }
     return $documentExtensions;
 }
@@ -395,7 +406,9 @@ function blocked_extensions(): array
 function handle_resource_upload(array $file, string $resourceType, ?string $formLevel): array
 {
     $allowedExtensions = allowed_extensions_for_type($resourceType);
-    $blockedExtensions = blocked_extensions();
+    // Anything explicitly whitelisted for this category (e.g. html for tasks)
+    // overrides the general block-list.
+    $blockedExtensions = array_diff(blocked_extensions(), $allowedExtensions);
 
     if (!isset($file['error']) || is_array($file['error'])) {
         return [false, 'Invalid file upload submission.', null];
@@ -555,6 +568,7 @@ function handle_slide_image_upload(array $file): array
     }
 
     @chmod($targetPath, 0644);
+    create_all_optimized_images('uploads/slides/' . $safeName);
 
     return [true, 'ok', [
         'image_name' => $safeName,
@@ -568,6 +582,7 @@ function delete_slide_file(string $relativeFilePath): void
     if (is_file($fullPath)) {
         @unlink($fullPath);
     }
+    delete_optimized_images($relativeFilePath);
 }
 
 // ------------------------------------------------------------
@@ -669,6 +684,9 @@ function handle_gallery_upload(array $file): array
     }
 
     @chmod($targetPath, 0644);
+    if ($mediaType === 'image') {
+        create_all_optimized_images('uploads/gallery/' . $safeName);
+    }
 
     return [true, 'ok', [
         'media_type'    => $mediaType,
@@ -684,6 +702,159 @@ function delete_gallery_file(string $relativeFilePath): void
     $fullPath = dirname(__DIR__) . '/' . ltrim($relativeFilePath, '/');
     if (is_file($fullPath)) {
         @unlink($fullPath);
+    }
+    delete_optimized_images($relativeFilePath);
+}
+
+// ------------------------------------------------------------
+// Optimized (smaller) copies of uploaded photos
+//
+// Phone photos are often 3–4 MB each. Showing them full size made the
+// homepage slideshow and gallery very slow, so pages show a resized copy
+// stored in uploads/_optimized/<width>/ instead. The original file is
+// kept untouched for downloading.
+// ------------------------------------------------------------
+
+/** Widths used by the site: grid thumbnails, and large views/slideshow. */
+const OPTIMIZED_IMAGE_WIDTHS = [600, 1600];
+
+function optimized_image_relative_path(string $relativePath, int $maxWidth): string
+{
+    $name = pathinfo($relativePath, PATHINFO_FILENAME);
+    $extension = strtolower(pathinfo($relativePath, PATHINFO_EXTENSION));
+    $outExtension = in_array($extension, ['png', 'gif', 'webp'], true) ? $extension : 'jpg';
+    return 'uploads/_optimized/' . $maxWidth . '/' . $name . '.' . $outExtension;
+}
+
+/**
+ * Returns the relative path of a copy of $relativePath no wider than
+ * $maxWidth, creating it the first time if the server can (GD). Falls
+ * back to the original path whenever a copy can't be made.
+ */
+function optimized_image(string $relativePath, int $maxWidth): string
+{
+    static $createdThisRequest = 0;
+
+    $root = dirname(__DIR__) . '/';
+    $optimized = optimized_image_relative_path($relativePath, $maxWidth);
+    if (is_file($root . $optimized)) {
+        return $optimized;
+    }
+
+    // Making a copy of a big photo takes a moment, so a single page view
+    // only creates a few; the rest are made on the next visits.
+    if ($createdThisRequest >= 3 || !create_optimized_image($relativePath, $maxWidth)) {
+        return $relativePath;
+    }
+    $createdThisRequest++;
+    return $optimized;
+}
+
+function create_optimized_image(string $relativePath, int $maxWidth): bool
+{
+    if (!function_exists('imagecreatetruecolor')) {
+        return false;
+    }
+
+    $root = dirname(__DIR__) . '/';
+    $source = $root . ltrim($relativePath, '/');
+    $info = @getimagesize($source);
+    if ($info === false) {
+        return false;
+    }
+    [$width, $height, $type] = $info;
+
+    // Already small enough — the original is used as it is.
+    if ($width <= $maxWidth) {
+        return false;
+    }
+
+    $loaders = [
+        IMAGETYPE_JPEG => 'imagecreatefromjpeg',
+        IMAGETYPE_PNG  => 'imagecreatefrompng',
+        IMAGETYPE_GIF  => 'imagecreatefromgif',
+        IMAGETYPE_WEBP => 'imagecreatefromwebp',
+    ];
+    if (!isset($loaders[$type]) || !function_exists($loaders[$type])) {
+        return false;
+    }
+
+    $image = @$loaders[$type]($source);
+    if (!$image) {
+        return false;
+    }
+
+    // Phone cameras store photos sideways plus an "orientation" flag;
+    // browsers honour the flag but GD drops it, so rotate for real.
+    if ($type === IMAGETYPE_JPEG && function_exists('exif_read_data')) {
+        $exif = @exif_read_data($source);
+        $rotation = [3 => 180, 6 => -90, 8 => 90][$exif['Orientation'] ?? 1] ?? 0;
+        if ($rotation !== 0) {
+            $rotated = imagerotate($image, $rotation, 0);
+            if ($rotated) {
+                imagedestroy($image);
+                $image = $rotated;
+                $width = imagesx($image);
+                $height = imagesy($image);
+            }
+        }
+    }
+
+    $scale = min(1, $maxWidth / max(1, $width));
+    $newWidth = max(1, (int) round($width * $scale));
+    $newHeight = max(1, (int) round($height * $scale));
+
+    $resized = imagecreatetruecolor($newWidth, $newHeight);
+    if (in_array($type, [IMAGETYPE_PNG, IMAGETYPE_GIF, IMAGETYPE_WEBP], true)) {
+        imagealphablending($resized, false);
+        imagesavealpha($resized, true);
+    }
+    imagecopyresampled($resized, $image, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+    imagedestroy($image);
+
+    $target = $root . optimized_image_relative_path($relativePath, $maxWidth);
+    if (!is_dir(dirname($target)) && !@mkdir(dirname($target), 0755, true) && !is_dir(dirname($target))) {
+        imagedestroy($resized);
+        return false;
+    }
+
+    switch ($type) {
+        case IMAGETYPE_PNG:
+            $saved = imagepng($resized, $target, 8);
+            break;
+        case IMAGETYPE_GIF:
+            $saved = imagegif($resized, $target);
+            break;
+        case IMAGETYPE_WEBP:
+            $saved = imagewebp($resized, $target, 80);
+            break;
+        default:
+            imageinterlace($resized, true); // progressive JPEG shows sooner
+            $saved = imagejpeg($resized, $target, 80);
+    }
+    imagedestroy($resized);
+
+    if ($saved) {
+        @chmod($target, 0644);
+    }
+    return (bool) $saved;
+}
+
+/** Makes every optimized size right after a photo is uploaded. */
+function create_all_optimized_images(string $relativePath): void
+{
+    foreach (OPTIMIZED_IMAGE_WIDTHS as $width) {
+        create_optimized_image($relativePath, $width);
+    }
+}
+
+function delete_optimized_images(string $relativePath): void
+{
+    foreach (OPTIMIZED_IMAGE_WIDTHS as $width) {
+        $path = dirname(__DIR__) . '/' . optimized_image_relative_path($relativePath, $width);
+        if (is_file($path)) {
+            @unlink($path);
+        }
     }
 }
 
@@ -779,7 +950,7 @@ function sync_folder_type_map(): array
  *
  * Returns ['added' => int, 'removed' => int, 'skipped' => bool].
  */
-function sync_filesystem_with_database(PDO $pdo, bool $force = false, int $minIntervalSeconds = 8): array
+function sync_filesystem_with_database(PDO $pdo, bool $force = false, int $minIntervalSeconds = 60): array
 {
     $uploadsRoot = dirname(__DIR__) . '/uploads';
     if (!is_dir($uploadsRoot)) {

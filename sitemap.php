@@ -23,9 +23,41 @@ $staticPages = [
     ['loc' => '/software.php', 'priority' => '0.7'],
     ['loc' => '/others.php', 'priority' => '0.6'],
     ['loc' => '/gallery.php', 'priority' => '0.6'],
-    ['loc' => '/about.php', 'priority' => '0.5'],
+    ['loc' => '/about.php', 'priority' => '0.7'],
+    ['loc' => '/mission-vision.php', 'priority' => '0.6'],
+    ['loc' => '/history.php', 'priority' => '0.6'],
+    ['loc' => '/our-students.php', 'priority' => '0.6'],
     ['loc' => '/contact.php', 'priority' => '0.5'],
 ];
+
+// National past paper pages (FTNA / CSEE subjects and CSEE practicals).
+require_once __DIR__ . '/includes/national-exams.php';
+foreach (national_exams() as $examKey => $examLevel) {
+    $staticPages[] = ['loc' => '/theory.php?exam=' . $examKey, 'priority' => '0.7'];
+    foreach (array_keys($examLevel['subjects']) as $subjectKey) {
+        if (national_exam_blocks($examKey, $subjectKey, false) !== []) {
+            $staticPages[] = ['loc' => '/theory.php?exam=' . $examKey . '&subject=' . $subjectKey, 'priority' => '0.6'];
+        }
+    }
+}
+foreach (array_keys(PRACTICAL_SUBJECTS) as $subjectKey) {
+    if (national_exam_blocks('csee', $subjectKey, true) !== []) {
+        $staticPages[] = ['loc' => '/practical.php?subject=' . $subjectKey, 'priority' => '0.6'];
+    }
+}
+
+// School (non-national) exam pages, one per Form and subject.
+require_once __DIR__ . '/includes/school-exams.php';
+foreach (VALID_FORMS as $form) {
+    foreach ([false => 'theory', true => 'practical'] as $practical => $page) {
+        if ($practical && $form !== 'form4') {
+            continue; // only Form 4 has practical exams
+        }
+        foreach (array_keys(school_exam_subjects($form, (bool) $practical)) as $subjectKey) {
+            $staticPages[] = ['loc' => '/' . $page . '.php?form=' . $form . '&subject=' . $subjectKey, 'priority' => '0.6'];
+        }
+    }
+}
 
 // Individual resources, so each notes/past-paper page can be found and
 // indexed directly by search engines too.

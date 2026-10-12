@@ -61,7 +61,7 @@ include __DIR__ . '/../includes/admin-header.php';
         <?php foreach ($items as $item): ?>
             <div class="slide-item">
                 <?php if ($item['media_type'] === 'image'): ?>
-                    <img src="<?= e($base) ?>/<?= e($item['file_path']) ?>" alt="<?= e($item['title']) ?>">
+                    <img src="<?= e($base) ?>/<?= e(optimized_image($item['file_path'], 600)) ?>" alt="<?= e($item['title']) ?>" loading="lazy">
                 <?php else: ?>
                     <video src="<?= e($base) ?>/<?= e($item['file_path']) ?>" muted preload="metadata"></video>
                 <?php endif; ?>

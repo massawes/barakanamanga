@@ -28,8 +28,8 @@ try {
     // hero_slides table not created yet (older installs) — fail quietly, plain banner shows instead.
 }
 
-$pageTitle = 'Namanga Secondary School Website | Digital Resource Centre';
-$pageDescription = 'Welcome to the Namanga Secondary School website (Namanga, Arusha, Tanzania). Free ICT & Computer Science notes, summaries, past papers, NECTA results and software for Form 1 to Form 4.';
+$pageTitle = 'Namanga Secondary School Website | Longido, Arusha, Tanzania';
+$pageDescription = 'Official website of Namanga Secondary School, a government secondary school in Namanga, Longido District, Arusha, Tanzania. Free ICT & Computer Science notes, summaries, past papers, NECTA results and software for Form 1 to Form 4.';
 $base = base_url();
 include __DIR__ . '/includes/header.php';
 ?>
@@ -38,15 +38,21 @@ include __DIR__ . '/includes/header.php';
     <div class="hero-inner">
         <div class="hero-content">
             <h1>NAMANGA SECONDARY SCHOOL WEBSITE</h1>
-            <p>Made by Form 4 ICS 2026</p>
+            <p class="hero-motto">&ldquo;Education for Liberty and Prosperity&rdquo;</p>
+            <p>Namanga, Longido District, Arusha — Tanzania</p>
             <a href="#resources" class="btn btn-gold btn-large">Explore Resources</a>
         </div>
         <?php if (!empty($slides)): ?>
             <div class="hero-photo">
                 <div class="hero-slideshow">
                     <?php foreach ($slides as $i => $slide): ?>
-                        <div class="hero-slide <?= $i === 0 ? 'active' : '' ?>"
-                             style="background-image: url('<?= e($base) ?>/<?= e($slide['image_path']) ?>');"></div>
+                        <?php $slideUrl = $base . '/' . optimized_image($slide['image_path'], 1600); ?>
+                        <?php if ($i === 0): ?>
+                            <div class="hero-slide active" style="background-image: url('<?= e($slideUrl) ?>');"></div>
+                        <?php else: ?>
+                            <?php // Later slides load just before they are shown (see script.js). ?>
+                            <div class="hero-slide" data-bg="<?= e($slideUrl) ?>"></div>
+                        <?php endif; ?>
                     <?php endforeach; ?>
                 </div>
             </div>
@@ -110,7 +116,7 @@ include __DIR__ . '/includes/header.php';
             <a href="<?= e($base) ?>/gallery.php" class="category-card">
                 <div class="category-icon"><?= svg_icon('gallery') ?></div>
                 <h3>Gallery</h3>
-                <p>Photos and videos from the ICT &amp; Computer Science department.</p>
+                <p>Photos and videos from life at Namanga Secondary School.</p>
                 <span class="card-count"><?= $galleryCount ?> item<?= $galleryCount === 1 ? '' : 's' ?></span>
                 <span class="btn btn-outline">View Gallery</span>
             </a>
@@ -120,13 +126,25 @@ include __DIR__ . '/includes/header.php';
 </section>
 
 <section class="home-intro">
-    <div class="container narrow">
-        <h2 class="section-title">About the Namanga Secondary School Website</h2>
-        <p>This is the official website of <strong>Namanga Secondary School</strong> in Namanga, Arusha, Tanzania.
-        It is the school's Digital Resource Centre, built by the Form 4 ICS class of 2026, where students can
-        download ICT and Computer Science notes, revision summaries, theory and practical past papers,
-        and educational software for Form 1 to Form 4. You can also find links to the school's
+    <div class="container">
+      <div class="notebook-card">
+        <h2 class="section-title">Who are we?</h2>
+        <p><strong>Namanga Secondary School</strong> is a government, co-educational secondary school in
+        Namanga ward, Longido District, Arusha Region, Tanzania, right on the Tanzania&ndash;Kenya border.
+        The school serves boys and girls from Namanga and the surrounding Longido communities, including
+        many Maasai families, offering O-Level education from Form 1 to Form 4.</p>
+        <p>In 2024 the school opened a new girls' dormitory, built with support from the Legal Services
+        Facility (LSF) and Luxembourg's North-South Cooperation, giving girls a safe place to live and study.</p>
+        <p>This website is the school's home online. Here students can download notes, revision summaries,
+        theory and practical past papers and educational software, and find the school's
         <a href="<?= e($base) ?>/results.php">NECTA Form 2 and Form 4 results</a>.</p>
+        <ul class="intro-points">
+            <li>Government school for boys and girls, Form 1 to Form 4</li>
+            <li>Located in Namanga, Longido District, on the Tanzania&ndash;Kenya border</li>
+            <li>New girls' dormitory opened in 2024 for a safe place to study</li>
+            <li>Free notes, summaries, past papers and NECTA results on this website</li>
+        </ul>
+      </div>
     </div>
 </section>
 

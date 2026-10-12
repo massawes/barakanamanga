@@ -3,8 +3,10 @@
 <footer class="site-footer">
     <div class="footer-content">
         <div class="footer-brand">
+            <img src="<?= e($base) ?>/assets/images/logo-white.png" alt="Namanga Secondary School logo" class="footer-logo">
             <strong>NAMANGA SECONDARY SCHOOL</strong>
-            <p>ICT &amp; Computer Science<br>Digital Resource Centre</p>
+            <em class="footer-motto">&ldquo;Education for Liberty and Prosperity&rdquo;</em>
+            <p>Namanga, Longido District<br>Arusha, Tanzania</p>
         </div>
 
         <div class="footer-links">
@@ -17,14 +19,24 @@
                 <li><a href="<?= e($base) ?>/practical.php">Form 4 Practical</a></li>
                 <li><a href="<?= e($base) ?>/software.php">Software</a></li>
                 <li><a href="<?= e($base) ?>/others.php">Other Subjects</a></li>
-                <li><a href="<?= e($base) ?>/gallery.php">Gallery</a></li>
+                <li><a href="<?= e($base) ?>/gallery.php">The Latest</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-links">
+            <h4>Our School</h4>
+            <ul>
+                <li><a href="<?= e($base) ?>/about.php">About Us</a></li>
+                <li><a href="<?= e($base) ?>/mission-vision.php">Mission &amp; Vision</a></li>
+                <li><a href="<?= e($base) ?>/history.php">Our History</a></li>
+                <li><a href="<?= e($base) ?>/our-students.php">Our Students</a></li>
             </ul>
         </div>
 
         <div class="footer-admin">
             <h4>Staff</h4>
             <ul>
-                <li><a href="<?= e($base) ?>/admin/login.php">Admin Login</a></li>
+                <li><a href="<?= e($base) ?>/admin/login.php">Staff Login</a></li>
             </ul>
         </div>
     </div>
@@ -33,6 +45,6 @@
     </div>
 </footer>
 <?php include __DIR__ . '/assistant-widget.php'; ?>
-<script src="<?= e($base) ?>/assets/js/script.js"></script>
+<script src="<?= e($base) ?>/assets/js/script.js?v=<?= (int) @filemtime(__DIR__ . '/../assets/js/script.js') ?>"></script>
 </body>
 </html>

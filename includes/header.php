@@ -26,6 +26,7 @@ $isHome = $canonical === SITE_URL . '/';
 <meta property="og:title" content="<?= e($pageTitle) ?>">
 <meta property="og:description" content="<?= e($pageDescription) ?>">
 <meta property="og:url" content="<?= e($canonical) ?>">
+<meta property="og:image" content="<?= e(SITE_URL) ?>/assets/images/logo-navy.png">
 <?php if ($isHome): ?>
 <script type="application/ld+json">
 <?= json_encode([
@@ -62,7 +63,11 @@ $isHome = $canonical === SITE_URL . '/';
 
 </script>
 <?php endif; ?>
-<link rel="stylesheet" href="<?= e(base_url()) ?>/assets/css/style.css">
+<link rel="icon" type="image/png" href="<?= e(base_url()) ?>/assets/images/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="<?= e(base_url()) ?>/assets/css/style.css?v=<?= (int) @filemtime(__DIR__ . '/../assets/css/style.css') ?>">
 </head>
 <body>
 <?php include __DIR__ . '/navbar.php'; ?>

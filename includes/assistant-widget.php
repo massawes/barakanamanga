@@ -11,14 +11,14 @@ $assistantBase = base_url();
     <button type="button" id="assistantToggle" class="assistant-toggle" aria-expanded="false" aria-controls="assistantPanel">
         <?= svg_icon('chat', 'icon-svg assistant-toggle-icon-open') ?>
         <?= svg_icon('close', 'icon-svg assistant-toggle-icon-close') ?>
-        <span class="assistant-toggle-label">Msaidizi</span>
+        <span class="assistant-toggle-label">Need help?</span>
     </button>
 
     <div id="assistantPanel" class="assistant-panel" hidden>
         <div class="assistant-panel-header">
             <div>
-                <strong>Msaidizi wa Tovuti</strong>
-                <span class="assistant-panel-subtitle">Inafanya kazi bila internet</span>
+                <strong>Help Center</strong>
+                <span class="assistant-panel-subtitle">Ask us anything about this website</span>
             </div>
             <button type="button" id="assistantClose" class="assistant-panel-close" aria-label="Funga">
                 <?= svg_icon('close', 'icon-svg') ?>
