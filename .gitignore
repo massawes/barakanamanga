@@ -25,3 +25,5 @@ config/env.php
 
 # Editor backup copies
 *.bak
+/SIMONFORM13NAMA/
+*.bak

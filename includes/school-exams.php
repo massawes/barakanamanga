@@ -6,9 +6,25 @@
  * [title, year or null, file path, 'exam'|'ms', is practical, size in bytes].
  */
 
-// Subjects shown for each Form, in display order: Form 2 follows the new
-// syllabus (same list as the FTNA exams), Form 4 the CSEE list.
+// Subjects shown for each Form, in display order: Forms 1-2 follow the new
+// syllabus (same list as the FTNA exams), Forms 3-4 the CSEE list.
 const SCHOOL_EXAM_SUBJECTS = [
+    'form1' => [
+        'historia-maadili' => 'Historia ya Tanzania na Maadili',
+        'history'          => 'History',
+        'geography'        => 'Geography',
+        'kiswahili'        => 'Kiswahili',
+        'english'          => 'English',
+        'physics'          => 'Physics',
+        'chemistry'        => 'Chemistry',
+        'biology'          => 'Biology',
+        'math'             => 'Mathematics',
+        'business'         => 'Business Studies',
+        'bookkeeping'      => 'Book-Keeping',
+        'foodnutrition'    => 'Food & Nutrition',
+        'ics'              => 'Information & Computer Studies',
+        'kiislamu'         => 'Islamic Knowledge',
+    ],
     'form2' => [
         'historia-maadili' => 'Historia ya Tanzania na Maadili',
         'history'          => 'History',
@@ -24,6 +40,23 @@ const SCHOOL_EXAM_SUBJECTS = [
         'foodnutrition'    => 'Food & Nutrition',
         'ics'              => 'Information & Computer Studies',
         'kiislamu'         => 'Islamic Knowledge',
+    ],
+    'form3' => [
+        'civics'        => 'Civics',
+        'history'       => 'History',
+        'geography'     => 'Geography',
+        'kiswahili'     => 'Kiswahili',
+        'english'       => 'English',
+        'physics'       => 'Physics',
+        'chemistry'     => 'Chemistry',
+        'biology'       => 'Biology',
+        'math'          => 'Basic Mathematics',
+        'bookkeeping'   => 'Book-Keeping',
+        'commerce'      => 'Commerce',
+        'foodnutrition' => 'Food & Nutrition',
+        'literature'    => 'Literature in English',
+        'kiislamu'      => 'Islamic Knowledge',
+        'ics'           => 'Information & Computer Studies',
     ],
     'form4' => [
         'civics'        => 'Civics',
