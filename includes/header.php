@@ -26,7 +26,7 @@ $isHome = $canonical === SITE_URL . '/';
 <meta property="og:title" content="<?= e($pageTitle) ?>">
 <meta property="og:description" content="<?= e($pageDescription) ?>">
 <meta property="og:url" content="<?= e($canonical) ?>">
-<meta property="og:image" content="<?= e(SITE_URL) ?>/assets/images/logo-navy.png">
+<meta property="og:image" content="<?= e(SITE_URL) ?>/assets/images/<?= $isHome ? 'school/students-red.jpg' : 'logo-navy.png' ?>">
 <?php if ($isHome): ?>
 <script type="application/ld+json">
 <?= json_encode([
@@ -36,14 +36,24 @@ $isHome = $canonical === SITE_URL . '/';
             '@type' => 'HighSchool',
             '@id' => SITE_URL . '/#school',
             'name' => 'Namanga Secondary School',
-            'alternateName' => ['Namanga Secondary', 'Namanga School', 'Namanga Website'],
+            'alternateName' => ['Namanga Secondary', 'Namanga School', 'Namanga Website', 'namangawebsite'],
+            'description' => 'Secondary school in Namanga, Longido District, Arusha, Tanzania (NECTA centre S2911), offering Form 1 to Form 4 education. Motto: Education for Liberty and Prosperity.',
+            'slogan' => 'Education for Liberty and Prosperity',
+            'identifier' => ['@type' => 'PropertyValue', 'propertyID' => 'NECTA centre number', 'value' => 'S2911'],
             'url' => SITE_URL . '/',
+            'logo' => SITE_URL . '/assets/images/logo-navy.png',
+            'image' => [
+                SITE_URL . '/assets/images/school/students-red.jpg',
+                SITE_URL . '/assets/images/school/assembly.jpg',
+                SITE_URL . '/assets/images/school/ceremony.jpg',
+            ],
             'address' => [
                 '@type' => 'PostalAddress',
                 'addressLocality' => 'Namanga',
                 'addressRegion' => 'Arusha',
                 'addressCountry' => 'TZ',
             ],
+            'areaServed' => 'Longido District, Arusha, Tanzania',
         ],
         [
             '@type' => 'WebSite',
