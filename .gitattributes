@@ -13,3 +13,7 @@
 *.webp binary
 *.mp4 binary
 *.zip binary
+
+# Files over 50 MB live in Git LFS (only in the massawes/namanga archive)
+uploads/gallery/*.mp4 filter=lfs diff=lfs merge=lfs -text
+EXMSVICENTNAMANGA/**/MARKING?SCHEME?MOCK?KANDA?F,4?ARUSHA.pdf filter=lfs diff=lfs merge=lfs -text
