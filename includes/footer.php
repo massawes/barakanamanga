@@ -9,6 +9,7 @@
             <p>Secondary School (Form 1&ndash;4) &middot; NECTA S2911<br>P.O. Box 8560, Namanga<br>Longido District, Arusha, Tanzania<br>Tel: <a href="tel:+255695389537">+255 695 389 537</a></p>
             <p class="footer-social">
                 <a href="https://www.facebook.com/namangasecondaryschool" target="_blank" rel="noopener">Follow Namanga Secondary School (S.2911), Tanzania on Facebook</a><br>
+                <a href="https://www.youtube.com/@namangasecondaryschool" target="_blank" rel="noopener">Watch Namanga Secondary School (S.2911), Tanzania on YouTube</a><br>
                 <a href="https://www.tiktok.com/@namangasecondaryschool" target="_blank" rel="noopener">Follow us on TikTok</a><br>
                 <a href="https://wa.me/255695389537?text=Habari%20Namanga%20Secondary%20School" target="_blank" rel="noopener">Contact us on WhatsApp: +255 695 389 537</a>
             </p>

@@ -62,6 +62,7 @@ $isHome = $canonical === SITE_URL . '/';
             'sameAs' => [
                 'https://www.facebook.com/namangasecondaryschool',
                 'https://www.tiktok.com/@namangasecondaryschool',
+                'https://www.youtube.com/@namangasecondaryschool',
             ],
         ],
         [
