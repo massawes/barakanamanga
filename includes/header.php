@@ -43,6 +43,7 @@ $isHome = $canonical === SITE_URL . '/';
             'foundingDate' => '2007',
             'identifier' => ['@type' => 'PropertyValue', 'propertyID' => 'NECTA centre number', 'value' => 'S2911'],
             'url' => SITE_URL . '/',
+            'telephone' => '+255695389537',
             'logo' => SITE_URL . '/assets/images/logo-navy.png',
             'image' => [
                 SITE_URL . '/assets/images/school/students-red.jpg',
@@ -52,6 +53,7 @@ $isHome = $canonical === SITE_URL . '/';
             'address' => [
                 '@type' => 'PostalAddress',
                 'postOfficeBoxNumber' => 'P.O. Box 8560',
+                'streetAddress' => 'Namanga, Longido District',
                 'addressLocality' => 'Namanga',
                 'addressRegion' => 'Arusha',
                 'addressCountry' => 'TZ',

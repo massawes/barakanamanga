@@ -6,7 +6,7 @@
             <img src="<?= e($base) ?>/assets/images/logo-white.png" alt="Namanga Secondary School logo" class="footer-logo">
             <strong>NAMANGA SECONDARY SCHOOL</strong>
             <em class="footer-motto">&ldquo;Education for Liberty and Prosperity&rdquo;</em>
-            <p>P.O. Box 8560, Namanga<br>Longido District, Arusha, Tanzania</p>
+            <p>Secondary School (Form 1&ndash;4) &middot; NECTA S2911<br>P.O. Box 8560, Namanga<br>Longido District, Arusha, Tanzania<br>Tel: <a href="tel:+255695389537">+255 695 389 537</a></p>
         </div>
 
         <div class="footer-links">
