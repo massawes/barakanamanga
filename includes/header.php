@@ -59,6 +59,10 @@ $isHome = $canonical === SITE_URL . '/';
                 'addressCountry' => 'TZ',
             ],
             'areaServed' => 'Longido District, Arusha, Tanzania',
+            'sameAs' => [
+                'https://www.facebook.com/namangasecondaryschool',
+                'https://www.tiktok.com/@namangasecondaryschool',
+            ],
         ],
         [
             '@type' => 'WebSite',

@@ -7,6 +7,10 @@
             <strong>NAMANGA SECONDARY SCHOOL</strong>
             <em class="footer-motto">&ldquo;Education for Liberty and Prosperity&rdquo;</em>
             <p>Secondary School (Form 1&ndash;4) &middot; NECTA S2911<br>P.O. Box 8560, Namanga<br>Longido District, Arusha, Tanzania<br>Tel: <a href="tel:+255695389537">+255 695 389 537</a></p>
+            <p class="footer-social">
+                <a href="https://www.facebook.com/namangasecondaryschool" target="_blank" rel="noopener">Follow Namanga Secondary School (S.2911), Tanzania on Facebook</a><br>
+                <a href="https://www.tiktok.com/@namangasecondaryschool" target="_blank" rel="noopener">Follow us on TikTok</a>
+            </p>
         </div>
 
         <div class="footer-links">
