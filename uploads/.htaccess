@@ -17,8 +17,9 @@
     Require all denied
 </FilesMatch>
 
-Options -ExecCGI
-AddHandler cgi-script .php .php3 .php4 .php5 .php7 .phtml .pht .phar .cgi .pl .py .asp .aspx .sh .exe
+# No "Options -ExecCGI" / "AddHandler cgi-script" here: InfinityFree
+# rejects those directives and answers every request in uploads/ with a
+# 500 error. The FilesMatch block above already refuses script files.
 
 # HTML/SVG files (e.g. student task uploads) must never be rendered as a
 # page on this site — always force them to download as a file instead.
