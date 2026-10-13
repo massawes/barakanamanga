@@ -21,17 +21,39 @@ function run_live_import(PDO $pdo): void
         return;
     }
 
-    $hash = md5_file($jsonFile);
+    $hash = 'v2:' . md5_file($jsonFile);
     $marker = $root . '/uploads/.live_import_done';
     if (is_file($marker) && trim((string) file_get_contents($marker)) === $hash) {
         return;
     }
-    // Claim the run straight away so parallel requests don't all import.
-    @file_put_contents($marker, $hash);
+    // Throttle attempts so parallel or repeated requests don't all import.
+    $lock = $root . '/uploads/.live_import_try';
+    if (is_file($lock) && time() - filemtime($lock) < 60) {
+        return;
+    }
+    @touch($lock);
 
     $data = json_decode((string) file_get_contents($jsonFile), true);
     if (!is_array($data)) {
         return;
+    }
+
+    // table => column holding the file path
+    $tables = [
+        'resources'     => 'file_path',
+        'gallery_items' => 'file_path',
+        'hero_slides'   => 'image_path',
+        'tasks'         => 'file_path',
+    ];
+
+    // A deploy uploads files one by one; wait until every file has
+    // arrived so the import never runs against a half-finished upload.
+    foreach ($tables as $table => $pathColumn) {
+        foreach ($data[$table] ?? [] as $row) {
+            if (!is_file($root . '/' . ltrim($row[$pathColumn] ?? '', '/'))) {
+                return;
+            }
+        }
     }
 
     $pdo->exec(
@@ -49,14 +71,6 @@ function run_live_import(PDO $pdo): void
             INDEX idx_created_at (created_at)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4"
     );
-
-    // table => column holding the file path
-    $tables = [
-        'resources'     => 'file_path',
-        'gallery_items' => 'file_path',
-        'hero_slides'   => 'image_path',
-        'tasks'         => 'file_path',
-    ];
 
     // The homepage slider and gallery must match the local site exactly,
     // so rows for those two that aren't in the JSON are dropped.
@@ -91,4 +105,6 @@ function run_live_import(PDO $pdo): void
             }
         }
     }
+
+    @file_put_contents($marker, $hash);
 }

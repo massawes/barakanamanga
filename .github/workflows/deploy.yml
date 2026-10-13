@@ -56,3 +56,4 @@ jobs:
             uploads/software/**
             uploads/.sync_marker
             uploads/.live_import_done
+            uploads/.live_import_try
