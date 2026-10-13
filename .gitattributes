@@ -1,0 +1,15 @@
+# Never let line-ending conversion touch documents or media
+*.pdf binary
+*.doc binary
+*.docx binary
+*.ppt binary
+*.pptx binary
+*.xls binary
+*.xlsx binary
+*.jpg binary
+*.jpeg binary
+*.png binary
+*.gif binary
+*.webp binary
+*.mp4 binary
+*.zip binary

@@ -53,6 +53,12 @@ if (!APP_DEBUG) {
 // so this stays cheap even under normal browsing traffic. Never allowed
 // to break a page if something about the scan goes wrong.
 try {
+    require_once __DIR__ . '/live-import.php';
+    run_live_import($pdo);
+} catch (Throwable $e) {
+    // Never let the importer break a page.
+}
+try {
     sync_filesystem_with_database($pdo);
 } catch (Throwable $e) {
     // Silently skip this cycle; the next request will try again.

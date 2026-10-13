@@ -1,7 +1,25 @@
-# User-uploaded content (large, machine-specific, not source code)
-/uploads/*/*
-!/uploads/*/.gitkeep
+# Uploaded content is deployed with the site, except software installers
+# (too big) and files over InfinityFree's 10 MB per-file limit.
+/uploads/software/*
+!/uploads/software/.gitkeep
 /uploads/.sync_marker
+/uploads/.live_import_done
+/uploads/gallery/9a65edb40a9218be32b99d0536d3c1b2.mp4
+/uploads/gallery/bc9957cf7ac39f69c6208a665bb87178.mp4
+/uploads/gallery/ec603a46704660f449d3e7bb24f63096.mp4
+/uploads/notes/form1/2464cb5de67f3f30180aa28d017b01d9.pdf
+/uploads/notes/form1/9b56922fbbfe88e5983872938c38bcb7.pdf
+/uploads/notes/form1/COMPUTER SCIENCE F1 - WazaElimu.com.pdf
+/uploads/notes/form1/ICT Computer Studies Form One-darasahuru.net.pdf
+/uploads/notes/form1/bc9ee99cb0002974a059c68ab729b045.pdf
+/uploads/notes/form2/ICT Computer Studies F2 Wazaelimu.com (2).pdf
+/uploads/notes/form2/ICT Computer Studies F2 Wazaelimu.com.pdf
+/uploads/notes/form2/computer science 2 - WazaElimu.com.pdf
+/uploads/notes/form3/ICT Computer Studies F3 Wazaelimu.com.pdf
+/uploads/notes/form4/ICT Computer Studies F4 Wazaelimu.com (2).pdf
+/uploads/theory/form4/65163e2375ca430fd32cdcb39580b242.pdf
+/uploads/theory/form4/CamScanner 19-09-2026 08.05.pdf
+/uploads/theory/form4/de39055140d8a6b86dc83827265a757f.pdf
 
 # XAMPP / PHP local artifacts
 *.log
