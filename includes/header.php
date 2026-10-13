@@ -38,6 +38,7 @@ $isHome = $canonical === SITE_URL . '/';
             'name' => 'Namanga Secondary School',
             'alternateName' => ['Namanga Secondary', 'Namanga School', 'Namanga Website', 'namangawebsite'],
             'description' => 'Secondary school in Namanga, Longido District, Arusha, Tanzania (NECTA centre S2911), offering Form 1 to Form 4 education. Motto: Education for Liberty and Prosperity.',
+            'disambiguatingDescription' => 'The Tanzanian Namanga Secondary School in Longido District, Arusha Region (NECTA S2911), not the school of the same name in Namanga, Kenya.',
             'slogan' => 'Education for Liberty and Prosperity',
             'foundingDate' => '2007',
             'identifier' => ['@type' => 'PropertyValue', 'propertyID' => 'NECTA centre number', 'value' => 'S2911'],
