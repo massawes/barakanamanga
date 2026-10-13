@@ -75,7 +75,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-$pageTitle = 'Upload Task — Namanga Digital Resource Centre';
+$pageTitle = 'Upload Task | Namanga Secondary School';
+$pageDescription = 'Students of Namanga Secondary School, Tanzania can upload their assignments and tasks here.';
 include __DIR__ . '/includes/header.php';
 ?>
 

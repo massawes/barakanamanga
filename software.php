@@ -14,6 +14,7 @@ $stmt->execute();
 $softwareList = $stmt->fetchAll();
 
 $pageTitle = 'Software | Namanga Secondary School';
+$pageDescription = 'Software used in ICT and Computer Science lessons at Namanga Secondary School, Tanzania: programming tools, typing tutors and more, free to download.';
 $base = base_url();
 include __DIR__ . '/includes/header.php';
 ?>

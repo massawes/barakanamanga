@@ -21,7 +21,7 @@ if ($formSelected) {
     );
     $stmt->execute(['form' => $selectedForm]);
     $items = $stmt->fetchAll();
-    $pageTitle = form_label($selectedForm) . ' Tasks — Namanga Digital Resource Centre';
+    $pageTitle = form_label($selectedForm) . ' Tasks | Namanga Secondary School';
 } else {
     $counts = ['form1' => 0, 'form2' => 0, 'form3' => 0, 'form4' => 0];
     $stmt = $pdo->query("SELECT form_level, COUNT(*) AS total FROM tasks GROUP BY form_level");
@@ -30,7 +30,8 @@ if ($formSelected) {
             $counts[$row['form_level']] = (int) $row['total'];
         }
     }
-    $pageTitle = 'Tasks — Namanga Digital Resource Centre';
+    $pageTitle = 'Student Tasks | Namanga Secondary School';
+    $pageDescription = 'Assignments and tasks submitted by students of Namanga Secondary School (S.2911), Tanzania, for Form 1 to Form 4.';
 }
 
 include __DIR__ . '/includes/header.php';

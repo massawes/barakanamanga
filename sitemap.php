@@ -27,6 +27,7 @@ $staticPages = [
     ['loc' => '/mission-vision.php', 'priority' => '0.6'],
     ['loc' => '/history.php', 'priority' => '0.6'],
     ['loc' => '/our-students.php', 'priority' => '0.6'],
+    ['loc' => '/tasks.php', 'priority' => '0.6'],
     ['loc' => '/contact.php', 'priority' => '0.5'],
 ];
 

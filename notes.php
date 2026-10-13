@@ -31,6 +31,7 @@ if ($formSelected) {
         }
     }
     $pageTitle = 'Notes | Namanga Secondary School';
+    $pageDescription = 'Free ICT & Computer Science notes for Form 1 to Form 4 from Namanga Secondary School (S.2911), Longido, Arusha, Tanzania. View or download complete notes books.';
 }
 
 include __DIR__ . '/includes/header.php';

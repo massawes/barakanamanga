@@ -14,6 +14,7 @@ $stmt->execute();
 $othersList = $stmt->fetchAll();
 
 $pageTitle = 'Other Subjects | Namanga Secondary School';
+$pageDescription = 'Past papers and study materials for other subjects (Biology, Chemistry, Physics, Geography, History, Kiswahili and more) from Namanga Secondary School, Tanzania.';
 $base = base_url();
 include __DIR__ . '/includes/header.php';
 ?>

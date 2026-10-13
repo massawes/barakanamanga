@@ -31,6 +31,7 @@ if ($formSelected) {
         }
     }
     $pageTitle = 'Summary | Namanga Secondary School';
+    $pageDescription = 'Short revision summaries for Form 1 to Form 4 from Namanga Secondary School (S.2911), Longido, Arusha, Tanzania. Free to view and download.';
 }
 
 include __DIR__ . '/includes/header.php';
