@@ -6,7 +6,7 @@
             <img src="<?= e($base) ?>/assets/images/logo-white.png" alt="Namanga Secondary School logo" class="footer-logo">
             <strong>NAMANGA SECONDARY SCHOOL</strong>
             <em class="footer-motto">&ldquo;Education for Liberty and Prosperity&rdquo;</em>
-            <p>Namanga, Longido District<br>Arusha, Tanzania</p>
+            <p>P.O. Box 8560, Namanga<br>Longido District, Arusha, Tanzania</p>
         </div>
 
         <div class="footer-links">

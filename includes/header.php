@@ -50,6 +50,7 @@ $isHome = $canonical === SITE_URL . '/';
             ],
             'address' => [
                 '@type' => 'PostalAddress',
+                'postOfficeBoxNumber' => 'P.O. Box 8560',
                 'addressLocality' => 'Namanga',
                 'addressRegion' => 'Arusha',
                 'addressCountry' => 'TZ',
