@@ -83,7 +83,9 @@ $isHome = $canonical === SITE_URL . '/';
 
 </script>
 <?php endif; ?>
-<link rel="icon" type="image/png" href="<?= e(base_url()) ?>/assets/images/favicon.png">
+<link rel="icon" href="<?= e(base_url()) ?>/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="192x192" href="<?= e(base_url()) ?>/assets/images/favicon.png">
+<link rel="apple-touch-icon" href="<?= e(base_url()) ?>/assets/images/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700&display=swap">
