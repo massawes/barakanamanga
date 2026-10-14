@@ -51,6 +51,12 @@ jobs:
             **/.git*/**
             .github/**
             README.md
+            DOCKER.md
+            Dockerfile
+            docker-compose.yml
+            .dockerignore
+            .env.example
+            docker/**
             database/**
             config/database.production.php
             uploads/software/**

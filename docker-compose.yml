@@ -1,0 +1,48 @@
+# Run the whole site on any Linux server with Docker:
+#   cp .env.example .env    (then set the passwords)
+#   docker compose up -d --build
+# See DOCKER.md for the full guide.
+
+services:
+  db:
+    image: mariadb:11.4
+    restart: unless-stopped
+    environment:
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:?Set DB_ROOT_PASSWORD in .env}
+      MARIADB_DATABASE: namanga_resource_centre
+      MARIADB_USER: namanga
+      MARIADB_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD in .env}
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - db_data:/var/lib/mysql
+      # Creates the tables the first time the database starts.
+      - ./database/namanga.sql:/docker-entrypoint-initdb.d/01-namanga.sql:ro
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+
+  web:
+    build: .
+    image: namanga-website
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_HOST: db
+      DB_NAME: namanga_resource_centre
+      DB_USER: namanga
+      DB_PASS: ${DB_PASSWORD}
+      APP_DEBUG: "false"
+    ports:
+      - "${WEB_PORT:-80}:80"
+    volumes:
+      # Uploaded files survive rebuilds and updates. On first start Docker
+      # fills this volume with the uploads that ship with the site.
+      - uploads:/var/www/html/uploads
+
+volumes:
+  db_data:
+  uploads:
