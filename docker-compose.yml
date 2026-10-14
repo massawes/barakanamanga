@@ -37,7 +37,7 @@ services:
       DB_PASS: ${DB_PASSWORD}
       APP_DEBUG: "false"
     ports:
-      - "${WEB_PORT:-80}:80"
+      - "${WEB_BIND:-0.0.0.0}:${WEB_PORT:-8080}:80"
     volumes:
       # Uploaded files survive rebuilds and updates. On first start Docker
       # fills this volume with the uploads that ship with the site.
