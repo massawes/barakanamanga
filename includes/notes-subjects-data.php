@@ -2,11 +2,13 @@
 /**
  * Subjects shown on notes.php when a Form is picked (Ordinary Secondary –
  * general stream). Each subject links to:
- *  - 'pdf': the TIE textbook PDF for each Form, shared on Google Drive by
- *    WazaElimu (wazaelimu.com/tie-books-download-pdf-form-1-6/); size is in
- *    bytes, label overrides the default "<Subject> Book" title. Form 1-2 use
- *    the new (2023 syllabus) books; where no PDF of the new book exists,
- *    'tie' links that book on the TIE Online Library instead,
+ *  - 'pdf': per Form, the textbook (and, where there is no full book, notes):
+ *    one item or a list of items, each a Google Drive file ('id', mostly
+ *    WazaElimu's copies of the TIE books), a TIE flipbook on FlipHTML5
+ *    ('flip'), a TIE Online Library book ('tie', needs a free sign-in; only
+ *    when no PDF exists) or another address ('url'). 'size' is in bytes,
+ *    'label' replaces the "<Subject> Book" title, 'by' names a non-TIE
+ *    source, 'view' marks a read-only file. Form 1-2 use new-syllabus books,
  *  - Form 1-2: its official new syllabus (muhtasari) PDF on the TIE website,
  *  - its NECTA past papers on theory.php (ftna = Form 1-2, csee = Form 3-4),
  *  - Form 3-4: its old syllabus PDF on TETEA ('old').
@@ -45,7 +47,7 @@ return [
         'old_name' => 'Basic Mathematics',
         'pdf' => [
             'form1' => ['id' => '12VQV8b5tSCblfl7svz9vF99O3o0jkjVr', 'size' => 20162628],
-            'form2' => ['tie' => '67c5da7f-d5a7-47fc-a179-3eb7d73c011b'],
+            'form2' => ['id' => '1m9ojiRwaOjr48U2SbttLzc_HnbPc2OeL', 'size' => 19814926],
             'form3' => ['id' => '1zu7M1OcwOppIcdV7LKRfjIKnbDhMndZu', 'size' => 38011783],
             'form4' => ['id' => '1pdrUOzRZXEBcQPFV607aN2c5JfTL8DBO', 'size' => 22711218],
         ],
@@ -57,7 +59,12 @@ return [
         'name' => 'Historia ya Tanzania na Maadili',
         'pdf' => [
             'form1' => ['id' => '1hRmD148IoOUo6fRGdkJ7wRNOzlnIKre3', 'size' => 17242190],
-            'form2' => ['tie' => '2a871b1d-974a-4e96-a00e-55023f9b6350'],
+            'form2' => [
+                ['id' => '1V5sOmQBRybtOMG5cnGTyofl-_-5NZo7u', 'size' => 20973781, 'label' => 'Historia ya Tanzania na Maadili — Kiongozi cha Mwalimu, Teacher\'s Guide'],
+                ['tie' => '2a871b1d-974a-4e96-a00e-55023f9b6350', 'label' => 'Historia ya Tanzania na Maadili — Kitabu cha Mwanafunzi'],
+                ['id' => '1UxnSmi1Qd-9FTEKSu8pcLLntgGFsnXHk', 'label' => 'Historia ya Tanzania na Maadili Notes — Mada ya 1: Ukoloni katika Jamii za Kitanzania', 'by' => 'WazaElimu'],
+                ['id' => '1-nkwY7styh6LUoLGrbFnrksvZoIb5Y4O', 'label' => 'Historia ya Tanzania na Maadili Notes — Mada ya 2: Athari za Ukoloni katika Jamii ya Kitanzania', 'by' => 'WazaElimu'],
+            ],
         ],
         'syllabus' => 'sw-1788264155-Muht. Historia ya Tanzania & Maadili 2.pdf',
         'ftna' => 'historia-maadili',
@@ -187,6 +194,7 @@ return [
         'pdf' => [
             'form1' => ['tie' => '5f25b10c-80b9-458b-a4cd-aaba0dcc31ce'],
             'form2' => ['tie' => 'e1241f05-d589-46e4-bdc3-b68f6cf65909'],
+            'form3' => ['flip' => 'dvtf'],
         ],
         'syllabus' => 'sw-1727255526-FOOD AND HUMAN NUTRITION STD I - IV.pdf',
         'ftna' => 'foodnutrition', 'csee' => 'foodnutrition',
@@ -206,6 +214,8 @@ return [
         'pdf' => [
             'form1' => ['id' => '1_z-zVa6QMJZX2LsCCKxwVqLycCoxffOi', 'size' => 59310903],
             'form2' => ['id' => '12abjtWeynhCFxjnGmkuu2GAXh3v5zMt6', 'size' => 27028118],
+            'form3' => ['id' => '11VV-7yQe92L_JNnB-xEv9iC1P92XgZLp', 'label' => 'Elimu ya Dini ya Kiislamu — Kitabu cha 3', 'by' => 'Islamic Education Panel', 'view' => true],
+            'form4' => ['url' => 'https://www.schoolpvh.ac.tz/p/edkf1.html', 'label' => 'Elimu ya Dini ya Kiislamu Notes — Kidato cha Nne (all topics)', 'by' => 'School PVH'],
         ],
         'syllabus' => 'sw-1727257430-MUHTASARI WA ELIMU YA DINI YA KIISLAM KWA SHULE ZA SEKONDARI KIDATO CHA I - IV.pdf',
         'ftna' => 'kiislamu', 'csee' => 'kiislamu',
@@ -215,15 +225,34 @@ return [
         'name' => 'Bible Knowledge',
         'pdf' => [
             'form1' => ['id' => '1JeHJ4Dnn_mAbSFTOBIUrWa12IvsDxOas', 'size' => 23938571],
-            'form2' => ['tie' => '97fb09ae-d96a-4e97-a1ec-9cbb8ff7c818'],
+            'form2' => [
+                ['tie' => '97fb09ae-d96a-4e97-a1ec-9cbb8ff7c818'],
+                ['id' => '17LXN04HTZ0WUmphZboEXWo6iUdhtl7Ve', 'label' => 'Bible Knowledge Notes — Topic 1: God\'s Love and Compassion', 'by' => 'WazaElimu'],
+            ],
+            'form3' => [
+                ['id' => '1gaE60vSBsqAXwZPBYwW7Oh7CYRe4z6hO', 'label' => 'Bible Knowledge Notes — Topic 1: General Introduction — Jewish Institutions and Sects', 'by' => 'WazaElimu'],
+                ['id' => '1sElkTg53A-JUTBtisDZBW3GHnv3XkAtG', 'label' => 'Bible Knowledge Notes — Topic 2: Birth Stories of John the Baptist and Jesus', 'by' => 'WazaElimu'],
+                ['id' => '1a1hXP__ts1AmWWSlgx4mKR3NYPRIQpJ4', 'label' => 'Bible Knowledge Notes — Topic 3: Preparation of Jesus\' Ministry', 'by' => 'WazaElimu'],
+                ['id' => '1XnJm6DKSQ0t1bZ2SFM7VyAICQj_d4jQ6', 'label' => 'Bible Knowledge Notes — Topic 4: Jesus\' Public Ministry in Galilee', 'by' => 'WazaElimu'],
+                ['id' => '1r0Dg2uuC0dxjHLzOiQlzhMRZgt9SUpxz', 'label' => 'Bible Knowledge Notes — Topic 5: The Sermon on the Plain', 'by' => 'WazaElimu'],
+                ['id' => '107S2hCrKsiw3B_cS6tTUUTp66uu9AYn-', 'label' => 'Bible Knowledge Notes — Topic 6: The Parables of Jesus Christ', 'by' => 'WazaElimu'],
+                ['id' => '1zQNTbcEhs7MSf3LpqslBpCqVT2i-fMt4', 'label' => 'Bible Knowledge Notes — Topic 7: The Commission of the Twelve and Jesus\' Authority', 'by' => 'WazaElimu'],
+                ['id' => '1puPn39yAiD0pv_ue0L6z8co3pkIpg1ux', 'label' => 'Bible Knowledge Notes — Topic 8: Events and Teaching of Jesus on His Way to Jerusalem', 'by' => 'WazaElimu'],
+            ],
+            'form4' => [
+                ['url' => 'https://bibleknowledgetz.com/wp-content/uploads/2021/08/BK-form-4-text-book-without-Acts.pdf', 'size' => 1646743, 'label' => 'Bible Knowledge Student Notes (textbook)', 'by' => 'Rev Andy Bennett, Anglican Diocese of Kagera'],
+                ['id' => '1KKqQgNknfAIoY4XWWIUPySfQTiZUhq8z', 'label' => 'Bible Knowledge Full Notes', 'by' => 'WazaElimu'],
+            ],
         ],
         'syllabus' => 'sw-1727192234-BIBLE KNOWLEDGE COMMISSIONER FINAL.pdf',
     ],
     'french' => [
         'name' => 'French',
         'pdf' => [
-            'form1' => ['tie' => 'bcc626de-314c-47cf-8e7d-e8aae9667f18'],
-            'form2' => ['tie' => '6fffe84c-93e9-4991-8efe-813fe0c4e352'],
+            'form1' => ['flip' => 'esfv', 'label' => 'French Book — Bonjour 1'],
+            'form2' => ['flip' => 'fzjg', 'label' => 'French Book — Bonjour 2'],
+            'form3' => ['flip' => 'smvc', 'label' => 'French Book — Bonjour 3'],
+            'form4' => ['flip' => 'hymi', 'label' => 'French Book — Bonjour 4'],
         ],
         'syllabus' => 'sw-1727255679-FRENCH O-LEVEL FINAL.pdf',
     ],

@@ -58,20 +58,18 @@ include __DIR__ . '/includes/header.php';
 
             <div class="exam-subject-group">
                 <h3 class="exam-group-title">Textbook (Notes)</h3>
-                <?php if (isset($subject['pdf'][$selectedForm])): ?>
-                    <?php $book = $subject['pdf'][$selectedForm]; ?>
+                <?php $books = notes_books($subject, $selectedForm); ?>
+                <?php if ($books !== []): ?>
                     <div class="resource-link-list">
-                        <a class="resource-link-item" href="<?= e(isset($book['tie']) ? 'https://ol.tie.go.tz/book-detail/' . $book['tie'] : 'https://drive.google.com/file/d/' . $book['id'] . '/view') ?>" target="_blank" rel="noopener">
-                            <span class="resource-link-main">
-                                <span class="resource-link-title"><?= e(form_label($selectedForm)) ?> <?= e($book['label'] ?? $subject['name'] . ' Book') ?> (TIE &mdash; <?= e(ucwords($syllabusLabel)) ?>)</span>
-                                <?php if (isset($book['tie'])): ?>
-                                    <span class="resource-link-meta"><span class="file-size">TIE Online Library &middot; sign in free to read</span></span>
-                                <?php else: ?>
-                                    <span class="resource-link-meta"><span class="file-size">PDF<?= isset($book['size']) ? ' &middot; ' . e(format_file_size($book['size'])) : '' ?> &middot; tap to read or download</span></span>
-                                <?php endif; ?>
-                            </span>
-                            <span class="resource-link-arrow">&rsaquo;</span>
-                        </a>
+                        <?php foreach ($books as $book): ?>
+                            <a class="resource-link-item" href="<?= e($book['href']) ?>" target="_blank" rel="noopener">
+                                <span class="resource-link-main">
+                                    <span class="resource-link-title"><?= e($book['title']) ?></span>
+                                    <span class="resource-link-meta"><span class="file-size"><?= e($book['meta']) ?></span></span>
+                                </span>
+                                <span class="resource-link-arrow">&rsaquo;</span>
+                            </a>
+                        <?php endforeach; ?>
                     </div>
                 <?php else: ?>
                     <p class="empty-state">The <?= e(form_label($selectedForm) . ' ' . $subject['name']) ?> book is not available yet. Please check again later.</p>
