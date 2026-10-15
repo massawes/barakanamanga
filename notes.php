@@ -59,10 +59,15 @@ include __DIR__ . '/includes/header.php';
                 <?php if (isset($subject['pdf'][$selectedForm])): ?>
                     <?php $book = $subject['pdf'][$selectedForm]; ?>
                     <div class="resource-link-list">
-                        <a class="resource-link-item" href="https://drive.google.com/file/d/<?= e($book['id']) ?>/view" target="_blank" rel="noopener">
+                        <?php $isNew = in_array($selectedForm, ['form1', 'form2'], true); ?>
+                        <a class="resource-link-item" href="<?= e(isset($book['tie']) ? 'https://ol.tie.go.tz/book-detail/' . $book['tie'] : 'https://drive.google.com/file/d/' . $book['id'] . '/view') ?>" target="_blank" rel="noopener">
                             <span class="resource-link-main">
-                                <span class="resource-link-title"><?= e(form_label($selectedForm)) ?> <?= e($book['label'] ?? $subject['name'] . ' Book') ?> (TIE)</span>
-                                <span class="resource-link-meta"><span class="file-size">PDF<?= isset($book['size']) ? ' &middot; ' . e(format_file_size($book['size'])) : '' ?> &middot; tap to read or download</span></span>
+                                <span class="resource-link-title"><?= e(form_label($selectedForm)) ?> <?= e($book['label'] ?? $subject['name'] . ' Book') ?> (TIE<?= $isNew ? ' &mdash; New Syllabus' : '' ?>)</span>
+                                <?php if (isset($book['tie'])): ?>
+                                    <span class="resource-link-meta"><span class="file-size">TIE Online Library &middot; sign in free to read</span></span>
+                                <?php else: ?>
+                                    <span class="resource-link-meta"><span class="file-size">PDF<?= isset($book['size']) ? ' &middot; ' . e(format_file_size($book['size'])) : '' ?> &middot; tap to read or download</span></span>
+                                <?php endif; ?>
                             </span>
                             <span class="resource-link-arrow">&rsaquo;</span>
                         </a>

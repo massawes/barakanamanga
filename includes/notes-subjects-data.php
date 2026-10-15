@@ -4,7 +4,9 @@
  * Ordinary Secondary – general stream). Each subject links to:
  *  - 'pdf': the TIE textbook PDF for each Form, shared on Google Drive by
  *    WazaElimu (wazaelimu.com/tie-books-download-pdf-form-1-6/); size is in
- *    bytes, label overrides the default "<Subject> Book" title,
+ *    bytes, label overrides the default "<Subject> Book" title. Form 1-2 use
+ *    the new (2023 syllabus) books; where no PDF of the new book exists,
+ *    'tie' links that book on the TIE Online Library instead,
  *  - its official new syllabus (muhtasari) PDF on the TIE website,
  *  - its NECTA past papers on theory.php (ftna = Form 1-2, csee = Form 3-4),
  *  - for Form 4 only, the old syllabus on TETEA (the class that began
@@ -16,8 +18,8 @@ return [
     'kiswahili' => [
         'name' => 'Kiswahili',
         'pdf' => [
-            'form1' => ['id' => '1jlGbu0xF-lYBWIKXS3QnH1K_JOOKHQbh', 'size' => 15513614],
-            'form2' => ['id' => '1ANx2N-2eBElyvoSmcjCcuRS9gH9RPFoj', 'size' => 12922675],
+            'form1' => ['id' => '19f8D1ConQV7g7pUyjoLWDZpiEcCIHb0P', 'size' => 78591189],
+            'form2' => ['id' => '1TMJn-a60RQGeV90hJKzEIejZtzy4o1P8', 'size' => 11559434],
             'form3' => ['id' => '1bELI_bpBc-pydbd8Cc6wx1UBRwfuqXJo', 'size' => 18618322],
             'form4' => ['id' => '1lw0e2h9bdZNZkHIlpJBZClasUgIYLkrb'],
         ],
@@ -28,7 +30,7 @@ return [
     'english' => [
         'name' => 'English Language',
         'pdf' => [
-            'form1' => ['id' => '1XrM3jFtUd7WnVN7FJVn4JOb_n4FbvSzh', 'size' => 10304327],
+            'form1' => ['id' => '1cu_jLps6oK8Zo4O2q3-CTn1BUiYIx9D0', 'size' => 17639986],
             'form2' => ['id' => '1qNFIkcWEadOpWwjlisoJoRq9_9sPr-s2', 'size' => 10331862],
             'form3' => ['id' => '1-ozO_8DAuN__JYT2UqYPK2Cg3-8gWhtK'],
             'form4' => ['id' => '16taIGwD0LWFodMzoXaOb4VXX9B1ME3wo', 'size' => 19143062],
@@ -40,8 +42,8 @@ return [
     'mathematics' => [
         'name' => 'Mathematics',
         'pdf' => [
-            'form1' => ['id' => '1mQNfCK8QB5wFbEDWiivWB4YC-VzHVw_y'],
-            'form2' => ['id' => '1e-kbumiZvB6MoJcl0B9Jfi0exVcXMNOK'],
+            'form1' => ['id' => '12VQV8b5tSCblfl7svz9vF99O3o0jkjVr', 'size' => 20162628],
+            'form2' => ['tie' => '67c5da7f-d5a7-47fc-a179-3eb7d73c011b'],
             'form3' => ['id' => '1zu7M1OcwOppIcdV7LKRfjIKnbDhMndZu', 'size' => 38011783],
             'form4' => ['id' => '1pdrUOzRZXEBcQPFV607aN2c5JfTL8DBO', 'size' => 22711218],
         ],
@@ -53,7 +55,7 @@ return [
         'name' => 'Historia ya Tanzania na Maadili',
         'pdf' => [
             'form1' => ['id' => '1hRmD148IoOUo6fRGdkJ7wRNOzlnIKre3', 'size' => 17242190],
-            'form2' => ['id' => '1V5sOmQBRybtOMG5cnGTyofl-_-5NZo7u', 'size' => 20973781],
+            'form2' => ['tie' => '2a871b1d-974a-4e96-a00e-55023f9b6350'],
         ],
         'syllabus' => 'sw-1788264155-Muht. Historia ya Tanzania & Maadili 2.pdf',
         'ftna' => 'historia-maadili',
@@ -71,8 +73,8 @@ return [
     'history' => [
         'name' => 'History',
         'pdf' => [
-            'form1' => ['id' => '1qZDcV-SlvNsnSV9ucBnc16zxsVKJ9IZv', 'size' => 12522597],
-            'form2' => ['id' => '1_MWXafY3DLal2vWTHOn46Fll8qaw0kx1', 'size' => 11218492],
+            'form1' => ['id' => '1fCFPGiheSIHsS-7n7T8BV69XGbDez11L', 'size' => 15257431],
+            'form2' => ['id' => '1YF5T-Lm_iu2oV-mMtmX0CVyswaAIkbst', 'size' => 9177902],
             'form3' => ['id' => '134Lkg_GyPyg0gpdHfT98QdnHiMKv7H7t', 'size' => 13111113],
             'form4' => ['id' => '1v_zmmEZko0HbJQmm1ApLWNsxfDKULYR7'],
         ],
@@ -83,8 +85,8 @@ return [
     'geography' => [
         'name' => 'Geography',
         'pdf' => [
-            'form1' => ['id' => '1hhNYfHrJGIAw1-v4p0tuCTAK1wB_5gbr', 'size' => 17573114],
-            'form2' => ['id' => '1NToEnVKoaXid6JTquZyOKDv3hD-Fy3xV'],
+            'form1' => ['id' => '1fsrz3PCxQWcSZHN_HphGT1X23wvL_IHs', 'size' => 74542740],
+            'form2' => ['id' => '1KteYmDjOl-p2jlAOV4mJn-VRX5Buzg4E', 'size' => 28568606],
             'form3' => ['id' => '1YR2ipx8EiUTg1r2PU-a688UgRbKSFfYj'],
             'form4' => ['id' => '1p5oEUAUmR541TrK9WIE2jPFBUP1HoYsZ'],
         ],
@@ -95,7 +97,7 @@ return [
     'biology' => [
         'name' => 'Biology',
         'pdf' => [
-            'form1' => ['id' => '1I-6u73TBQeR2-ukJqatwqJnJvnD8Aubg'],
+            'form1' => ['id' => '1FgFNFnM6cujQYvGzqtinxRaxMe2rYX_C', 'size' => 17271674],
             'form2' => ['id' => '1NfEvClLyoY-qJlF6Zv6S4hZQK5UHOQTu', 'size' => 14874766],
             'form3' => ['id' => '1p_dGDLAwtUmlyUj-3zrE9nFwxMIHf0jq'],
             'form4' => ['id' => '1B2wmCdK1ir0fXLvIOutagyzAQWTxT6eN', 'size' => 37232427],
@@ -107,7 +109,7 @@ return [
     'chemistry' => [
         'name' => 'Chemistry',
         'pdf' => [
-            'form1' => ['id' => '1gYY69DDKBTfDSK7fNOP-HAOW2kqP-pcB'],
+            'form1' => ['id' => '1l6kkYFUn1HbP8if3LYxv0EuSMGbqn8s-', 'size' => 13856648],
             'form2' => ['id' => '13fZuRrop5ebcCDD3gvrPX3vfGXBP7urz', 'size' => 11060929],
             'form3' => ['id' => '1MkGOoFpDoGcFs80ydv0BJkCbBz_gsDx7', 'size' => 29864895],
             'form4' => ['id' => '1CaCWRYQ_wltdTsE9ya-eZtCQDJBIxO9k'],
@@ -118,7 +120,7 @@ return [
     'physics' => [
         'name' => 'Physics',
         'pdf' => [
-            'form1' => ['id' => '1C-u7CkVMY5Mc83a9PDPbE1skGFeVeTA9'],
+            'form1' => ['id' => '1jp5e_nbEeK3MVxzvmYLzTckyGbHr2YL1', 'size' => 21570034],
             'form2' => ['id' => '1sEZZIsp2cSTvdeVBhsddvfwZFQVEsA4E', 'size' => 53112841],
             'form3' => ['id' => '1W8zvhi89h1ISG_RjUPGNLjKqnNSmB_XN'],
             'form4' => ['id' => '1u0B8UvAKsTaUAqey6axW0ZJisU1xCwJ_', 'size' => 26699153],
@@ -130,8 +132,8 @@ return [
     'computer-science' => [
         'name' => 'Computer Science',
         'pdf' => [
-            'form1' => ['id' => '1Lu-ObPjWAy3aioBRSvPPjZW1oHqFQyEA', 'size' => 23098530, 'label' => 'ICT Computer Studies Book'],
-            'form2' => ['id' => '1oMLgHLvS9hw2Xn35P3zQa27-H6WRJ0FY', 'size' => 23589442, 'label' => 'ICT Computer Studies Book'],
+            'form1' => ['id' => '16hS8VZN3ZdbL6N3rOS3pqaGIIMPoLZZ4', 'size' => 28211962],
+            'form2' => ['id' => '1iVwDZaALjp4qYN-nzwcHdizby912H8CJ', 'size' => 22531298],
             'form3' => ['id' => '1LcVqVDSKoZQIwWMbnCvd8kN4yG04woqp', 'label' => 'ICT Computer Studies Book'],
             'form4' => ['id' => '1Zz82eCQYVXvY2Ms_4qhQwBYe46ZzYiZT', 'label' => 'ICT Computer Studies Book'],
         ],
@@ -142,7 +144,7 @@ return [
     'business-studies' => [
         'name' => 'Business Studies',
         'pdf' => [
-            'form1' => ['id' => '1UjUkgOcFtDS1ngIAG_rZlEu7wrOTWmdz', 'size' => 17092509, 'label' => 'Business Studies Teacher\'s Guide'],
+            'form1' => ['id' => '1Gjq7b5WEI5N0hBZtqJovsEkjJw-sKx7D', 'size' => 48096643],
             'form2' => ['id' => '1oMkkRo4fdwi12Ge84VB8X8c9klvEIaaI', 'size' => 14046237],
             'form3' => ['id' => '14LcQl3aF6idj0gITF7W0ryntYzMmo6xL', 'label' => 'Commerce Book'],
             'form4' => ['id' => '1r0d2Qc15WijY_JKF8IjQ5bnxM7Pp-1yo', 'size' => 8532188, 'label' => 'Commerce Book'],
@@ -154,7 +156,7 @@ return [
     'book-keeping' => [
         'name' => 'Book-keeping',
         'pdf' => [
-            'form1' => ['id' => '1sQ9JDmr4mEnE4eq1PXRXr35mquXB_727'],
+            'form1' => ['id' => '1Ibk5UjovZ7nrVz_Bllb8A63geS2ZqRCp', 'size' => 18002875],
             'form2' => ['id' => '1tGewFRgXKMn5TcfaQBZn40g5IbbGc9f8', 'size' => 4903226],
             'form3' => ['id' => '1Ep9Lrnm6vNMLDnnX-E5Kb1zUf43ofwAQ', 'size' => 3082026],
             'form4' => ['id' => '1xBm0OIxjzB4QrQMzKY-38k2LpiyW47Kh', 'size' => 39535833],
@@ -166,7 +168,7 @@ return [
     'agriculture' => [
         'name' => 'Agriculture',
         'pdf' => [
-            'form1' => ['id' => '1yW5VlA7VlHL2iNcWFtgC76C1iTIqp0zy'],
+            'form1' => ['id' => '1vIFzPZ4Sx0J7xT4ack4sWEQ7JAwC1282', 'size' => 23525507],
             'form2' => ['id' => '1aCFMQ1IA10atoXrZSUu-8Fq6h0JtEKZl', 'size' => 31116499],
             'form3' => ['id' => '1JHYQ08GWunXVNc7awJ-0zpTsafohEAoQ', 'size' => 67690473],
             'form4' => ['id' => '1ib5ID4mPU2eMB85XGwEkviD7KMUcrgba'],
@@ -177,7 +179,8 @@ return [
     'food-nutrition' => [
         'name' => 'Food and Human Nutrition',
         'pdf' => [
-            'form1' => ['id' => '1UN-8TekLGQnx4GY1CyV35lgLvjx496QU', 'size' => 17990349, 'label' => 'Home Economics Book'],
+            'form1' => ['tie' => '5f25b10c-80b9-458b-a4cd-aaba0dcc31ce'],
+            'form2' => ['tie' => 'e1241f05-d589-46e4-bdc3-b68f6cf65909'],
         ],
         'syllabus' => 'sw-1727255526-FOOD AND HUMAN NUTRITION STD I - IV.pdf',
         'ftna' => 'foodnutrition', 'csee' => 'foodnutrition',
@@ -209,10 +212,18 @@ return [
     ],
     'bible' => [
         'name' => 'Bible Knowledge',
+        'pdf' => [
+            'form1' => ['id' => '1JeHJ4Dnn_mAbSFTOBIUrWa12IvsDxOas', 'size' => 23938571],
+            'form2' => ['tie' => '97fb09ae-d96a-4e97-a1ec-9cbb8ff7c818'],
+        ],
         'syllabus' => 'sw-1727192234-BIBLE KNOWLEDGE COMMISSIONER FINAL.pdf',
     ],
     'french' => [
         'name' => 'French',
+        'pdf' => [
+            'form1' => ['tie' => 'bcc626de-314c-47cf-8e7d-e8aae9667f18'],
+            'form2' => ['tie' => '6fffe84c-93e9-4991-8efe-813fe0c4e352'],
+        ],
         'syllabus' => 'sw-1727255679-FRENCH O-LEVEL FINAL.pdf',
     ],
 ];
