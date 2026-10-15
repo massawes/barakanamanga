@@ -107,24 +107,40 @@ include __DIR__ . '/includes/header.php';
 
 <section class="home-intro">
     <div class="container">
-      <div class="notebook-card">
         <h2 class="section-title">Who are we?</h2>
-        <p><strong>Namanga Secondary School</strong> is a government, co-educational secondary school in
-        Namanga ward, Longido District, Arusha Region, Tanzania, right on the Tanzania&ndash;Kenya border.
-        The school serves boys and girls from Namanga and the surrounding Longido communities, including
-        many Maasai families, offering O-Level education from Form 1 to Form 4.</p>
-        <p>In 2024 the school opened a new girls' dormitory, built with support from the Legal Services
-        Facility (LSF) and Luxembourg's North-South Cooperation, giving girls a safe place to live and study.</p>
-        <p>This website is the school's home online. Here students can download notes, revision summaries,
-        theory and practical past papers and educational software, and find the school's
-        <a href="<?= e($base) ?>/results.php">NECTA Form 2 and Form 4 results</a>.</p>
-        <ul class="intro-points">
-            <li>Government school for boys and girls, Form 1 to Form 4</li>
-            <li>Located in Namanga, Longido District, on the Tanzania&ndash;Kenya border</li>
-            <li>New girls' dormitory opened in 2024 for a safe place to study</li>
-            <li>Free notes, summaries, past papers and NECTA results on this website</li>
+        <div class="intro-card">
+            <p><strong>Namanga Secondary School</strong> is a government, co-educational secondary school in
+            Namanga ward, Longido District, Arusha Region, Tanzania, right on the Tanzania&ndash;Kenya border.
+            The school serves boys and girls from Namanga and the surrounding Longido communities, including
+            many Maasai families, offering O-Level education from Form 1 to Form 4.</p>
+            <p>In 2024 the school opened a new girls' dormitory, built with support from the Legal Services
+            Facility (LSF) and Luxembourg's North-South Cooperation, giving girls a safe place to live and study.</p>
+            <p>This website is the school's home online. Here students can download notes, revision summaries,
+            theory and practical past papers and educational software, and find the school's
+            <a href="<?= e($base) ?>/results.php">NECTA Form 2 and Form 4 results</a>.</p>
+        </div>
+        <ul class="feature-grid">
+            <li class="feature-card">
+                <span class="feature-icon"><?= svg_icon('school', 'icon-svg') ?></span>
+                <h3 class="feature-title">Government School</h3>
+                <p>Government school for boys and girls, Form 1 to Form 4</p>
+            </li>
+            <li class="feature-card">
+                <span class="feature-icon"><?= svg_icon('pin', 'icon-svg') ?></span>
+                <h3 class="feature-title">Our Location</h3>
+                <p>Located in Namanga, Longido District, on the Tanzania&ndash;Kenya border</p>
+            </li>
+            <li class="feature-card">
+                <span class="feature-icon"><?= svg_icon('home', 'icon-svg') ?></span>
+                <h3 class="feature-title">Girls' Dormitory</h3>
+                <p>New girls' dormitory opened in 2024 for a safe place to study</p>
+            </li>
+            <li class="feature-card">
+                <span class="feature-icon"><?= svg_icon('notes', 'icon-svg') ?></span>
+                <h3 class="feature-title">Free Resources</h3>
+                <p>Free notes, summaries, past papers and NECTA results on this website</p>
+            </li>
         </ul>
-      </div>
     </div>
 </section>
 

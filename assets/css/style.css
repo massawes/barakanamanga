@@ -24,27 +24,53 @@
     --radius: 18px;
     --shadow: 0 3px 12px rgba(42, 31, 94, 0.08);
     --shadow-hover: 0 10px 24px rgba(42, 31, 94, 0.18);
-    --font-heading: 'Fredoka', 'Segoe UI', Arial, sans-serif;
+    /* Fonts: set here ONCE and used everywhere. Loaded from Google Fonts in
+       includes/header.php and includes/admin-header.php. */
+    --font-heading: 'Poppins', 'Segoe UI', Roboto, Arial, sans-serif;
+    --font-body: 'Inter', 'Segoe UI', Roboto, Arial, sans-serif;
+
+    /* Fluid type sizes: grow smoothly from phone to large screen */
+    --fs-h1: clamp(1.8rem, 4vw + 0.5rem, 3.2rem);
+    --fs-h2: clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem);
+    --fs-h3: clamp(1.1rem, 0.6vw + 0.95rem, 1.35rem);
+    --fs-body: clamp(0.95rem, 0.3vw + 0.9rem, 1.05rem);
+
+    /* Soft card shadows for the clean card style */
+    --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    --card-shadow-hover: 0 12px 30px rgba(42, 31, 94, 0.12);
+
+    /* Vertical space around page sections (smaller on phones, see below) */
+    --section-space: 60px;
 }
 
 * { box-sizing: border-box; }
 
 body {
     margin: 0;
-    font-family: 'Nunito', 'Segoe UI', Roboto, Arial, sans-serif;
+    font-family: var(--font-body);
+    font-size: var(--fs-body);
     color: var(--dark-text);
     background: var(--cream);
-    line-height: 1.6;
+    line-height: 1.65;
+    /* Never let a too-wide element cause sideways scrolling. "clip" (not
+       "hidden") keeps the sticky header working. */
+    overflow-x: clip;
 }
 
-h1, h2, h3, h4,
+h1, h2, h3, h4, h5, h6,
 .brand-name, .btn, .main-nav a {
     font-family: var(--font-heading);
 }
+/* Strong but elegant headings: 600, never the heavy 800-900 */
+h1, h2, h3, h4, h5, h6 { font-weight: 600; line-height: 1.25; }
+h1 { font-size: var(--fs-h1); }
+h2 { font-size: var(--fs-h2); }
+h3 { font-size: var(--fs-h3); }
 
 a { text-decoration: none; color: inherit; }
 ul { list-style: none; margin: 0; padding: 0; }
-img { max-width: 100%; display: block; }
+/* Photos scale down with the screen and keep their shape */
+img { max-width: 100%; height: auto; display: block; }
 
 .container {
     max-width: 1180px;
@@ -300,10 +326,10 @@ img { max-width: 100%; display: block; }
     to   { transform: scale(1.08); }
 }
 .hero-content h1 {
-    font-size: clamp(2rem, 4.5vw, 3.4rem);
+    font-size: var(--fs-h1);
     font-weight: 700;
-    line-height: 1.05;
-    letter-spacing: -0.5px;
+    line-height: 1.15;
+    letter-spacing: -0.3px;
     margin: 0 0 14px;
     color: var(--gold);
 }
@@ -322,57 +348,78 @@ img { max-width: 100%; display: block; }
 
 /* ---------------- Resource / category cards ---------------- */
 
-.resource-cards { padding: 60px 0; }
+.resource-cards { padding: var(--section-space) 0; }
 .section-title {
     text-align: center;
-    font-size: clamp(1.7rem, 3.5vw, 2.4rem);
-    font-weight: 700;
+    font-size: var(--fs-h2);
+    font-weight: 600;
     color: var(--navy);
     margin: 0 0 36px;
 }
+/* Short orange accent line under every centred section title */
+.section-title::after {
+    content: '';
+    display: block;
+    width: 56px;
+    height: 3px;
+    margin: 12px auto 0;
+    border-radius: 3px;
+    background: var(--orange);
+}
 
-/* "Notebook page" card: punched holes along the top and ruled lines */
-.home-intro { padding: 0 0 64px; }
-.notebook-card {
-    position: relative;
-    background:
-        repeating-linear-gradient(to bottom, transparent 0, transparent 33px, #E3EEF5 33px, #E3EEF5 34px),
-        var(--white);
-    border: 2px solid var(--border-color);
-    border-radius: 28px;
-    padding: 70px 40px 40px;
-    box-shadow: var(--shadow);
+/* ---------------- "Who are we?" (homepage) ----------------
+   One intro card with the text about the school, then four small
+   feature cards: 4 columns on large screens, 2 on tablets, 1 on phones. */
+.home-intro { padding: 0 0 var(--section-space); }
+.intro-card {
+    background: var(--white);
+    border-radius: 16px;
+    border-left: 4px solid var(--orange);
+    padding: clamp(22px, 3vw, 36px);
+    box-shadow: var(--card-shadow);
+    margin-bottom: 24px;
 }
-.notebook-card::before {
-    content: '';
-    position: absolute;
-    top: 26px;
-    left: 40px;
-    right: 40px;
-    height: 26px;
-    background: radial-gradient(circle, #FBE6B5 0 12px, transparent 13px) 0 0 / 60px 26px repeat-x;
+.intro-card p { margin: 0 0 14px; line-height: 1.75; }
+.intro-card p:last-child { margin-bottom: 0; }
+.intro-card a { color: var(--orange); font-weight: 600; }
+.intro-card a:hover { text-decoration: underline; }
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
 }
-.home-intro .section-title { margin-bottom: 18px; text-align: left; }
-.home-intro p { line-height: 1.8; font-size: 1.05rem; }
-.home-intro a { color: var(--orange); font-weight: 700; }
-.home-intro a:hover { text-decoration: underline; }
-.intro-points { margin: 18px 0 0; display: grid; gap: 10px; }
-.intro-points li {
-    position: relative;
-    padding-left: 30px;
-    font-weight: 600;
+.feature-card {
+    --accent: var(--orange);
+    background: var(--white);
+    border-radius: 14px;
+    padding: 24px 22px;
+    box-shadow: var(--card-shadow);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-.intro-points li::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 6px;
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    background: var(--green);
-    box-shadow: 0 0 0 4px rgba(140, 198, 63, 0.25);
+.feature-card:nth-child(2) { --accent: var(--navy-light); }
+.feature-card:nth-child(3) { --accent: var(--gold-dark); }
+.feature-card:nth-child(4) { --accent: var(--green); }
+.feature-card:hover { transform: translateY(-4px); box-shadow: var(--card-shadow-hover); }
+.feature-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 14px;
+    border-radius: 12px;
+    color: var(--accent);
+    /* A light tint of the card's accent colour behind the icon
+       (plain cream first, for older phone browsers) */
+    background: var(--light-grey);
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
 }
+.feature-icon .icon-svg { width: 24px; height: 24px; }
+.feature-title { margin: 0 0 6px; font-size: 1.05rem; font-weight: 600; color: var(--navy); }
+.feature-card p { margin: 0; font-size: 0.95rem; line-height: 1.6; color: #4A4566; }
+@media (max-width: 1023px) { .feature-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px)  { .feature-grid { grid-template-columns: 1fr; gap: 14px; } }
 
 .cards-grid {
     display: grid;
@@ -429,7 +476,7 @@ img { max-width: 100%; display: block; }
 
 .form-big-label {
     font-size: 2rem;
-    font-weight: 800;
+    font-weight: 700;
     letter-spacing: 1px;
     color: var(--navy);
     margin: 4px 0;
@@ -824,7 +871,7 @@ input:disabled { background: var(--light-grey); color: #888; }
     padding: 0 16px;
     border-bottom: 1px solid #4B545C;
     color: var(--white);
-    font-family: 'Fredoka', sans-serif;
+    font-family: var(--font-heading);
     font-size: 1.1rem;
     font-weight: 500;
     letter-spacing: 0.3px;
@@ -1115,7 +1162,7 @@ body.adm-sidebar-hidden .adm-main { margin-left: 0; }
 /* ---------------- Responsive ---------------- */
 
 
-@media (max-width: 1180px) {
+@media (max-width: 1100px) {
     .nav-toggle { display: flex; }
     .main-nav {
         display: none;
@@ -1361,7 +1408,7 @@ body.adm-sidebar-hidden .adm-main { margin-left: 0; }
 .main-nav .dropdown-menu a:hover,
 .main-nav .dropdown-menu a.active { background: var(--cream); color: var(--orange); }
 
-@media (max-width: 1180px) {
+@media (max-width: 1100px) {
     /* On phones the sub-links simply show indented under "Our School" */
     .main-nav .dropdown-menu {
         position: static;
@@ -1420,10 +1467,10 @@ body.adm-sidebar-hidden .adm-main { margin-left: 0; }
 }
 .eyebrow::before { content: '\00BB\00A0'; }
 .school-h2 {
-    font-size: clamp(1.7rem, 3.4vw, 2.5rem);
-    font-weight: 700;
+    font-size: var(--fs-h2);
+    font-weight: 600;
     color: var(--navy);
-    line-height: 1.1;
+    line-height: 1.2;
     margin: 0 0 18px;
 }
 .lead { font-size: 1.12rem; line-height: 1.8; }
@@ -1648,84 +1695,122 @@ body.adm-sidebar-hidden .adm-main { margin-left: 0; }
 
 .mobile-nav-head { display: none; }
 
-@media (max-width: 1180px) {
+/* Phones, tablets and small laptops: the menu slides in from the right as a
+   compact navy panel; the rest of the page is dimmed behind it (tapping
+   the dimmed part closes the menu, see script.js). */
+@media (max-width: 1100px) {
+    /* Hamburger button: a neat 44px square with three thin bars */
     .nav-toggle {
-        width: 40px;
-        height: 30px;
+        width: 44px;
+        height: 44px;
+        padding: 12px 10px;
+        border-radius: 10px;
     }
-    .nav-toggle span {
-        height: 5px;
-        border-radius: 5px;
-        background: var(--gold);
-    }
+    .nav-toggle:hover { background: var(--light-grey); }
+    .nav-toggle span { height: 3px; border-radius: 3px; }
 
     .main-nav {
+        --panel-width: min(360px, 100%);
         position: fixed;
         inset: 0;
         z-index: 1000;
-        background: #1B1550;
+        display: block;
         overflow-y: auto;
-        padding: 18px 24px 48px;
+        overscroll-behavior: contain;
+        /* Left part = dim backdrop, right part = the navy panel. The panel's
+           contents are pushed to the right with padding-left below. */
+        background: linear-gradient(to right,
+            rgba(15, 10, 40, 0.55) calc(100% - var(--panel-width)),
+            #1B1550 calc(100% - var(--panel-width)));
+        padding: 0 0 32px calc(100% - var(--panel-width));
+        /* Hidden until opened; fades in/out smoothly */
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity 0.25s ease, visibility 0.25s;
     }
-    .main-nav.open { display: block; animation: navSlideIn 0.22s ease-out; }
-    @keyframes navSlideIn {
-        from { opacity: 0; transform: translateY(-12px); }
-        to   { opacity: 1; transform: none; }
-    }
+    .main-nav.open { visibility: visible; opacity: 1; }
+    .main-nav > * { transform: translateX(30px); transition: transform 0.25s ease; }
+    .main-nav.open > * { transform: none; }
     body.nav-open { overflow: hidden; }
 
+    /* Panel header: school name + close button */
     .mobile-nav-head {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 16px;
-        margin-bottom: 18px;
+        gap: 12px;
+        padding: 14px 16px 14px 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.12);
     }
-    .mobile-nav-head .brand-name { color: var(--gold); font-size: 1.05rem; }
+    .mobile-nav-head .brand-name { color: var(--gold); font-size: 0.9rem; line-height: 1.3; }
     .nav-close {
         flex-shrink: 0;
-        width: 58px;
-        height: 58px;
+        width: 42px;
+        height: 42px;
         border: none;
-        border-radius: 14px;
-        background: var(--gold);
-        color: var(--navy);
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.1);
+        color: var(--white);
         display: flex;
         align-items: center;
         justify-content: center;
         cursor: pointer;
+        transition: background 0.15s ease;
     }
-    .nav-close .icon-svg { width: 32px; height: 32px; stroke-width: 3; }
+    .nav-close:hover { background: var(--gold); color: var(--navy); }
+    .nav-close .icon-svg { width: 20px; height: 20px; stroke-width: 2.5; }
 
-    .main-nav > ul { gap: 0; padding: 0; }
-    .main-nav > ul > li > a {
-        font-size: 1.55rem;
-        padding: 12px 4px;
+    /* Menu items: 16px text, 44px tall rows, thin divider lines */
+    .main-nav > ul { gap: 0; padding: 6px 20px 0; }
+    .main-nav > ul > li { border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+    .main-nav > ul > li.nav-search,
+    .main-nav > ul > li.nav-auth { border-bottom: none; }
+    .main-nav > ul > li:not(.nav-auth) > a {
+        display: flex;
+        align-items: center;
+        min-height: 44px;
+        font-size: 1rem;
+        font-weight: 500;
+        padding: 10px 4px;
         border-radius: 0;
-        background: none !important;
+        background: none !important; /* beats the pill hover background from the desktop rules */
         color: var(--white);
     }
-    .main-nav > ul > li > a.active { color: var(--gold); }
+    .main-nav > ul > li > a:hover { color: var(--gold); }
+    .main-nav > ul > li > a.active { color: var(--gold); font-weight: 600; }
 
-    /* Dropdowns open on tap, with an orange caret like the desktop one */
-    .dropdown-caret { display: inline-block; width: 22px; height: 22px; margin-left: 6px; }
+    /* Dropdowns open on tap; the small arrow sits at the right edge */
+    .main-nav .dropdown-trigger { justify-content: space-between; }
+    .dropdown-caret { display: inline-block; width: 18px; height: 18px; margin-left: 8px; }
     .main-nav .has-dropdown .dropdown-menu { display: none !important; }
     .main-nav .has-dropdown.open .dropdown-menu { display: flex !important; }
     .has-dropdown.open .dropdown-caret { transform: rotate(180deg); }
-    .main-nav .dropdown-menu { margin: 0 0 10px 6px; }
-    .main-nav .dropdown-menu a { font-size: 1.15rem; padding: 8px 12px; }
+    .main-nav .dropdown-menu { margin: 0 0 8px 4px; }
+    .main-nav .dropdown-menu a {
+        display: flex;
+        align-items: center;
+        min-height: 44px;
+        font-size: 0.95rem;
+        padding: 8px 12px;
+    }
 
-    .nav-search { margin-top: 18px; }
-    .nav-search-form { margin: 0; padding: 6px 6px 6px 14px; }
-    .nav-search-form input { font-size: 1rem; }
+    /* Compact search box */
+    .nav-search { margin-top: 16px; }
+    .nav-search-form { margin: 0; height: 44px; padding: 4px 4px 4px 12px; border-radius: 10px; }
+    .nav-search-form input { font-size: 0.95rem; }
+    .nav-search-form button { width: 34px; height: 34px; border-radius: 8px; }
+
     .nav-auth {
-        margin: 18px 0 0;
-        padding: 18px 0 0;
+        margin: 16px 0 0;
+        padding: 16px 0 0;
         border-left: none;
-        border-top: 1px solid rgba(255, 255, 255, 0.15);
+        border-top: 1px solid rgba(255, 255, 255, 0.12);
         gap: 10px;
     }
-    .nav-auth-link { font-size: 1.05rem; padding: 10px 16px; }
+    .nav-auth-link { display: inline-flex; align-items: center; min-height: 44px; font-size: 0.95rem; padding: 0 16px; }
+}
+@media (max-width: 1100px) and (prefers-reduced-motion: reduce) {
+    .main-nav, .main-nav > * { transition: none; }
 }
 
 /* ---------------- Photo lightbox (The Latest) ---------------- */
@@ -1798,25 +1883,34 @@ body.adm-sidebar-hidden .adm-main { margin-left: 0; }
 }
 .lightbox-btn[hidden] { display: none; }
 
-/* Keep the logo, school name and hamburger on one row on phones, and hide
-   the chat button while the full-screen menu or a photo is open. */
-@media (max-width: 1180px) {
-    .navbar { flex-wrap: nowrap; gap: 12px; }
-    .brand { min-width: 0; }
-    .nav-toggle { flex-shrink: 0; }
+/* Phones and tablets: logo + school name centred in the bar, hamburger on
+   the right. The empty first column balances the hamburger so the logo
+   sits in the true centre. */
+@media (max-width: 1100px) {
+    .navbar {
+        display: grid;
+        grid-template-columns: 44px 1fr 44px;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 16px;
+    }
+    .brand { grid-column: 2; justify-self: center; min-width: 0; }
+    .nav-toggle { grid-column: 3; }
+    .brand-logo { height: 50px; }
+    .brand-name { font-size: 1rem; }
 }
 @media (max-width: 480px) {
-    .brand-tagline { white-space: normal; }
+    /* Small phones: drop the balancing column so the school name gets
+       enough room; the logo block stays (almost) centred. */
+    .navbar { grid-template-columns: 1fr 44px; }
+    .brand { grid-column: 1; gap: 8px; }
+    .nav-toggle { grid-column: 2; }
+    .brand-logo { height: 36px; }
+    .brand-name { font-size: 0.8rem; }
+    .brand-tagline { font-size: 0.68rem; }
 }
+/* Hide the chat button while the menu or a photo is open */
 body.nav-open .assistant-widget { display: none; }
-/* Don't let the menu squeeze the logo/name block on wide screens */
-@media (min-width: 1181px) {
-    .brand { flex-shrink: 0; margin-right: 18px; }
-    .brand-text { max-width: 215px; }
-    .navbar { max-width: 1400px; }
-    .main-nav a { padding: 8px 10px; font-size: 0.93rem; }
-    .main-nav ul { gap: 2px; }
-}
 
 /* =====================================================================
    Template-style homepage (white header, open hero photo, photo cards,
@@ -1828,19 +1922,25 @@ body.nav-open .assistant-widget { display: none; }
 .brand-name { color: var(--navy); }
 .brand-tagline { color: var(--orange); }
 .nav-toggle span { background: var(--navy); }
-@media (max-width: 1180px) {
+@media (max-width: 1100px) {
     .nav-toggle span { background: var(--navy); }
 }
 
-/* Desktop: full-height menu items, the current page in an orange block,
+/* Laptops and desktops: two rows. Top row = the logo and school name,
+   centred, with Staff Login / Register on the right. Bottom row = the menu,
+   centred, with full-height items, the current page in an orange block,
    and a square search button that opens a search box under it. */
-@media (min-width: 1181px) {
-    .navbar { max-width: 1440px; padding: 0 0 0 20px; align-items: stretch; min-height: 84px; }
-    .brand { align-self: center; margin-right: 14px; }
-    .main-nav { display: flex; }
+@media (min-width: 1100.02px) {
+    .site-header { border-top: 4px solid var(--navy); }
+    .navbar { flex-direction: column; align-items: stretch; max-width: none; padding: 0; }
+    .brand { align-self: center; height: 76px; padding: 0 20px; }
+    .brand-logo { height: 54px; }
+    .brand-name { font-size: 1.15rem; }
+    .main-nav { display: flex; justify-content: center; border-top: 1px solid #EEEAF6; }
+    .main-nav > ul { min-height: 54px; }
     .main-nav > ul { flex-wrap: nowrap; align-items: stretch; gap: 0; }
     .main-nav > ul > li { display: flex; align-items: stretch; }
-    .main-nav > ul > li > a {
+    .main-nav > ul > li:not(.nav-auth) > a {
         display: flex;
         align-items: center;
         padding: 0 11px;
@@ -1856,23 +1956,22 @@ body.nav-open .assistant-widget { display: none; }
     .main-nav > ul > li > a.active .dropdown-caret { color: var(--white); }
     .main-nav .dropdown-menu { margin-top: 0; border-radius: 0 0 10px 10px; border-top-color: var(--orange); }
 
-    /* Staff Login / Register live in a thin navy strip above the menu,
-       so the menu itself fits on one line. */
-    .site-header::before { content: ''; display: block; height: 34px; background: var(--navy); }
+    /* Staff Login / Register sit at the right of the logo row, so the
+       menu row below has the full width and fits on one line. */
     .nav-auth {
         position: absolute;
         top: 0;
         right: 20px;
-        height: 34px;
+        height: 76px;
         margin: 0;
         padding: 0;
         border-left: 0;
-        align-items: center;
-        gap: 4px;
+        gap: 6px;
     }
-    .main-nav > ul > li.nav-auth > a { display: inline-block; color: #E6E0FF; font-size: 0.8rem; font-weight: 600; padding: 4px 10px; border-radius: 4px; }
-    .main-nav > ul > li.nav-auth > a:hover { background: rgba(255, 255, 255, 0.1); color: var(--white); }
-    .main-nav > ul > li.nav-auth > a.nav-auth-register { background: var(--orange); color: var(--white); padding: 4px 12px; }
+    .main-nav > ul > li.nav-auth { align-items: center; }
+    .main-nav > ul > li.nav-auth > a { display: inline-block; color: var(--navy); font-size: 0.82rem; font-weight: 600; padding: 7px 12px; border-radius: 8px; }
+    .main-nav > ul > li.nav-auth > a:hover { background: var(--light-grey); color: var(--orange); }
+    .main-nav > ul > li.nav-auth > a.nav-auth-register { background: var(--orange); color: var(--white); padding: 7px 14px; }
     .main-nav > ul > li.nav-auth > a.nav-auth-register:hover { background: var(--gold); color: var(--navy); }
 
     .nav-search { position: relative; }
@@ -1914,13 +2013,10 @@ body.nav-open .assistant-widget { display: none; }
     .nav-search-form:focus-within button { visibility: visible; opacity: 1; }
 }
 .nav-search-toggle { display: none; }
-@media (min-width: 1181px) { .nav-search-toggle { display: flex; } }
+@media (min-width: 1100.02px) { .nav-search-toggle { display: flex; } }
 /* Narrower laptops: tighten the menu so it still fits on one line */
-@media (min-width: 1181px) and (max-width: 1380px) {
-    .brand-logo { height: 48px; }
-    .brand-text { max-width: 175px; }
-    .brand-name { font-size: 0.92rem; }
-    .main-nav > ul > li > a { padding: 0 8px; font-size: 0.83rem; }
+@media (min-width: 1100.02px) and (max-width: 1380px) {
+    .main-nav > ul > li:not(.nav-auth) > a { padding: 0 9px; font-size: 0.84rem; }
     .nav-search-toggle { width: 58px; }
 }
 
@@ -2027,3 +2123,52 @@ body.nav-open .assistant-widget { display: none; }
 .faculty-card img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; object-position: top; }
 .faculty-name { margin: 16px 0 4px; font-size: 1rem; font-weight: 700; text-transform: uppercase; color: #2B2B2B; }
 .faculty-role { margin: 0 0 16px; color: var(--orange); font-size: 0.9rem; }
+
+/* =====================================================================
+   Responsive polish: phones (320-767px), tablets (768-1023px)
+   ===================================================================== */
+
+/* Hero buttons share one row neatly on phones; on very small phones they
+   stack full-width so they're easy to tap. */
+@media (max-width: 760px) {
+    .hero-content p { font-size: 1rem; margin-bottom: 22px; }
+    .hero-motto { font-size: 1.1rem !important; } /* the base rule also uses !important */
+    .hero-buttons { gap: 10px; }
+    .hero-buttons .btn-hero { flex: 1 1 0; padding: 12px 14px; }
+}
+@media (max-width: 420px) {
+    .hero-buttons { flex-direction: column; }
+    .hero-buttons .btn-hero { width: 100%; }
+}
+
+/* Less empty space around sections on smaller screens */
+@media (max-width: 1023px) {
+    :root { --section-space: 48px; }
+    .faculty-section { padding: 48px 0 56px; }
+    .school-section { margin-bottom: 48px; }
+    .facts-band, .cta-band { border-radius: 20px; }
+}
+@media (max-width: 767px) {
+    :root { --section-space: 36px; }
+    .container { padding: 0 16px; }
+    .section-title { margin-bottom: 28px; }
+    .section-subtitle { margin: -18px 0 28px; }
+    .faculty-section { padding: 36px 0 44px; }
+    .school-section { margin-bottom: 36px; }
+    .facts-band { padding: 26px 20px; margin-bottom: 40px; }
+    .cta-band { padding: 26px 22px; }
+    .statement-card { padding: 26px 22px; }
+    .split { gap: 24px; }
+    .photo-cards-grid { gap: 20px; }
+    .photo-card-body { padding: 14px 20px 22px; }
+    .motto-band { padding: 22px 18px; }
+    .page-header { padding: 34px 0 48px; }
+    .hero { padding: 44px 16px 56px; }
+    .hero.hero-has-slides .hero-content { padding: 36px 16px 16px; }
+}
+
+/* Tablets: give the hero text a little more room so both buttons fit */
+@media (min-width: 761px) and (max-width: 1023px) {
+    .hero.hero-has-slides .hero-content { flex-basis: 58%; }
+    .btn-hero { padding: 12px 18px; }
+}

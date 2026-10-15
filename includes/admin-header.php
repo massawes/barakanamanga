@@ -51,7 +51,7 @@ foreach ($adminMenu as $key => [$label, , $target]) {
 <link rel="icon" type="image/png" sizes="192x192" href="<?= e($base) ?>/assets/images/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="<?= e($base) ?>/assets/css/style.css?v=<?= (int) @filemtime(__DIR__ . '/../assets/css/style.css') ?>">
 </head>
 <body class="admin-body<?= $loggedIn ? '' : ' adm-guest' ?>">

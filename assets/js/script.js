@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
             toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
         };
         var isMobileMenu = function () {
-            return window.matchMedia('(max-width: 1180px)').matches;
+            return window.matchMedia('(max-width: 1100px)').matches;
         };
 
         toggle.addEventListener('click', function () {
@@ -27,6 +27,10 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         document.addEventListener('keydown', function (e) {
             if (e.key === 'Escape') setMenuOpen(false);
+        });
+        // Tapping the dimmed area beside the slide-in menu closes it.
+        nav.addEventListener('click', function (e) {
+            if (e.target === nav) setMenuOpen(false);
         });
 
         // On phones, tapping "Our School" / "The Latest" opens its sub-links
