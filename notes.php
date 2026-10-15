@@ -2,8 +2,8 @@
 require_once __DIR__ . '/includes/bootstrap.php';
 require_once __DIR__ . '/includes/notes-subjects.php';
 
-// ?form=formN shows that Form's subjects (2023 new curriculum) plus the notes
-// uploaded by teachers; adding &subject=… shows one subject's online links.
+// ?form=formN shows that Form's subjects (2023 new curriculum);
+// adding &subject=… shows one subject's online links.
 $selectedForm = $_GET['form'] ?? '';
 $formSelected = in_array($selectedForm, VALID_FORMS, true);
 
@@ -18,46 +18,12 @@ if ($subjectSelected) {
     // Form 1-2 sit the FTNA, Form 3-4 the CSEE.
     $examLevel = in_array($selectedForm, ['form1', 'form2'], true) ? 'ftna' : 'csee';
 
-    // Teachers' notes for this Form whose title mentions the subject.
-    $stmt = $pdo->prepare("SELECT * FROM resources WHERE resource_type = 'notes' AND form_level = :form ORDER BY created_at DESC");
-    $stmt->execute(['form' => $selectedForm]);
-    $items = array_values(array_filter($stmt->fetchAll(), static function (array $row) use ($subject): bool {
-        $title = ' ' . strtolower($row['title']) . ' ';
-        foreach ($subject['keywords'] as $keyword) {
-            if (str_contains($title, $keyword)) {
-                return true;
-            }
-        }
-        return false;
-    }));
-
     $pageTitle = form_label($selectedForm) . ' ' . $subject['name'] . ' Notes | Namanga Secondary School';
-    $pageDescription = form_label($selectedForm) . ' ' . $subject['name'] . ' (new syllabus): official TIE syllabus, textbooks, past papers and notes — Namanga Secondary School, Longido, Arusha.';
+    $pageDescription = form_label($selectedForm) . ' ' . $subject['name'] . ' (new syllabus): official TIE syllabus, textbooks and past papers — Namanga Secondary School, Longido, Arusha.';
 } elseif ($formSelected) {
-    $countStmt = $pdo->prepare("SELECT COUNT(*) FROM resources WHERE resource_type = 'notes' AND form_level = :form");
-    $countStmt->execute(['form' => $selectedForm]);
-    $totalItems = (int) $countStmt->fetchColumn();
-    $totalPages = max(1, (int) ceil($totalItems / RESOURCES_PER_PAGE));
-    $pageNum = current_page_number($totalPages);
-    $offset = ($pageNum - 1) * RESOURCES_PER_PAGE;
-
-    $stmt = $pdo->prepare(
-        "SELECT * FROM resources WHERE resource_type = 'notes' AND form_level = :form
-         ORDER BY created_at DESC LIMIT " . RESOURCES_PER_PAGE . " OFFSET " . $offset
-    );
-    $stmt->execute(['form' => $selectedForm]);
-    $items = $stmt->fetchAll();
     $pageTitle = form_label($selectedForm) . ' Notes | Namanga Secondary School';
-    $pageDescription = form_label($selectedForm) . ' subjects (new syllabus) with official TIE syllabus, textbooks, past papers and teachers\' notes — Namanga Secondary School, Longido, Arusha.';
+    $pageDescription = form_label($selectedForm) . ' subjects (new syllabus) with official TIE syllabus, textbooks and past papers — Namanga Secondary School, Longido, Arusha.';
 } else {
-    // Counts per Form, shown on the selection menu.
-    $counts = ['form1' => 0, 'form2' => 0, 'form3' => 0, 'form4' => 0];
-    $stmt = $pdo->query("SELECT form_level, COUNT(*) AS total FROM resources WHERE resource_type = 'notes' GROUP BY form_level");
-    foreach ($stmt->fetchAll() as $row) {
-        if (isset($counts[$row['form_level']])) {
-            $counts[$row['form_level']] = (int) $row['total'];
-        }
-    }
     $pageTitle = 'Notes | Namanga Secondary School';
     $pageDescription = 'Free notes for every subject, Form 1 to Form 4 (new syllabus), from Namanga Secondary School (S.2911), Longido, Arusha, Tanzania. Official TIE syllabus, textbooks and past papers.';
 }
@@ -128,19 +94,6 @@ include __DIR__ . '/includes/header.php';
                 </div>
             </div>
 
-            <div class="exam-subject-group">
-                <h3 class="exam-group-title">Notes from our teachers</h3>
-                <?php if (empty($items)): ?>
-                    <p class="empty-state">No <?= e(form_label($selectedForm) . ' ' . $subject['name']) ?> notes have been uploaded yet. Please check again later.</p>
-                <?php else: ?>
-                    <div class="resource-link-list">
-                        <?php foreach ($items as $resource): ?>
-                            <?php include __DIR__ . '/includes/notes-link-item.php'; ?>
-                        <?php endforeach; ?>
-                    </div>
-                <?php endif; ?>
-            </div>
-
         <?php elseif ($formSelected): ?>
 
             <p><a href="<?= e($base) ?>/notes.php" class="back-link">&larr; Back to Form selection</a></p>
@@ -158,24 +111,6 @@ include __DIR__ . '/includes/header.php';
                 </ul>
             </div>
 
-            <div class="section-title-row">
-                <h2 class="section-title-left">Notes from our teachers</h2>
-                <?php if (!empty($items)): ?>
-                    <a href="<?= e($base) ?>/download-all.php?category=notes&amp;form=<?= e($selectedForm) ?>" class="btn btn-outline btn-small">Download All</a>
-                <?php endif; ?>
-            </div>
-
-            <?php if (empty($items)): ?>
-                <p class="empty-state">No <?= e(form_label($selectedForm)) ?> notes have been uploaded yet. Please check again later.</p>
-            <?php else: ?>
-                <div class="resource-link-list">
-                    <?php foreach ($items as $resource): ?>
-                        <?php include __DIR__ . '/includes/notes-link-item.php'; ?>
-                    <?php endforeach; ?>
-                </div>
-                <?= render_pagination($pageNum, $totalPages, 'notes.php?form=' . $selectedForm) ?>
-            <?php endif; ?>
-
         <?php else: ?>
 
             <div class="cards-grid">
@@ -184,7 +119,7 @@ include __DIR__ . '/includes/header.php';
                         <div class="category-icon"><?= svg_icon('notes') ?></div>
                         <h3 class="form-big-label"><?= e(strtoupper(form_label($form))) ?></h3>
                         <p>All <?= e(form_label($form)) ?> subjects &mdash; new syllabus.</p>
-                        <span class="card-count"><?= $counts[$form] ?> teacher file<?= $counts[$form] === 1 ? '' : 's' ?></span>
+                        <span class="card-count"><?= count(notes_subjects($form)) ?> subjects</span>
                         <span class="btn btn-outline">View <?= e(form_label($form)) ?></span>
                     </a>
                 <?php endforeach; ?>
