@@ -28,6 +28,26 @@ try {
     // hero_slides table not created yet (older installs) — fail quietly, plain banner shows instead.
 }
 
+require_once __DIR__ . '/includes/card-photos.php';
+
+// Resource cards: [page, title, text, count, count word, link text]; the
+// card photo is assets/images/cards/<key>.jpg (see includes/card-photos.php).
+$resourceCards = [
+    'notes'     => ['notes.php', 'Notes', 'TIE textbooks, syllabus and past papers for every subject, Form 1 to Form 4.', $counts['notes'], 'file', 'View Notes'],
+    'summary'   => ['summaries.php', 'Summary', 'Quick revision summaries for Form 1 to Form 4 topics.', $counts['summary'], 'file', 'View Summaries'],
+    'theory'    => ['theory.php', 'Theory Past Papers', 'Complete theory examination papers organised by Form and year.', $counts['theory'], 'file', 'View Papers'],
+    'practical' => ['practical.php', 'Form 4 Practical', 'Complete Form 4 computer practical examination papers.', $counts['practical'], 'file', 'View Practicals'],
+    'software'  => ['software.php', 'Software', 'Educational and programming software used in ICT lessons.', $counts['software'], 'item', 'View Software'],
+    'others'    => ['others.php', 'Other Subjects', 'Resources for other subjects beyond ICT and Computer Science.', $counts['others'], 'file', 'View Other Subjects'],
+    'gallery'   => ['gallery.php', 'Gallery', 'Photos and videos from life at Namanga Secondary School.', $galleryCount, 'item', 'View Gallery'],
+];
+
+// "Our Great Faculties": [photo in assets/images/staff/, name, role].
+// Add a row here for each new staff photo.
+$faculty = [
+    ['massawe.jpg', 'Mr. Massawe', 'ICT Teacher'],
+];
+
 $pageTitle = 'Namanga Secondary School Website | Longido, Arusha, Tanzania';
 $pageDescription = 'Official website of Namanga Secondary School, a government secondary school in Namanga, Longido District, Arusha, Tanzania. Free ICT & Computer Science notes, summaries, past papers, NECTA results and software for Form 1 to Form 4.';
 $base = base_url();
@@ -40,7 +60,10 @@ include __DIR__ . '/includes/header.php';
             <h1>NAMANGA SECONDARY SCHOOL WEBSITE</h1>
             <p class="hero-motto">&ldquo;Education for Liberty and Prosperity&rdquo;</p>
             <p>Namanga, Longido District, Arusha — Tanzania</p>
-            <a href="#resources" class="btn btn-gold btn-large">Explore Resources</a>
+            <div class="hero-buttons">
+                <a href="#resources" class="btn btn-hero">Explore Resources</a>
+                <a href="<?= e($base) ?>/about.php" class="btn btn-hero">About Us</a>
+            </div>
         </div>
         <?php if (!empty($slides)): ?>
             <div class="hero-photo">
@@ -63,65 +86,23 @@ include __DIR__ . '/includes/header.php';
 <section id="resources" class="resource-cards">
     <div class="container">
         <h2 class="section-title">Resource Categories</h2>
-        <div class="cards-grid">
-
-            <a href="<?= e($base) ?>/notes.php" class="category-card">
-                <div class="category-icon"><?= svg_icon('notes') ?></div>
-                <h3>Notes</h3>
-                <p>Access complete ICT and Computer Science notes for Form 1 to Form 4.</p>
-                <span class="card-count"><?= $counts['notes'] ?> file<?= $counts['notes'] === 1 ? '' : 's' ?></span>
-                <span class="btn btn-outline">View Notes</span>
-            </a>
-
-            <a href="<?= e($base) ?>/summaries.php" class="category-card">
-                <div class="category-icon"><?= svg_icon('summary') ?></div>
-                <h3>Summary</h3>
-                <p>Quick revision summaries for Form 1 to Form 4 topics.</p>
-                <span class="card-count"><?= $counts['summary'] ?> file<?= $counts['summary'] === 1 ? '' : 's' ?></span>
-                <span class="btn btn-outline">View Summaries</span>
-            </a>
-
-            <a href="<?= e($base) ?>/theory.php" class="category-card">
-                <div class="category-icon"><?= svg_icon('theory') ?></div>
-                <h3>Theory Past Papers</h3>
-                <p>Complete theory examination papers organised by Form and year.</p>
-                <span class="card-count"><?= $counts['theory'] ?> file<?= $counts['theory'] === 1 ? '' : 's' ?></span>
-                <span class="btn btn-outline">View Papers</span>
-            </a>
-
-            <a href="<?= e($base) ?>/practical.php" class="category-card">
-                <div class="category-icon"><?= svg_icon('practical') ?></div>
-                <h3>Form 4 Practical</h3>
-                <p>Complete Form 4 computer practical examination papers.</p>
-                <span class="card-count"><?= $counts['practical'] ?> file<?= $counts['practical'] === 1 ? '' : 's' ?></span>
-                <span class="btn btn-outline">View Practicals</span>
-            </a>
-
-            <a href="<?= e($base) ?>/software.php" class="category-card">
-                <div class="category-icon"><?= svg_icon('software') ?></div>
-                <h3>Software</h3>
-                <p>Educational and programming software used in ICT lessons.</p>
-                <span class="card-count"><?= $counts['software'] ?> item<?= $counts['software'] === 1 ? '' : 's' ?></span>
-                <span class="btn btn-outline">View Software</span>
-            </a>
-
-            <a href="<?= e($base) ?>/others.php" class="category-card">
-                <div class="category-icon"><?= svg_icon('others') ?></div>
-                <h3>Other Subjects</h3>
-                <p>Resources for other subjects beyond ICT and Computer Science.</p>
-                <span class="card-count"><?= $counts['others'] ?> file<?= $counts['others'] === 1 ? '' : 's' ?></span>
-                <span class="btn btn-outline">View Other Subjects</span>
-            </a>
-
-            <a href="<?= e($base) ?>/gallery.php" class="category-card">
-                <div class="category-icon"><?= svg_icon('gallery') ?></div>
-                <h3>Gallery</h3>
-                <p>Photos and videos from life at Namanga Secondary School.</p>
-                <span class="card-count"><?= $galleryCount ?> item<?= $galleryCount === 1 ? '' : 's' ?></span>
-                <span class="btn btn-outline">View Gallery</span>
-            </a>
-
+        <p class="section-subtitle">Notes, past papers and more for every student</p>
+        <div class="photo-cards-grid">
+            <?php foreach ($resourceCards as $key => [$page, $title, $text, $count, $word, $linkText]): ?>
+                <a href="<?= e($base) ?>/<?= e($page) ?>" class="photo-card">
+                    <span class="photo-card-img">
+                        <img src="<?= e(card_photo_url($key)) ?>" alt="Students studying" loading="lazy" width="900" height="600">
+                    </span>
+                    <span class="photo-card-body">
+                        <span class="photo-card-title"><?= e($title) ?></span>
+                        <span class="photo-card-text"><?= e($text) ?></span>
+                        <span class="photo-card-count"><?= (int) $count ?> <?= e($word) ?><?= $count === 1 ? '' : 's' ?></span>
+                        <span class="photo-card-link"><?= e($linkText) ?> &rsaquo;</span>
+                    </span>
+                </a>
+            <?php endforeach; ?>
         </div>
+        <?= render_card_photo_credits(array_keys($resourceCards)) ?>
     </div>
 </section>
 
@@ -145,6 +126,22 @@ include __DIR__ . '/includes/header.php';
             <li>Free notes, summaries, past papers and NECTA results on this website</li>
         </ul>
       </div>
+    </div>
+</section>
+
+<section class="faculty-section">
+    <div class="container">
+        <h2 class="section-title">Our Great Faculties</h2>
+        <p class="section-subtitle">Well experienced staff</p>
+        <div class="faculty-grid">
+            <?php foreach ($faculty as [$photo, $name, $role]): ?>
+                <div class="faculty-card">
+                    <img src="<?= e($base) ?>/assets/images/staff/<?= e($photo) ?>" alt="<?= e($name . ', ' . $role) ?>" loading="lazy" width="640" height="800">
+                    <h3 class="faculty-name"><?= e($name) ?></h3>
+                    <p class="faculty-role"><?= e($role) ?></p>
+                </div>
+            <?php endforeach; ?>
+        </div>
     </div>
 </section>
 

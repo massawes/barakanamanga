@@ -1674,3 +1674,213 @@ body.nav-open .assistant-widget { display: none; }
     .main-nav a { padding: 8px 10px; font-size: 0.93rem; }
     .main-nav ul { gap: 2px; }
 }
+
+/* =====================================================================
+   Template-style homepage (white header, open hero photo, photo cards,
+   faculty), modelled on the "EduCampus" layout the school chose.
+   ===================================================================== */
+
+/* ---- Header: white bar, navy logo and text ---- */
+.site-header { background: var(--white); box-shadow: 0 2px 14px rgba(0, 0, 0, 0.08); }
+.brand-name { color: var(--navy); }
+.brand-tagline { color: var(--orange); }
+.nav-toggle span { background: var(--navy); }
+@media (max-width: 1180px) {
+    .nav-toggle span { background: var(--navy); }
+}
+
+/* Desktop: full-height menu items, the current page in an orange block,
+   and a square search button that opens a search box under it. */
+@media (min-width: 1181px) {
+    .navbar { max-width: 1440px; padding: 0 0 0 20px; align-items: stretch; min-height: 84px; }
+    .brand { align-self: center; margin-right: 14px; }
+    .main-nav { display: flex; }
+    .main-nav > ul { flex-wrap: nowrap; align-items: stretch; gap: 0; }
+    .main-nav > ul > li { display: flex; align-items: stretch; }
+    .main-nav > ul > li > a {
+        display: flex;
+        align-items: center;
+        padding: 0 11px;
+        border-radius: 0;
+        color: #2B2B2B;
+        font-size: 0.88rem;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+    .main-nav > ul > li > a:hover { background: transparent; color: var(--orange); }
+    .main-nav > ul > li > a.active,
+    .main-nav > ul > li > a.active:hover { background: var(--orange); color: var(--white); }
+    .main-nav > ul > li > a.active .dropdown-caret { color: var(--white); }
+    .main-nav .dropdown-menu { margin-top: 0; border-radius: 0 0 10px 10px; border-top-color: var(--orange); }
+
+    /* Staff Login / Register live in a thin navy strip above the menu,
+       so the menu itself fits on one line. */
+    .site-header::before { content: ''; display: block; height: 34px; background: var(--navy); }
+    .nav-auth {
+        position: absolute;
+        top: 0;
+        right: 20px;
+        height: 34px;
+        margin: 0;
+        padding: 0;
+        border-left: 0;
+        align-items: center;
+        gap: 4px;
+    }
+    .main-nav > ul > li.nav-auth > a { display: inline-block; color: #E6E0FF; font-size: 0.8rem; font-weight: 600; padding: 4px 10px; border-radius: 4px; }
+    .main-nav > ul > li.nav-auth > a:hover { background: rgba(255, 255, 255, 0.1); color: var(--white); }
+    .main-nav > ul > li.nav-auth > a.nav-auth-register { background: var(--orange); color: var(--white); padding: 4px 12px; }
+    .main-nav > ul > li.nav-auth > a.nav-auth-register:hover { background: var(--gold); color: var(--navy); }
+
+    .nav-search { position: relative; }
+    .nav-search-form { align-self: stretch; height: auto; margin: 0; padding: 0; border-radius: 0; background: transparent; align-items: stretch; }
+    .nav-search-icon { display: none; }
+    .nav-search-toggle {
+        align-items: center;
+        justify-content: center;
+        width: 70px;
+        margin: 0;
+        background: var(--gold);
+        color: var(--navy);
+        cursor: pointer;
+    }
+    .nav-search-toggle:hover { background: var(--gold-dark); }
+    /* The box itself, hidden until the square button is clicked */
+    .nav-search-form input,
+    .nav-search-form button {
+        position: absolute;
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity 0.15s ease;
+        z-index: 210;
+    }
+    .nav-search-form input {
+        top: 100%;
+        right: 0;
+        width: 320px;
+        height: 54px;
+        padding: 0 56px 0 16px;
+        background: var(--white);
+        border: 1px solid #E6E6E6;
+        border-top: 3px solid var(--gold);
+        box-shadow: 0 14px 30px rgba(0, 0, 0, 0.15);
+        font-size: 0.95rem;
+    }
+    .nav-search-form button { top: calc(100% + 11px); right: 10px; border-radius: 4px; }
+    .nav-search-form:focus-within input,
+    .nav-search-form:focus-within button { visibility: visible; opacity: 1; }
+}
+.nav-search-toggle { display: none; }
+@media (min-width: 1181px) { .nav-search-toggle { display: flex; } }
+/* Narrower laptops: tighten the menu so it still fits on one line */
+@media (min-width: 1181px) and (max-width: 1380px) {
+    .brand-logo { height: 48px; }
+    .brand-text { max-width: 175px; }
+    .brand-name { font-size: 0.92rem; }
+    .main-nav > ul > li > a { padding: 0 8px; font-size: 0.83rem; }
+    .nav-search-toggle { width: 58px; }
+}
+
+/* ---- Hero: the slideshow photos sit open on the right, with no frame,
+   fading softly into the background behind the text. ---- */
+.hero.hero-has-slides { padding: 0 20px; }
+.hero.hero-has-slides .hero-inner { min-height: 540px; }
+.hero.hero-has-slides .hero-content { position: relative; z-index: 1; flex: 0 1 46%; padding: 90px 0 110px; }
+.hero.hero-has-slides .hero-photo {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 60%;
+    height: auto;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    background: transparent;
+    -webkit-mask-image: linear-gradient(to right, transparent 0, #000 30%);
+    mask-image: linear-gradient(to right, transparent 0, #000 30%);
+}
+.hero.hero-has-slides .hero-slide {
+    background-color: transparent;
+    background-size: cover;
+    background-position: center;
+}
+.hero-buttons { display: flex; flex-wrap: wrap; gap: 14px; }
+.btn-hero {
+    background: transparent;
+    color: var(--white);
+    border: 2px solid var(--white);
+    border-radius: 4px;
+    padding: 12px 24px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.85rem;
+}
+.btn-hero:hover { background: var(--gold); border-color: var(--gold); color: var(--navy); }
+@media (max-width: 760px) {
+    .hero.hero-has-slides { padding: 0; }
+    .hero.hero-has-slides .hero-inner { min-height: 0; }
+    .hero.hero-has-slides .hero-content { flex: none; padding: 50px 20px 20px; }
+    .hero.hero-has-slides .hero-photo {
+        position: relative;
+        width: 100%;
+        height: 260px;
+        -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 22%);
+        mask-image: linear-gradient(to bottom, transparent 0, #000 22%);
+    }
+    .hero-buttons { justify-content: center; }
+}
+
+/* ---- Section subtitle under a centred title ---- */
+.section-subtitle {
+    text-align: center;
+    color: #B49A5E;
+    font-size: 1.05rem;
+    margin: -26px 0 36px;
+}
+
+/* ---- Photo cards (homepage categories, Notes Forms) ---- */
+.photo-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 28px;
+}
+.photo-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--white);
+    border: 1px solid #E6E6E6;
+    color: #2B2B2B;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.photo-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
+/* The photo's slanted bottom edge with a small notch, as in the template */
+.photo-card-img {
+    display: block;
+    aspect-ratio: 3 / 2;
+    overflow: hidden;
+    clip-path: polygon(0 0, 100% 0, 100% 74%, 25% 93%, 20% 100%, 15% 93%, 0 96%);
+}
+.photo-card-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease; }
+.photo-card:hover .photo-card-img img { transform: scale(1.05); }
+.photo-card-body { display: flex; flex-direction: column; gap: 10px; flex: 1; padding: 16px 26px 26px; }
+.photo-card-title { font-size: 1.15rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; color: #2B2B2B; }
+.photo-card-text { color: #6B6B6B; line-height: 1.6; }
+.photo-card-count { font-size: 0.8rem; color: #9A9A9A; }
+.photo-card-link { margin-top: auto; padding-top: 6px; color: var(--orange); font-weight: 700; font-size: 0.9rem; text-transform: uppercase; }
+.photo-card:hover .photo-card-link { color: var(--navy); }
+.photo-credits { text-align: center; font-size: 0.75rem; color: #8A8A8A; margin: 22px 0 0; }
+.photo-credits a { color: inherit; text-decoration: underline; }
+
+/* ---- Our Great Faculties ---- */
+.faculty-section { background: var(--white); padding: 60px 0 70px; }
+.faculty-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 260px));
+    justify-content: center;
+    gap: 30px;
+}
+.faculty-card { background: var(--white); border: 1px solid #E6E6E6; border-bottom: 3px solid var(--orange); text-align: center; }
+.faculty-card img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; object-position: top; }
+.faculty-name { margin: 16px 0 4px; font-size: 1rem; font-weight: 700; text-transform: uppercase; color: #2B2B2B; }
+.faculty-role { margin: 0 0 16px; color: var(--orange); font-size: 0.9rem; }

@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/includes/bootstrap.php';
 require_once __DIR__ . '/includes/notes-subjects.php';
+require_once __DIR__ . '/includes/card-photos.php';
 
 // ?form=formN shows that Form's subjects (Form 1-2 on the 2023 new syllabus,
 // Form 3-4 on the old one);
@@ -129,17 +130,22 @@ include __DIR__ . '/includes/header.php';
 
         <?php else: ?>
 
-            <div class="cards-grid">
+            <div class="photo-cards-grid">
                 <?php foreach (VALID_FORMS as $form): ?>
-                    <a href="<?= e($base) ?>/notes.php?form=<?= e($form) ?>" class="category-card form-select-card">
-                        <div class="category-icon"><?= svg_icon('notes') ?></div>
-                        <h3 class="form-big-label"><?= e(strtoupper(form_label($form))) ?></h3>
-                        <p>All <?= e(form_label($form)) ?> subjects &mdash; <?= notes_new_syllabus($form) ? 'new' : 'old' ?> syllabus.</p>
-                        <span class="card-count"><?= count(notes_subjects($form)) ?> subjects</span>
-                        <span class="btn btn-outline">View <?= e(form_label($form)) ?></span>
+                    <a href="<?= e($base) ?>/notes.php?form=<?= e($form) ?>" class="photo-card">
+                        <span class="photo-card-img">
+                            <img src="<?= e(card_photo_url($form)) ?>" alt="Students studying" loading="lazy" width="900" height="600">
+                        </span>
+                        <span class="photo-card-body">
+                            <span class="photo-card-title"><?= e(form_label($form)) ?></span>
+                            <span class="photo-card-text">All <?= e(form_label($form)) ?> subjects &mdash; <?= notes_new_syllabus($form) ? 'new' : 'old' ?> syllabus.</span>
+                            <span class="photo-card-count"><?= count(notes_subjects($form)) ?> subjects</span>
+                            <span class="photo-card-link">View <?= e(form_label($form)) ?> &rsaquo;</span>
+                        </span>
                     </a>
                 <?php endforeach; ?>
             </div>
+            <?= render_card_photo_credits(VALID_FORMS) ?>
 
         <?php endif; ?>
 

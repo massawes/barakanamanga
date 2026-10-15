@@ -46,7 +46,7 @@ $navLinks = [
 <header class="site-header">
     <div class="navbar">
         <a class="brand" href="<?= e($base) ?>/index.php">
-            <img src="<?= e($base) ?>/assets/images/logo-white.png" alt="Namanga Secondary School logo" class="brand-logo" onerror="this.style.display='none'">
+            <img src="<?= e($base) ?>/assets/images/logo-navy.png" alt="Namanga Secondary School logo" class="brand-logo" onerror="this.style.display='none'">
             <span class="brand-text">
                 <span class="brand-name">NAMANGA SECONDARY SCHOOL</span>
                 <span class="brand-tagline">Longido &middot; Arusha &middot; Tanzania</span>
@@ -94,9 +94,11 @@ $navLinks = [
                 <li class="nav-search">
                     <form action="<?= e($base) ?>/search.php" method="get" class="nav-search-form">
                         <span class="nav-search-icon" aria-hidden="true"><?= svg_icon('search', 'icon-svg icon-svg-small') ?></span>
-                        <input type="text" name="q" placeholder="Search resources..."
+                        <input type="text" name="q" id="navSearchInput" placeholder="Search resources..."
                                value="<?= e($_GET['q'] ?? '') ?>" aria-label="Search resources">
                         <button type="submit" aria-label="Search"><?= svg_icon('search', 'icon-svg icon-svg-small') ?></button>
+                        <?php // Desktop: this square button opens the search box (see .nav-search-toggle). ?>
+                        <label for="navSearchInput" class="nav-search-toggle" aria-hidden="true"><?= svg_icon('search', 'icon-svg') ?></label>
                     </form>
                 </li>
                 <li class="nav-auth">
