@@ -151,11 +151,6 @@ include __DIR__ . '/includes/header.php';
                 <p>Located in Namanga, Longido District, on the Tanzania&ndash;Kenya border</p>
             </li>
             <li class="feature-card">
-                <span class="feature-icon"><?= svg_icon('home', 'icon-svg') ?></span>
-                <h3 class="feature-title">Girls' Dormitory</h3>
-                <p>New girls' dormitory opened in 2024 for a safe place to study</p>
-            </li>
-            <li class="feature-card">
                 <span class="feature-icon"><?= svg_icon('notes', 'icon-svg') ?></span>
                 <h3 class="feature-title">Free Resources</h3>
                 <p>Free notes, summaries, past papers and NECTA results on this website</p>

@@ -475,8 +475,8 @@ img { max-width: 100%; height: auto; display: block; }
 }
 
 /* ---------------- "Who are we?" (homepage) ----------------
-   One intro card with the text about the school, then four small
-   feature cards: 4 columns on large screens, 2 on tablets, 1 on phones. */
+   One intro card with the text about the school, then three small
+   feature cards: 3 columns on computers and tablets, 1 on phones. */
 .home-intro { padding: 0 0 var(--section-space); }
 .intro-card {
     background: var(--white);
@@ -493,7 +493,7 @@ img { max-width: 100%; height: auto; display: block; }
 
 .feature-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 20px;
 }
 .feature-card {
@@ -506,7 +506,6 @@ img { max-width: 100%; height: auto; display: block; }
 }
 .feature-card:nth-child(2) { --accent: var(--navy-light); }
 .feature-card:nth-child(3) { --accent: var(--gold-dark); }
-.feature-card:nth-child(4) { --accent: var(--green); }
 .feature-card:hover { transform: translateY(-4px); box-shadow: var(--card-shadow-hover); }
 .feature-icon {
     display: flex;
@@ -525,8 +524,7 @@ img { max-width: 100%; height: auto; display: block; }
 .feature-icon .icon-svg { width: 24px; height: 24px; }
 .feature-title { margin: 0 0 6px; font-size: 1.05rem; font-weight: 600; color: var(--navy); }
 .feature-card p { margin: 0; font-size: 0.95rem; line-height: 1.6; color: #4A4566; }
-@media (max-width: 1023px) { .feature-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 600px)  { .feature-grid { grid-template-columns: 1fr; gap: 14px; } }
+@media (max-width: 700px) { .feature-grid { grid-template-columns: 1fr; gap: 14px; } }
 
 .cards-grid {
     display: grid;
