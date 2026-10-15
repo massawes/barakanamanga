@@ -250,100 +250,207 @@ img { max-width: 100%; height: auto; display: block; }
 .btn-large { padding: 14px 32px; font-size: 1rem; }
 .btn-small { padding: 6px 12px; font-size: 0.8rem; }
 
-/* ---------------- Hero ---------------- */
+/* ---------------- Hero (homepage) ----------------
+   The slideshow photos fill the whole hero. A navy shade on the left fades
+   smoothly into the photo so the text in front is always easy to read.
+   Layers, back to front: .hero-slideshow -> .hero-shade -> .hero-inner. */
 
 .hero {
-    background:
-        radial-gradient(circle at 85% 15%, rgba(31, 176, 230, 0.25) 0, transparent 40%),
-        radial-gradient(circle at 10% 90%, rgba(140, 198, 63, 0.22) 0, transparent 45%),
-        linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
-    color: var(--white);
-    padding: 70px 20px 80px;
+    --hero-navy: 27, 21, 80; /* #1B1550, deep brand navy, as R,G,B for rgba() */
     position: relative;
     overflow: hidden;
+    display: flex;
+    align-items: center;
+    min-height: clamp(540px, 80vh, 700px);
+    padding: 80px 20px 120px;
+    color: var(--white);
+    /* Shown when no slideshow photos have been uploaded yet */
+    background:
+        radial-gradient(circle at 85% 20%, rgba(31, 176, 230, 0.25) 0, transparent 45%),
+        linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
 }
 /* Wavy cream edge at the bottom of the hero */
 .hero::after {
     content: '';
     position: absolute;
+    z-index: 3;
     left: 0;
     right: 0;
     bottom: -1px;
-    height: 40px;
+    height: 48px;
     background: var(--cream);
     clip-path: ellipse(60% 100% at 50% 100%);
 }
-/* Two-column layout: text on the left, the rotating photo(s) on the
-   right in their own box — never on top of each other, so the text is
-   always readable and the photo is always shown in full, uncropped. */
-.hero-inner {
-    max-width: 1180px;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    gap: 40px;
-    text-align: center;
-}
-.hero.hero-has-slides .hero-inner { text-align: left; }
-.hero-content { flex: 1 1 0; }
-.hero.hero-has-slides .hero-content { flex: 1 1 45%; }
-.hero-photo {
-    flex: 1 1 55%;
-    position: relative;
-    width: 100%;
-    height: 380px;
-    border-radius: 26px;
-    overflow: hidden;
-    background: var(--navy);
-    border: 12px solid var(--gold);
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
-}
-.hero-slideshow { position: absolute; inset: 0; }
+
+.hero-slideshow { position: absolute; inset: 0; z-index: 0; }
 .hero-slide {
     position: absolute;
     inset: 0;
-    /* "contain" instead of "cover" so the whole photo always shows — nothing
-       gets cropped or cut in half. Any empty space left on the sides or top/
-       bottom (when the photo's shape doesn't exactly match the box) is
-       filled with the navy background color instead of zooming into and
-       cutting the photo. */
-    background-size: contain;
-    background-repeat: no-repeat;
+    background-size: cover;
     background-position: center;
-    background-color: var(--navy);
+    background-repeat: no-repeat;
     opacity: 0;
     transition: opacity 1.2s ease-in-out;
 }
-/* Slow zoom while a slide is showing — gives the still photos a gentle,
-   video-like motion. Only the visible slide animates, so the browser
-   isn't busy moving hidden photos. */
+/* Slow zoom on the visible photo for a gentle, video-like motion */
 .hero-slide.active { opacity: 1; animation: heroKenBurns 14s ease-in-out infinite alternate; }
-@media (prefers-reduced-motion: reduce) {
-    .hero-slide.active { animation: none; }
-}
 @keyframes heroKenBurns {
     from { transform: scale(1); }
     to   { transform: scale(1.04); }
 }
-.hero-content h1 {
-    font-size: var(--fs-h1);
+@media (prefers-reduced-motion: reduce) {
+    .hero-slide.active { animation: none; }
+}
+
+/* The navy shade: solid behind the text, fading out into the photo */
+.hero-shade {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background:
+        linear-gradient(90deg,
+            rgba(var(--hero-navy), 0.97) 0%,
+            rgba(var(--hero-navy), 0.92) 30%,
+            rgba(var(--hero-navy), 0.6) 48%,
+            rgba(var(--hero-navy), 0.15) 66%,
+            rgba(var(--hero-navy), 0) 80%),
+        linear-gradient(to top, rgba(var(--hero-navy), 0.45) 0%, transparent 35%);
+}
+
+.hero-inner {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 1240px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: 40px;
+}
+.hero-content { max-width: 620px; }
+
+.hero-badge {
+    display: inline-block;
+    margin-bottom: 18px;
+    padding: 6px 16px;
+    border-radius: 999px;
+    background: var(--gold);
+    color: var(--navy);
+    font-family: var(--font-heading);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+.hero-title {
+    margin: 0 0 16px;
+    font-size: clamp(2.2rem, 4.5vw + 0.5rem, 4rem);
     font-weight: 700;
-    line-height: 1.15;
-    letter-spacing: -0.3px;
-    margin: 0 0 14px;
+    line-height: 1.08;
+    letter-spacing: -0.5px;
+    text-transform: uppercase;
+    text-shadow: 0 2px 18px rgba(0, 0, 0, 0.25);
+}
+.hero-title span { display: block; }
+.hero-title-white { color: var(--white); }
+.hero-title-gold { color: var(--gold); }
+.hero-motto {
+    margin: 0 0 12px;
+    font-family: var(--font-heading);
+    font-size: clamp(1.05rem, 0.6vw + 0.9rem, 1.35rem);
+    font-weight: 500;
+    color: var(--white);
+}
+.hero-text {
+    max-width: 470px;
+    margin: 0 0 30px;
+    color: #E6E0FF;
+    line-height: 1.6;
+}
+
+.hero-buttons { display: flex; flex-wrap: wrap; gap: 14px; }
+.btn-hero {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px 26px;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+.btn-hero-gold { background: var(--gold); color: var(--navy); border: 2px solid var(--gold); }
+.btn-hero-gold:hover { background: #FFD457; border-color: #FFD457; }
+.btn-hero-outline { background: transparent; color: var(--white); border: 2px solid rgba(255, 255, 255, 0.75); }
+.btn-hero-outline:hover { background: var(--white); border-color: var(--white); color: var(--navy); }
+
+/* Glass-style navy card at the bottom right of the hero */
+.hero-card {
+    min-width: 310px;
+    padding: 8px 22px;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(var(--hero-navy), 0.82);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.3);
+}
+.hero-card li {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 0;
+}
+.hero-card li + li { border-top: 1px solid rgba(255, 255, 255, 0.1); }
+.hero-card-icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(255, 200, 46, 0.15);
     color: var(--gold);
 }
-.hero-content h2 {
-    font-size: 2rem;
-    margin: 0 0 16px;
-    line-height: 1.3;
-}
-.hero-content p { font-size: 1.15rem; margin-bottom: 30px; color: #E6E0FF; }
+.hero-card-icon .icon-svg { width: 22px; height: 22px; }
+.hero-card strong { display: block; font-family: var(--font-heading); font-size: 0.98rem; font-weight: 600; }
+.hero-card small { display: block; color: #C9C2EE; font-size: 0.8rem; }
 
+/* Tablets: the text sits over more of the photo, so the shade is stronger,
+   and the card becomes a row of three under the buttons. */
+@media (max-width: 1023px) {
+    .hero { min-height: 0; padding: 64px 20px 100px; }
+    .hero-shade {
+        background: linear-gradient(90deg,
+            rgba(var(--hero-navy), 0.95) 0%,
+            rgba(var(--hero-navy), 0.85) 55%,
+            rgba(var(--hero-navy), 0.55) 100%);
+    }
+    .hero-inner { grid-template-columns: 1fr; gap: 32px; }
+    .hero-card { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; min-width: 0; padding: 4px 18px; }
+    .hero-card li + li { border-top: 0; }
+}
+/* Phones: shade from top to bottom, everything stacked */
 @media (max-width: 760px) {
-    .hero-inner { flex-direction: column; text-align: center !important; }
-    .hero.hero-has-slides .hero-content { flex: none; }
-    .hero-photo { flex: none; width: 100%; height: 240px; }
+    .hero { padding: 48px 16px 84px; }
+    .hero-shade {
+        background: linear-gradient(180deg,
+            rgba(var(--hero-navy), 0.78) 0%,
+            rgba(var(--hero-navy), 0.9) 100%);
+    }
+    .hero-badge { margin-bottom: 14px; }
+    .hero-text { margin-bottom: 24px; }
+    .hero-buttons { gap: 10px; }
+    .hero-buttons .btn-hero { flex: 1 1 auto; padding: 13px 18px; }
+    .hero-card { grid-template-columns: 1fr; gap: 0; padding: 4px 18px; }
+    .hero-card li { padding: 12px 0; }
+    .hero-card li + li { border-top: 1px solid rgba(255, 255, 255, 0.1); }
+}
+@media (max-width: 420px) {
+    .hero-buttons { flex-direction: column; }
+    .hero-buttons .btn-hero { width: 100%; }
 }
 
 /* ---------------- Resource / category cards ---------------- */
@@ -1652,13 +1759,6 @@ body.adm-sidebar-hidden .adm-main { margin-left: 0; }
 
 /* ---------------- School crest & motto ---------------- */
 
-.hero-motto {
-    font-family: var(--font-heading);
-    font-size: 1.3rem !important;
-    font-weight: 500;
-    color: var(--white) !important;
-    margin: 0 0 6px !important;
-}
 .footer-logo { height: 72px; width: auto; margin-bottom: 12px; }
 .footer-brand strong { display: block; }
 .footer-motto { display: block; margin-top: 6px; color: var(--gold); font-size: 0.9rem; }
@@ -2020,56 +2120,6 @@ body.nav-open .assistant-widget { display: none; }
     .nav-search-toggle { width: 58px; }
 }
 
-/* ---- Hero: the slideshow photos sit open on the right, with no frame,
-   fading softly into the background behind the text. ---- */
-.hero.hero-has-slides { padding: 0 20px; }
-.hero.hero-has-slides .hero-inner { min-height: 540px; }
-.hero.hero-has-slides .hero-content { position: relative; z-index: 1; flex: 0 1 46%; padding: 90px 0 110px; }
-.hero.hero-has-slides .hero-photo {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    width: 60%;
-    height: auto;
-    border: 0;
-    border-radius: 0;
-    box-shadow: none;
-    background: transparent;
-    -webkit-mask-image: linear-gradient(to right, transparent 0, #000 30%);
-    mask-image: linear-gradient(to right, transparent 0, #000 30%);
-}
-.hero.hero-has-slides .hero-slide {
-    background-color: transparent;
-    background-size: cover;
-    background-position: center;
-}
-.hero-buttons { display: flex; flex-wrap: wrap; gap: 14px; }
-.btn-hero {
-    background: transparent;
-    color: var(--white);
-    border: 2px solid var(--white);
-    border-radius: 4px;
-    padding: 12px 24px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    font-size: 0.85rem;
-}
-.btn-hero:hover { background: var(--gold); border-color: var(--gold); color: var(--navy); }
-@media (max-width: 760px) {
-    .hero.hero-has-slides { padding: 0; }
-    .hero.hero-has-slides .hero-inner { min-height: 0; }
-    .hero.hero-has-slides .hero-content { flex: none; padding: 50px 20px 20px; }
-    .hero.hero-has-slides .hero-photo {
-        position: relative;
-        width: 100%;
-        height: 260px;
-        -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 22%);
-        mask-image: linear-gradient(to bottom, transparent 0, #000 22%);
-    }
-    .hero-buttons { justify-content: center; }
-}
-
 /* ---- Section subtitle under a centred title ---- */
 .section-subtitle {
     text-align: center;
@@ -2128,19 +2178,6 @@ body.nav-open .assistant-widget { display: none; }
    Responsive polish: phones (320-767px), tablets (768-1023px)
    ===================================================================== */
 
-/* Hero buttons share one row neatly on phones; on very small phones they
-   stack full-width so they're easy to tap. */
-@media (max-width: 760px) {
-    .hero-content p { font-size: 1rem; margin-bottom: 22px; }
-    .hero-motto { font-size: 1.1rem !important; } /* the base rule also uses !important */
-    .hero-buttons { gap: 10px; }
-    .hero-buttons .btn-hero { flex: 1 1 0; padding: 12px 14px; }
-}
-@media (max-width: 420px) {
-    .hero-buttons { flex-direction: column; }
-    .hero-buttons .btn-hero { width: 100%; }
-}
-
 /* Less empty space around sections on smaller screens */
 @media (max-width: 1023px) {
     :root { --section-space: 48px; }
@@ -2163,12 +2200,5 @@ body.nav-open .assistant-widget { display: none; }
     .photo-card-body { padding: 14px 20px 22px; }
     .motto-band { padding: 22px 18px; }
     .page-header { padding: 34px 0 48px; }
-    .hero { padding: 44px 16px 56px; }
-    .hero.hero-has-slides .hero-content { padding: 36px 16px 16px; }
 }
 
-/* Tablets: give the hero text a little more room so both buttons fit */
-@media (min-width: 761px) and (max-width: 1023px) {
-    .hero.hero-has-slides .hero-content { flex-basis: 58%; }
-    .btn-hero { padding: 12px 18px; }
-}

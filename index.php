@@ -53,32 +53,52 @@ $base = base_url();
 include __DIR__ . '/includes/header.php';
 ?>
 
-<section class="hero <?= !empty($slides) ? 'hero-has-slides' : '' ?>">
+<section class="hero">
+    <?php // Slideshow photos fill the whole hero, behind the text. ?>
+    <?php if (!empty($slides)): ?>
+        <div class="hero-slideshow" aria-hidden="true">
+            <?php foreach ($slides as $i => $slide): ?>
+                <?php $slideUrl = $base . '/' . optimized_image($slide['image_path'], 2400); ?>
+                <?php if ($i === 0): ?>
+                    <div class="hero-slide active" style="background-image: url('<?= e($slideUrl) ?>');"></div>
+                <?php else: ?>
+                    <?php // Later slides load just before they are shown (see script.js). ?>
+                    <div class="hero-slide" data-bg="<?= e($slideUrl) ?>"></div>
+                <?php endif; ?>
+            <?php endforeach; ?>
+        </div>
+    <?php endif; ?>
+    <div class="hero-shade" aria-hidden="true"></div>
+
     <div class="hero-inner">
         <div class="hero-content">
-            <h1>NAMANGA SECONDARY SCHOOL WEBSITE</h1>
+            <span class="hero-badge">Welcome to</span>
+            <h1 class="hero-title">
+                <span class="hero-title-white">Namanga</span>
+                <span class="hero-title-gold">Secondary School</span>
+            </h1>
             <p class="hero-motto">&ldquo;Education for Liberty and Prosperity&rdquo;</p>
-            <p>Namanga, Longido District, Arusha — Tanzania</p>
+            <p class="hero-text">A center of excellence in education, nurturing knowledge, discipline and future leaders.</p>
             <div class="hero-buttons">
-                <a href="#resources" class="btn btn-hero">Explore Resources</a>
-                <a href="<?= e($base) ?>/about.php" class="btn btn-hero">About Us</a>
+                <a href="#resources" class="btn btn-hero btn-hero-gold">Explore Resources <span aria-hidden="true">&rarr;</span></a>
+                <a href="<?= e($base) ?>/about.php" class="btn btn-hero btn-hero-outline">About Us</a>
             </div>
         </div>
-        <?php if (!empty($slides)): ?>
-            <div class="hero-photo">
-                <div class="hero-slideshow">
-                    <?php foreach ($slides as $i => $slide): ?>
-                        <?php $slideUrl = $base . '/' . optimized_image($slide['image_path'], 2400); ?>
-                        <?php if ($i === 0): ?>
-                            <div class="hero-slide active" style="background-image: url('<?= e($slideUrl) ?>');"></div>
-                        <?php else: ?>
-                            <?php // Later slides load just before they are shown (see script.js). ?>
-                            <div class="hero-slide" data-bg="<?= e($slideUrl) ?>"></div>
-                        <?php endif; ?>
-                    <?php endforeach; ?>
-                </div>
-            </div>
-        <?php endif; ?>
+
+        <ul class="hero-card">
+            <li>
+                <span class="hero-card-icon"><?= svg_icon('school', 'icon-svg') ?></span>
+                <span><strong>Quality Education</strong><small>For a Brighter Future</small></span>
+            </li>
+            <li>
+                <span class="hero-card-icon"><?= svg_icon('students', 'icon-svg') ?></span>
+                <span><strong>Supportive Community</strong><small>Students &middot; Teachers &middot; Parents</small></span>
+            </li>
+            <li>
+                <span class="hero-card-icon"><?= svg_icon('star', 'icon-svg') ?></span>
+                <span><strong>Our Goal</strong><small>Knowledge &middot; Discipline &middot; Success</small></span>
+            </li>
+        </ul>
     </div>
 </section>
 
