@@ -1,17 +1,18 @@
 <?php
 /**
- * Subjects shown on notes.php when a Form is picked (2023 new curriculum,
- * Ordinary Secondary – general stream). Each subject links to:
+ * Subjects shown on notes.php when a Form is picked (Ordinary Secondary –
+ * general stream). Each subject links to:
  *  - 'pdf': the TIE textbook PDF for each Form, shared on Google Drive by
  *    WazaElimu (wazaelimu.com/tie-books-download-pdf-form-1-6/); size is in
  *    bytes, label overrides the default "<Subject> Book" title. Form 1-2 use
  *    the new (2023 syllabus) books; where no PDF of the new book exists,
  *    'tie' links that book on the TIE Online Library instead,
- *  - its official new syllabus (muhtasari) PDF on the TIE website,
+ *  - Form 1-2: its official new syllabus (muhtasari) PDF on the TIE website,
  *  - its NECTA past papers on theory.php (ftna = Form 1-2, csee = Form 3-4),
- *  - for Form 4 only, the old syllabus on TETEA (the class that began
- *    Form 1 before 2024 still follows it).
+ *  - Form 3-4: its old syllabus PDF on TETEA ('old').
  * 'forms' limits a subject to some Forms; leave it out for all four.
+ * Form 3-4 follow the old syllabus: 'old_name' is the subject's name there,
+ * 'old' its old syllabus PDF on TETEA, and their 'pdf' books are old ones.
  */
 
 return [
@@ -41,6 +42,7 @@ return [
     ],
     'mathematics' => [
         'name' => 'Mathematics',
+        'old_name' => 'Basic Mathematics',
         'pdf' => [
             'form1' => ['id' => '12VQV8b5tSCblfl7svz9vF99O3o0jkjVr', 'size' => 20162628],
             'form2' => ['tie' => '67c5da7f-d5a7-47fc-a179-3eb7d73c011b'],
@@ -59,16 +61,17 @@ return [
         ],
         'syllabus' => 'sw-1788264155-Muht. Historia ya Tanzania & Maadili 2.pdf',
         'ftna' => 'historia-maadili',
-        'forms' => ['form1', 'form2', 'form3'],
+        'forms' => ['form1', 'form2'],
     ],
     'civics' => [
         'name' => 'Civics',
         'pdf' => [
+            'form3' => ['id' => '1oSBTbHafAkEb36D-MofC4t_TY-uX4yfy', 'size' => 14986015],
             'form4' => ['id' => '1QDe2xeyQwUUrEctOAumHWtbm0G6RFcTz', 'size' => 15615267],
         ],
         'csee' => 'civics',
         'old' => 'Syllabus - Civics - F1-F4 - 2017.pdf',
-        'forms' => ['form4'],
+        'forms' => ['form3', 'form4'],
     ],
     'history' => [
         'name' => 'History',
@@ -131,11 +134,12 @@ return [
     ],
     'computer-science' => [
         'name' => 'Computer Science',
+        'old_name' => 'Information & Computer Studies',
         'pdf' => [
             'form1' => ['id' => '16hS8VZN3ZdbL6N3rOS3pqaGIIMPoLZZ4', 'size' => 28211962],
             'form2' => ['id' => '1iVwDZaALjp4qYN-nzwcHdizby912H8CJ', 'size' => 22531298],
-            'form3' => ['id' => '1LcVqVDSKoZQIwWMbnCvd8kN4yG04woqp', 'label' => 'ICT Computer Studies Book'],
-            'form4' => ['id' => '1Zz82eCQYVXvY2Ms_4qhQwBYe46ZzYiZT', 'label' => 'ICT Computer Studies Book'],
+            'form3' => ['id' => '1LcVqVDSKoZQIwWMbnCvd8kN4yG04woqp'],
+            'form4' => ['id' => '1Zz82eCQYVXvY2Ms_4qhQwBYe46ZzYiZT'],
         ],
         'syllabus' => 'sw-1727193276-COMPUTER SCIENCE SYLABUS I TO IV (12_07_2023).pdf',
         'ftna' => 'ics', 'csee' => 'computers',
@@ -143,11 +147,12 @@ return [
     ],
     'business-studies' => [
         'name' => 'Business Studies',
+        'old_name' => 'Commerce',
         'pdf' => [
             'form1' => ['id' => '1Gjq7b5WEI5N0hBZtqJovsEkjJw-sKx7D', 'size' => 48096643],
             'form2' => ['id' => '1oMkkRo4fdwi12Ge84VB8X8c9klvEIaaI', 'size' => 14046237],
-            'form3' => ['id' => '14LcQl3aF6idj0gITF7W0ryntYzMmo6xL', 'label' => 'Commerce Book'],
-            'form4' => ['id' => '1r0d2Qc15WijY_JKF8IjQ5bnxM7Pp-1yo', 'size' => 8532188, 'label' => 'Commerce Book'],
+            'form3' => ['id' => '14LcQl3aF6idj0gITF7W0ryntYzMmo6xL'],
+            'form4' => ['id' => '1r0d2Qc15WijY_JKF8IjQ5bnxM7Pp-1yo', 'size' => 8532188],
         ],
         'syllabus' => 'sw-1727192697-BUSINESS STUDIES SYLLABUS FOR ORDINARY LEVEL SECONDARY EDUCATION.pdf',
         'ftna' => 'business', 'csee' => 'commerce',
@@ -178,6 +183,7 @@ return [
     ],
     'food-nutrition' => [
         'name' => 'Food and Human Nutrition',
+        'old_name' => 'Food & Nutrition',
         'pdf' => [
             'form1' => ['tie' => '5f25b10c-80b9-458b-a4cd-aaba0dcc31ce'],
             'form2' => ['tie' => 'e1241f05-d589-46e4-bdc3-b68f6cf65909'],
@@ -193,11 +199,6 @@ return [
         ],
         'syllabus' => 'sw-1727256752-LITERATURE IN ENGLISH O-LEVEL FINAL.pdf',
         'csee' => 'literature',
-        'forms' => ['form3', 'form4'],
-    ],
-    'fasihi' => [
-        'name' => 'Fasihi ya Kiswahili',
-        'syllabus' => 'sw-1727194298-FASIHI YA KISWAHILI SEKONDARI KIDATO CHA III-IV.pdf',
         'forms' => ['form3', 'form4'],
     ],
     'kiislamu' => [
