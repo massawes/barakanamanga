@@ -68,7 +68,7 @@ include __DIR__ . '/includes/header.php';
             <div class="hero-photo">
                 <div class="hero-slideshow">
                     <?php foreach ($slides as $i => $slide): ?>
-                        <?php $slideUrl = $base . '/' . optimized_image($slide['image_path'], 1600); ?>
+                        <?php $slideUrl = $base . '/' . optimized_image($slide['image_path'], 2400); ?>
                         <?php if ($i === 0): ?>
                             <div class="hero-slide active" style="background-image: url('<?= e($slideUrl) ?>');"></div>
                         <?php else: ?>

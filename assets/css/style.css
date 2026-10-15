@@ -323,7 +323,7 @@ img { max-width: 100%; height: auto; display: block; }
 }
 @keyframes heroKenBurns {
     from { transform: scale(1); }
-    to   { transform: scale(1.08); }
+    to   { transform: scale(1.04); }
 }
 .hero-content h1 {
     font-size: var(--fs-h1);

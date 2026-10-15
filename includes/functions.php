@@ -715,8 +715,10 @@ function delete_gallery_file(string $relativeFilePath): void
 // kept untouched for downloading.
 // ------------------------------------------------------------
 
-/** Widths used by the site: grid thumbnails, and large views/slideshow. */
-const OPTIMIZED_IMAGE_WIDTHS = [600, 1600];
+/** Widths used by the site: grid thumbnails (600, and 1200 for sharp
+ *  phone/laptop screens), large views (1600) and the slideshow/photo
+ *  viewer (2400, so photos stay crisp on high-resolution screens). */
+const OPTIMIZED_IMAGE_WIDTHS = [600, 1200, 1600, 2400];
 
 function optimized_image_relative_path(string $relativePath, int $maxWidth): string
 {
@@ -830,7 +832,7 @@ function create_optimized_image(string $relativePath, int $maxWidth): bool
             break;
         default:
             imageinterlace($resized, true); // progressive JPEG shows sooner
-            $saved = imagejpeg($resized, $target, 80);
+            $saved = imagejpeg($resized, $target, 86);
     }
     imagedestroy($resized);
 

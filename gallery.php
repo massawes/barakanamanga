@@ -72,8 +72,12 @@ $paginationBaseUrl = 'gallery.php' . ($typeFilter !== '' ? '?type=' . $typeFilte
                 <?php foreach ($items as $item): ?>
                     <div class="gallery-card">
                         <?php if ($item['media_type'] === 'image'): ?>
-                            <a href="<?= e($base) ?>/<?= e(optimized_image($item['file_path'], 1600)) ?>" target="_blank" rel="noopener" class="gallery-media gallery-photo-link" data-title="<?= e($item['title']) ?>">
-                                <img src="<?= e($base) ?>/<?= e(optimized_image($item['file_path'], 600)) ?>" alt="<?= e($item['title']) ?>" loading="lazy" decoding="async">
+                            <a href="<?= e($base) ?>/<?= e(optimized_image($item['file_path'], 2400)) ?>" target="_blank" rel="noopener" class="gallery-media gallery-photo-link" data-title="<?= e($item['title']) ?>">
+                                <?php // The browser picks the 1200px copy on sharp (high-resolution) screens. ?>
+                                <img src="<?= e($base) ?>/<?= e(optimized_image($item['file_path'], 600)) ?>"
+                                     srcset="<?= e($base) ?>/<?= e(optimized_image($item['file_path'], 600)) ?> 600w, <?= e($base) ?>/<?= e(optimized_image($item['file_path'], 1200)) ?> 1200w"
+                                     sizes="(max-width: 600px) 100vw, 360px"
+                                     alt="<?= e($item['title']) ?>" loading="lazy" decoding="async">
                             </a>
                         <?php else: ?>
                             <div class="gallery-media">
