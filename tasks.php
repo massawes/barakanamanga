@@ -53,17 +53,13 @@ include __DIR__ . '/includes/header.php';
                 <a href="<?= e($base) ?>/upload-task.php" class="btn btn-primary">Upload Task</a>
             </p>
 
-            <div class="cards-grid">
+            <div class="photo-cards-grid">
                 <?php foreach (VALID_FORMS as $form): ?>
-                    <a href="<?= e($base) ?>/tasks.php?form=<?= e($form) ?>" class="category-card form-select-card">
-                        <div class="category-icon"><?= svg_icon('task') ?></div>
-                        <h3 class="form-big-label"><?= e(strtoupper(form_label($form))) ?></h3>
-                        <p>Submitted tasks for <?= e(form_label($form)) ?>.</p>
-                        <span class="card-count"><?= $counts[$form] ?> task<?= $counts[$form] === 1 ? '' : 's' ?></span>
-                        <span class="btn btn-outline">View <?= e(form_label($form)) ?></span>
-                    </a>
+                    <?= render_photo_card($base . '/tasks.php?form=' . $form, 'tasks-' . $form, form_label($form),
+                        'Submitted tasks for ' . form_label($form) . '.', count_label($counts[$form], 'task'), 'View ' . form_label($form)) ?>
                 <?php endforeach; ?>
             </div>
+            <?= render_card_photo_credits(array_map(fn ($f) => 'tasks-' . $f, VALID_FORMS)) ?>
 
         <?php else: ?>
 

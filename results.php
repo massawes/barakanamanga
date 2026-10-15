@@ -56,16 +56,10 @@ include __DIR__ . '/includes/header.php';
 
         <?php if (!$examSelected): ?>
 
-            <div class="cards-grid">
+            <div class="photo-cards-grid">
                 <?php foreach ($exams as $key => $info): ?>
-                    <?php $count = count($resultsLinks[$key]); ?>
-                    <a href="<?= e($base) ?>/results.php?form=<?= e($key) ?>" class="category-card form-select-card">
-                        <div class="category-icon"><?= svg_icon('theory') ?></div>
-                        <h3 class="form-big-label"><?= e(strtoupper($info['label'])) ?></h3>
-                        <p><?= e($info['exam']) ?> — <?= e($info['name']) ?>.</p>
-                        <span class="card-count"><?= $count ?> year<?= $count === 1 ? '' : 's' ?></span>
-                        <span class="btn btn-outline">View <?= e($info['label']) ?> Results</span>
-                    </a>
+                    <?= render_photo_card($base . '/results.php?form=' . $key, 'results-' . $key, $info['label'],
+                        $info['exam'] . ' — ' . $info['name'] . '.', count_label(count($resultsLinks[$key]), 'year'), 'View ' . $info['label'] . ' Results') ?>
                 <?php endforeach; ?>
             </div>
 

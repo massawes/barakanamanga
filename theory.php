@@ -192,32 +192,24 @@ include __DIR__ . '/includes/header.php';
 
             <div class="exam-section">
                 <h2 class="section-title-left">Past National Exams</h2>
-                <div class="cards-grid">
+                <div class="photo-cards-grid">
                     <?php foreach ($exams as $key => $examLevel): ?>
-                        <a href="<?= e($base) ?>/theory.php?exam=<?= e($key) ?>" class="category-card form-select-card">
-                            <div class="category-icon"><?= svg_icon('theory') ?></div>
-                            <h3><?= e($examLevel['label']) ?></h3>
-                            <p>NECTA <?= e($examLevel['full_name']) ?> past papers with marking schemes.</p>
-                            <span class="btn btn-outline">View <?= e($examLevel['title']) ?></span>
-                        </a>
+                        <?= render_photo_card($base . '/theory.php?exam=' . $key, 'theory-' . $key, $examLevel['label'],
+                            'NECTA ' . $examLevel['full_name'] . ' past papers with marking schemes.', null, 'View ' . $examLevel['title']) ?>
                     <?php endforeach; ?>
                 </div>
             </div>
 
             <div class="exam-section">
                 <h2 class="section-title-left">Past Non-National Exams</h2>
-                <div class="cards-grid">
+                <div class="photo-cards-grid">
                     <?php foreach (VALID_FORMS as $form): ?>
-                        <a href="<?= e($base) ?>/theory.php?form=<?= e($form) ?>" class="category-card form-select-card">
-                            <div class="category-icon"><?= svg_icon('theory') ?></div>
-                            <h3 class="form-big-label"><?= e(strtoupper(form_label($form))) ?></h3>
-                            <p>Theory past papers for <?= e(form_label($form)) ?>.</p>
-                            <span class="card-count"><?= $counts[$form] ?> paper<?= $counts[$form] === 1 ? '' : 's' ?></span>
-                            <span class="btn btn-outline">View <?= e(form_label($form)) ?></span>
-                        </a>
+                        <?= render_photo_card($base . '/theory.php?form=' . $form, 'theory-' . $form, form_label($form),
+                            'Theory past papers for ' . form_label($form) . '.', count_label($counts[$form], 'paper'), 'View ' . form_label($form)) ?>
                     <?php endforeach; ?>
                 </div>
             </div>
+            <?= render_card_photo_credits(array_merge(array_map(fn ($k) => 'theory-' . $k, array_keys($exams)), array_map(fn ($f) => 'theory-' . $f, VALID_FORMS))) ?>
 
         <?php endif; ?>
 

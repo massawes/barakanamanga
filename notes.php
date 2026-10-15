@@ -1,7 +1,6 @@
 <?php
 require_once __DIR__ . '/includes/bootstrap.php';
 require_once __DIR__ . '/includes/notes-subjects.php';
-require_once __DIR__ . '/includes/card-photos.php';
 
 // ?form=formN shows that Form's subjects (Form 1-2 on the 2023 new syllabus,
 // Form 3-4 on the old one);

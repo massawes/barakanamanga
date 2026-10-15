@@ -49,17 +49,13 @@ include __DIR__ . '/includes/header.php';
 
         <?php if (!$formSelected): ?>
 
-            <div class="cards-grid">
+            <div class="photo-cards-grid">
                 <?php foreach (VALID_FORMS as $form): ?>
-                    <a href="<?= e($base) ?>/summaries.php?form=<?= e($form) ?>" class="category-card form-select-card">
-                        <div class="category-icon"><?= svg_icon('summary') ?></div>
-                        <h3 class="form-big-label"><?= e(strtoupper(form_label($form))) ?></h3>
-                        <p>Summary for <?= e(form_label($form)) ?>.</p>
-                        <span class="card-count"><?= $counts[$form] ?> file<?= $counts[$form] === 1 ? '' : 's' ?></span>
-                        <span class="btn btn-outline">View <?= e(form_label($form)) ?></span>
-                    </a>
+                    <?= render_photo_card($base . '/summaries.php?form=' . $form, 'summary-' . $form, form_label($form),
+                        'Quick revision summaries for ' . form_label($form) . '.', count_label($counts[$form], 'file'), 'View ' . form_label($form)) ?>
                 <?php endforeach; ?>
             </div>
+            <?= render_card_photo_credits(array_map(fn ($f) => 'summary-' . $f, VALID_FORMS)) ?>
 
         <?php else: ?>
 

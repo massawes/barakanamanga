@@ -22,6 +22,7 @@ require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/functions.php';
 require_once __DIR__ . '/auth.php';
 require_once __DIR__ . '/icons.php';
+require_once __DIR__ . '/card-photos.php';
 
 // Make sure the Super Admin column/account exists before anything else
 // runs (login.php reads it, and every admin page's sidebar checks it).

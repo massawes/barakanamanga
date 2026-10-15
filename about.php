@@ -71,25 +71,10 @@ include __DIR__ . '/includes/header.php';
                 <span class="eyebrow">Discover more</span>
                 <h2 class="school-h2">Get to know our school</h2>
             </div>
-            <div class="cards-grid">
-                <a href="<?= e($base) ?>/mission-vision.php" class="category-card">
-                    <div class="category-icon"><?= svg_icon('target') ?></div>
-                    <h3>Mission &amp; Vision</h3>
-                    <p>What we work for every day, and the values that guide us.</p>
-                    <span class="btn btn-outline">Read more</span>
-                </a>
-                <a href="<?= e($base) ?>/history.php" class="category-card">
-                    <div class="category-icon"><?= svg_icon('history') ?></div>
-                    <h3>Our History</h3>
-                    <p>How our school has grown with the Namanga community.</p>
-                    <span class="btn btn-outline">Read more</span>
-                </a>
-                <a href="<?= e($base) ?>/our-students.php" class="category-card">
-                    <div class="category-icon"><?= svg_icon('students') ?></div>
-                    <h3>Our Students</h3>
-                    <p>Student life, learning and activities at Namanga.</p>
-                    <span class="btn btn-outline">Read more</span>
-                </a>
+            <div class="photo-cards-grid">
+                <?= render_photo_card($base . '/mission-vision.php', 'about-mission', 'Mission & Vision', 'What we work for every day, and the values that guide us.', null, 'Read more') ?>
+                <?= render_photo_card($base . '/history.php', 'about-history', 'Our History', 'How our school has grown with the Namanga community.', null, 'Read more') ?>
+                <?= render_photo_card($base . '/our-students.php', 'about-students', 'Our Students', 'Student life, learning and activities at Namanga.', null, 'Read more') ?>
             </div>
         </div>
     </div>

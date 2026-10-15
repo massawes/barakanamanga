@@ -28,7 +28,6 @@ try {
     // hero_slides table not created yet (older installs) — fail quietly, plain banner shows instead.
 }
 
-require_once __DIR__ . '/includes/card-photos.php';
 
 // Resource cards: [page, title, text, count, count word, link text]; the
 // card photo is assets/images/cards/<key>.jpg (see includes/card-photos.php).
