@@ -56,18 +56,19 @@ include __DIR__ . '/includes/header.php';
 
             <div class="exam-subject-group">
                 <h3 class="exam-group-title">Textbook (Notes)</h3>
-                <?php if (isset($subject['books'][$selectedForm])): ?>
+                <?php if (isset($subject['pdf'][$selectedForm])): ?>
+                    <?php $book = $subject['pdf'][$selectedForm]; ?>
                     <div class="resource-link-list">
-                        <a class="resource-link-item" href="https://ol.tie.go.tz/book-detail/<?= e($subject['books'][$selectedForm]) ?>" target="_blank" rel="noopener">
+                        <a class="resource-link-item" href="https://drive.google.com/file/d/<?= e($book['id']) ?>/view" target="_blank" rel="noopener">
                             <span class="resource-link-main">
-                                <span class="resource-link-title"><?= e($subject['name']) ?> Student&rsquo;s Book &mdash; <?= e(form_label($selectedForm)) ?></span>
-                                <span class="resource-link-meta"><span class="file-size">Latest official textbook (2023 curriculum) &middot; TIE Online Library &middot; sign in free to read</span></span>
+                                <span class="resource-link-title"><?= e(form_label($selectedForm)) ?> <?= e($book['label'] ?? $subject['name'] . ' Book') ?> (TIE)</span>
+                                <span class="resource-link-meta"><span class="file-size">PDF<?= isset($book['size']) ? ' &middot; ' . e(format_file_size($book['size'])) : '' ?> &middot; tap to read or download</span></span>
                             </span>
                             <span class="resource-link-arrow">&rsaquo;</span>
                         </a>
                     </div>
                 <?php else: ?>
-                    <p class="empty-state">TIE has not yet published the <?= e(form_label($selectedForm) . ' ' . $subject['name']) ?> textbook online. Please check again later.</p>
+                    <p class="empty-state">The <?= e(form_label($selectedForm) . ' ' . $subject['name']) ?> book is not available yet. Please check again later.</p>
                 <?php endif; ?>
             </div>
 
@@ -115,7 +116,7 @@ include __DIR__ . '/includes/header.php';
                         <li>
                             <a href="<?= e($base) ?>/notes.php?form=<?= e($selectedForm) ?>&amp;subject=<?= e($key) ?>">
                                 <?= e($subject['name']) ?>
-                                <?php if (isset($subject['books'][$selectedForm])): ?><span class="card-count">Book</span><?php endif; ?>
+                                <?php if (isset($subject['pdf'][$selectedForm])): ?><span class="card-count">Book</span><?php endif; ?>
                             </a>
                         </li>
                     <?php endforeach; ?>
