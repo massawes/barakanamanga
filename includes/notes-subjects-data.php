@@ -215,7 +215,10 @@ return [
             'form1' => ['id' => '1_z-zVa6QMJZX2LsCCKxwVqLycCoxffOi', 'size' => 59310903],
             'form2' => ['id' => '12abjtWeynhCFxjnGmkuu2GAXh3v5zMt6', 'size' => 27028118],
             'form3' => ['id' => '11VV-7yQe92L_JNnB-xEv9iC1P92XgZLp', 'label' => 'Elimu ya Dini ya Kiislamu — Kitabu cha 3', 'by' => 'Islamic Education Panel', 'view' => true],
-            'form4' => ['url' => 'https://www.schoolpvh.ac.tz/p/edkf1.html', 'label' => 'Elimu ya Dini ya Kiislamu Notes — Kidato cha Nne (all topics)', 'by' => 'School PVH'],
+            'form4' => [
+                ['id' => '1PopK02cdGdzGZ724HhtKgtAyBgPJMDhY', 'label' => 'Mwongozo wa Elimu ya Dini ya Kiislamu — Kidato cha Nne', 'by' => 'WazaElimu'],
+                ['url' => 'https://www.schoolpvh.ac.tz/p/edkf1.html', 'label' => 'Elimu ya Dini ya Kiislamu Notes — Kidato cha Nne (all topics)', 'by' => 'School PVH'],
+            ],
         ],
         'syllabus' => 'sw-1727257430-MUHTASARI WA ELIMU YA DINI YA KIISLAM KWA SHULE ZA SEKONDARI KIDATO CHA I - IV.pdf',
         'ftna' => 'kiislamu', 'csee' => 'kiislamu',
