@@ -47,6 +47,15 @@ foreach (array_keys(PRACTICAL_SUBJECTS) as $subjectKey) {
     }
 }
 
+// Notes pages: each Form's subject list and every subject in it.
+require_once __DIR__ . '/includes/notes-subjects.php';
+foreach (VALID_FORMS as $form) {
+    $staticPages[] = ['loc' => '/notes.php?form=' . $form, 'priority' => '0.7'];
+    foreach (array_keys(notes_subjects($form)) as $subjectKey) {
+        $staticPages[] = ['loc' => '/notes.php?form=' . $form . '&subject=' . $subjectKey, 'priority' => '0.6'];
+    }
+}
+
 // School (non-national) exam pages, one per Form and subject.
 require_once __DIR__ . '/includes/school-exams.php';
 foreach (VALID_FORMS as $form) {
