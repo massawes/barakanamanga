@@ -55,7 +55,24 @@ include __DIR__ . '/includes/header.php';
             <h2 class="section-title-left"><?= e(form_label($selectedForm)) ?>: <?= e($subject['name']) ?></h2>
 
             <div class="exam-subject-group">
-                <h3 class="exam-group-title">Online resources</h3>
+                <h3 class="exam-group-title">Textbook (Notes)</h3>
+                <?php if (isset($subject['books'][$selectedForm])): ?>
+                    <div class="resource-link-list">
+                        <a class="resource-link-item" href="https://ol.tie.go.tz/book-detail/<?= e($subject['books'][$selectedForm]) ?>" target="_blank" rel="noopener">
+                            <span class="resource-link-main">
+                                <span class="resource-link-title"><?= e($subject['name']) ?> Student&rsquo;s Book &mdash; <?= e(form_label($selectedForm)) ?></span>
+                                <span class="resource-link-meta"><span class="file-size">Latest official textbook (2023 curriculum) &middot; TIE Online Library &middot; sign in free to read</span></span>
+                            </span>
+                            <span class="resource-link-arrow">&rsaquo;</span>
+                        </a>
+                    </div>
+                <?php else: ?>
+                    <p class="empty-state">TIE has not yet published the <?= e(form_label($selectedForm) . ' ' . $subject['name']) ?> textbook online. Please check again later.</p>
+                <?php endif; ?>
+            </div>
+
+            <div class="exam-subject-group">
+                <h3 class="exam-group-title">Syllabus &amp; Past Papers</h3>
                 <div class="resource-link-list">
                     <?php if (isset($subject['syllabus'])): ?>
                         <a class="resource-link-item" href="<?= e(TIE_SYLLABUS_BASE . rawurlencode($subject['syllabus'])) ?>" target="_blank" rel="noopener">
@@ -66,13 +83,6 @@ include __DIR__ . '/includes/header.php';
                             <span class="resource-link-arrow">&rsaquo;</span>
                         </a>
                     <?php endif; ?>
-                    <a class="resource-link-item" href="https://ol.tie.go.tz/" target="_blank" rel="noopener">
-                        <span class="resource-link-main">
-                            <span class="resource-link-title"><?= e(form_label($selectedForm)) ?> <?= e($subject['name']) ?> Textbook — TIE Online Library</span>
-                            <span class="resource-link-meta"><span class="file-size">Official textbooks &middot; free account, then search &ldquo;<?= e($subject['name']) ?>&rdquo;</span></span>
-                        </span>
-                        <span class="resource-link-arrow">&rsaquo;</span>
-                    </a>
                     <?php if (isset($subject[$examLevel])): ?>
                         <a class="resource-link-item" href="<?= e($base) ?>/theory.php?exam=<?= e($examLevel) ?>&amp;subject=<?= e($subject[$examLevel]) ?>">
                             <span class="resource-link-main">
@@ -105,6 +115,7 @@ include __DIR__ . '/includes/header.php';
                         <li>
                             <a href="<?= e($base) ?>/notes.php?form=<?= e($selectedForm) ?>&amp;subject=<?= e($key) ?>">
                                 <?= e($subject['name']) ?>
+                                <?php if (isset($subject['books'][$selectedForm])): ?><span class="card-count">Book</span><?php endif; ?>
                             </a>
                         </li>
                     <?php endforeach; ?>
