@@ -75,7 +75,7 @@ namanga/
 │   others.php, gallery.php, results.php, search.php
 ├── tasks.php, upload-task.php, task-view.php, task-download.php
 ├── resource-view.php, download.php, download-all.php   (secure view/download)
-├── api/chat.php             (AI assistant endpoint, JSON)
+├── api/ask.php              (AI assistant endpoint, JSON)
 ├── api/search_resources.php (site file search, JSON)
 ├── sitemap.php, robots.txt  (SEO; served as /sitemap.xml)
 ├── admin/                   (login, dashboard, upload & manage pages)
@@ -178,7 +178,7 @@ opens a chat that:
 browser (assets/js/assistant.js)
    │  POST JSON {message, lang, history}
    ▼
-api/chat.php ── checks input, rate limit
+api/ask.php ── checks input, rate limit
    │  ├─ ai_search_resources()  → this site's files (MySQL, prepared statements)
    │  ├─ ai_web_search()        → Brave or Tavily (only if enabled)
    │  └─ ai_chat_completion()   → Groq API with cURL (key read on the server)
@@ -190,7 +190,7 @@ JSON {reply, resources[], web[]} → shown in the chat
 |---|---|
 | `includes/assistant-widget.php` | Chat button and window, included from `includes/footer.php` |
 | `assets/js/assistant.js` | Chat behaviour and EN/SW texts (plain JavaScript) |
-| `api/chat.php` | Chat endpoint |
+| `api/ask.php` | Chat endpoint (not named `chat.php`: InfinityFree blocks any URL containing "chat") |
 | `api/search_resources.php` | Site search as JSON, e.g. `/api/search_resources.php?q=biology form 2` |
 | `includes/ai.php` | Settings, rate limiting, search, Groq and web-search calls, system prompt |
 | `config/ai.example.php` | Settings template (copy to `config/ai.php`) |
@@ -288,7 +288,7 @@ creates itself; only a hash of the IP is stored. Messages are limited to
 curl "http://localhost/namanga/api/search_resources.php?q=ict+notes+form+1"
 
 # 2. Chat in Kiswahili
-curl -X POST http://localhost/namanga/api/chat.php \
+curl -X POST http://localhost/namanga/api/ask.php \
      -H "Content-Type: application/json" \
      -d '{"message":"Nipe notes za ICT form 1","lang":"sw","history":[]}'
 
@@ -313,7 +313,7 @@ still gets the site search results with a friendly message.
 | Log shows `cURL extension is not enabled` | Enable `extension=curl` in `php.ini` (XAMPP), or `apt install php-curl` |
 | Log shows `Groq HTTP 404` / `model … does not exist` | The model was retired. Set `groq_model` to a current model |
 | "You are sending messages too quickly" | The rate limit. Wait one minute |
-| Chat says it cannot reach the server | `api/chat.php` gave an error. Open it in the browser to see the HTTP status, and check the PHP error log |
+| Chat says it cannot reach the server | `api/ask.php` gave an error. Open it in the browser to see the HTTP status, and check the PHP error log |
 
 ### InfinityFree vs your own server
 

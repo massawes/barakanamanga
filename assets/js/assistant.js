@@ -1,7 +1,7 @@
 /**
  * Namanga AI assistant widget (markup: includes/assistant-widget.php).
  *
- * - Talks only to api/chat.php on this same server. No API key is ever
+ * - Talks only to api/ask.php on this same server. No API key is ever
  *   in this file or anywhere in the browser.
  * - English / Kiswahili: all widget text below, and the AI replies in the
  *   chosen language.
@@ -433,7 +433,7 @@
             updateCounter();
             setBusy(true);
 
-            fetch(CONFIG.base + '/api/chat.php', {
+            fetch(CONFIG.base + '/api/ask.php', {
                 method: 'POST',
                 credentials: 'same-origin',
                 headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },

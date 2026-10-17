@@ -1,7 +1,7 @@
 <?php
 /**
  * Floating AI assistant chat widget, included once from footer.php so it
- * appears on every public page. The browser only talks to api/chat.php on
+ * appears on every public page. The browser only talks to api/ask.php on
  * this same server; the AI API key stays on the server (includes/ai.php).
  * All visible text is filled in by assets/js/assistant.js in the chosen
  * language (English / Kiswahili); the English here is the no-JS fallback.

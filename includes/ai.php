@@ -1,6 +1,6 @@
 <?php
 /**
- * AI assistant helpers, used by api/chat.php and api/search_resources.php.
+ * AI assistant helpers, used by api/ask.php and api/search_resources.php.
  *
  *  - ai_config()             real keys/settings, read only on the server
  *  - ai_rate_limit_check()   per-session and per-IP request limits

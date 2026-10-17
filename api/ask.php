@@ -9,6 +9,9 @@
  *
  * The browser never sees the API key: this file reads it from the server's
  * config (see includes/ai.php) and calls Groq itself with cURL.
+ *
+ * Do not rename this to chat.php: InfinityFree's firewall answers 403 to
+ * every URL containing "chat", before PHP even runs.
  */
 require_once __DIR__ . '/../includes/bootstrap.php';
 require_once __DIR__ . '/../includes/ai.php';
