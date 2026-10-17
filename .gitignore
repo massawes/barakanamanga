@@ -48,3 +48,6 @@ config/ai.php
 *.bak
 /SIMONFORM13NAMA/
 *.bak
+
+# Raw video, far over GitHub (100 MB) and InfinityFree (10 MB) limits
+/four.mp4
