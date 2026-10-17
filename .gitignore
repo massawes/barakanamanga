@@ -37,6 +37,8 @@ Thumbs.db
 .env
 config/database.production.php
 config/env.php
+# Real AI / search API keys (template: config/ai.example.php)
+config/ai.php
 
 # Raw exam collection; the cleaned PDFs live in /exams
 /EXMSVICENTNAMANGA/

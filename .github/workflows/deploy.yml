@@ -36,6 +36,25 @@ jobs:
             file_put_contents("config/env.php", $out);
           '
 
+      # Build config/ai.php (AI assistant keys) from secrets. Optional: if
+      # GROQ_API_KEY is not set, the file is not created and the assistant
+      # falls back to searching the website only.
+      - name: Generate config/ai.php
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          GROQ_MODEL: ${{ vars.GROQ_MODEL }}
+          WEB_SEARCH_PROVIDER: ${{ vars.WEB_SEARCH_PROVIDER }}
+          WEB_SEARCH_API_KEY: ${{ secrets.WEB_SEARCH_API_KEY }}
+        run: |
+          php -r '
+            if ((string) getenv("GROQ_API_KEY") === "") { echo "GROQ_API_KEY not set; skipping config/ai.php\n"; exit(0); }
+            $c = ["groq_api_key" => getenv("GROQ_API_KEY")];
+            foreach (["groq_model" => "GROQ_MODEL", "web_search_provider" => "WEB_SEARCH_PROVIDER", "web_search_api_key" => "WEB_SEARCH_API_KEY"] as $k => $env) {
+                if ((string) getenv($env) !== "") { $c[$k] = getenv($env); }
+            }
+            file_put_contents("config/ai.php", "<?php\nreturn " . var_export($c, true) . ";\n");
+          '
+
       - name: Upload via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
