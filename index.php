@@ -82,6 +82,7 @@ include __DIR__ . '/includes/header.php';
             <div class="hero-buttons">
                 <a href="#resources" class="btn btn-hero btn-hero-gold">Explore Resources <span aria-hidden="true">&rarr;</span></a>
                 <a href="<?= e($base) ?>/about.php" class="btn btn-hero btn-hero-outline">About Us</a>
+                <a href="<?= e($base) ?>/download-app.php" class="btn btn-hero btn-hero-outline">Download App</a>
             </div>
         </div>
 
