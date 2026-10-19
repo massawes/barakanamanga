@@ -58,7 +58,7 @@ include __DIR__ . '/includes/header.php';
                 <div class="app-qr-text">
                     <p class="app-qr-caption">Scan to download</p>
                     <a class="btn btn-gold" href="<?= e(APP_DOWNLOAD_URL) ?>" rel="noopener">Download for Android</a>
-                    <p class="note">Free &middot; Android 7.0 or newer &middot; about 22 MB</p>
+                    <p class="note">Free &middot; Android 7.0 or newer &middot; about 38 MB</p>
                 </div>
             </div>
         </div>
