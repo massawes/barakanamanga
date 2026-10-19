@@ -55,8 +55,8 @@ include __DIR__ . '/includes/header.php';
                 <div class="app-qr-text">
                     <p class="app-qr-caption">Skani kwa kamera ya simu<br><span class="app-en">Scan with your phone camera</span></p>
                     <a class="btn btn-gold" href="<?= e(APP_DOWNLOAD_URL) ?>" rel="noopener">Pakua / Download</a>
-                    <p class="note">Bure &middot; Android 7.0 au zaidi &middot; takriban MB 38<br>
-                    <span class="app-en">Free &middot; Android 7.0 or newer &middot; about 38 MB</span></p>
+                    <p class="note">Bure &middot; Android 7.0 au zaidi &middot; takriban MB 44<br>
+                    <span class="app-en">Free &middot; Android 7.0 or newer &middot; about 44 MB</span></p>
                 </div>
             </div>
 
