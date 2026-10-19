@@ -86,6 +86,9 @@ function count_label(int $count, string $word): string
  */
 function render_card_photo_credits(array $keys): string
 {
+    // Credits line hidden on the owner's request. Delete this line to show it again.
+    return '';
+
     $byAuthor = [];
     foreach ($keys as $key) {
         if (!isset(CARD_PHOTOS[$key])) {
