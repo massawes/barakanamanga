@@ -32,7 +32,6 @@ $navLinks = [
         'children' => [
             'gallery.php?type=image' => 'Photos',
             'gallery.php?type=video' => 'Videos',
-            'gallery.php'            => 'All Media',
         ],
     ],
     'results.php'   => 'Results',

@@ -13,6 +13,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors[] = 'Your session expired. Please try again.';
     } else {
         $title = trim($_POST['title'] ?? '');
+        $eventName = trim(preg_replace('/\s+/', ' ', $_POST['event_name'] ?? ''));
+        $eventDate = trim($_POST['event_date'] ?? '');
+        if ($eventDate !== '' && !preg_match('/^\d{4}-\d{2}-\d{2}$/', $eventDate)) {
+            $eventDate = '';
+        }
+        if ($eventName === '') {
+            $errors[] = 'Type the name of the event (for example: Form Four Graduation 2026).';
+        }
 
         $folderFiles = normalize_uploaded_files_field($_FILES['gallery_folder'] ?? null);
         $singleFile  = normalize_uploaded_files_field($_FILES['gallery_single_file'] ?? null);
@@ -24,8 +32,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if (empty($errors)) {
             $insert = $pdo->prepare(
-                "INSERT INTO gallery_items (title, media_type, file_name, file_path, file_size, original_name)
-                 VALUES (:title, :media_type, :file_name, :file_path, :file_size, :original_name)"
+                "INSERT INTO gallery_items (title, event_name, event_date, media_type, file_name, file_path, file_size, original_name)
+                 VALUES (:title, :event_name, :event_date, :media_type, :file_name, :file_path, :file_size, :original_name)"
             );
 
             $useTypedTitle = (count($files) === 1 && $title !== '');
@@ -36,9 +44,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $failures[] = $file['name'] . ': ' . $message;
                     continue;
                 }
-                $itemTitle = $useTypedTitle ? $title : derive_title_from_filename($file['name']);
+                $itemTitle = $useTypedTitle ? $title : $eventName;
                 $insert->execute([
                     'title'         => $itemTitle,
+                    'event_name'    => $eventName,
+                    'event_date'    => $eventDate !== '' ? $eventDate : null,
                     'media_type'    => $fileData['media_type'],
                     'file_name'     => $fileData['file_name'],
                     'file_path'     => $fileData['file_path'],
@@ -79,7 +89,7 @@ include __DIR__ . '/../includes/admin-header.php';
 ?>
 
 <h1>Upload Gallery</h1>
-<p class="muted">Add photos and videos to the public Gallery page. Optionally give it a Title, then choose the folder containing the files.</p>
+<p class="muted">Add photos and videos to The Latest. Type the event name and date, then choose the folder (or one file).</p>
 
 <?php $justUploaded = flash_get_uploaded_gallery_items(); ?>
 <?php if (!empty($justUploaded)): ?>
@@ -96,7 +106,7 @@ include __DIR__ . '/../includes/admin-header.php';
                 </li>
             <?php endforeach; ?>
         </ul>
-        <a href="<?= e($base) ?>/gallery.php" class="btn btn-outline btn-small">See in Gallery</a>
+        <a href="<?= e($base) ?>/gallery.php?type=image" class="btn btn-outline btn-small">See in Gallery</a>
     </div>
 <?php endif; ?>
 
@@ -107,7 +117,20 @@ include __DIR__ . '/../includes/admin-header.php';
 <form method="post" action="" enctype="multipart/form-data" class="upload-form">
     <?= csrf_field() ?>
 
-    <label for="title">Title (only used for a single file)</label>
+    <label for="event_name">Event name (required)</label>
+    <input type="text" id="event_name" name="event_name" required maxlength="150" list="known-events"
+           placeholder="e.g. Form Four Graduation 2026" value="<?= e($_POST['event_name'] ?? '') ?>">
+    <datalist id="known-events">
+        <?php foreach ($pdo->query("SELECT DISTINCT event_name FROM gallery_items WHERE event_name IS NOT NULL ORDER BY event_name")->fetchAll(PDO::FETCH_COLUMN) as $ev): ?>
+            <option value="<?= e($ev) ?>">
+        <?php endforeach; ?>
+    </datalist>
+    <p class="field-hint">All photos of one event become ONE album on the Photos page, with this name written on the photos. Type an existing name to add photos to that album.</p>
+
+    <label for="event_date">Event date</label>
+    <input type="date" id="event_date" name="event_date" value="<?= e($_POST['event_date'] ?? '') ?>">
+
+    <label for="title">Title (optional, only used for a single file)</label>
     <input type="text" id="title" name="title" value="<?= e($_POST['title'] ?? '') ?>">
     <p class="field-hint">Leave this blank when uploading a folder with several files — a title will be generated automatically from each file's name (you can rename it afterwards from Manage Gallery).</p>
 

@@ -61,6 +61,71 @@ function ensure_super_admin_setup(PDO $pdo): void
 }
 
 /**
+ * Events of the photos that were on the site before albums existed:
+ * [event name, event date or null, [file names]]. Used once, when the
+ * event columns are added. Change names later on Admin > Manage Gallery.
+ */
+const GALLERY_FIRST_EVENTS = [
+    ['Form Four Graduation 2026', '2026-10-01', [
+        '6d2936a3c1eb5c435b747423f64bda42.jpg', '463f2d1644494922779f6de1680eb471.jpg',
+        '19fcfc03a4e8875594bf588e2f5be920.jpg', '9e4d8194c47547ac4cf4e36ba25b448b.jpg',
+        'cafdc189462f0e90a85ff866dc54a335.jpg', '31381ccf6c8f657ef5d8bdc68b451e13.jpg',
+        'e81b5adce205fa56a1c9a2ca8a9c5d41.jpg', '1b15283a887f137f50293abfd59a8f31.jpg',
+        // the 3 videos (same tents and uniforms)
+        'ec603a46704660f449d3e7bb24f63096.mp4', 'bc9957cf7ac39f69c6208a665bb87178.mp4',
+        '9a65edb40a9218be32b99d0536d3c1b2.mp4',
+    ]],
+    ['Cultural Day Celebrations', null, [
+        '94b20c43429b6bfa2636b57781a0a728.png', 'f41235c0d241c5cf360444e9125f3807.png',
+    ]],
+    ['Plaque Unveiling Ceremony', null, [
+        '1a4d1eb4d925640c8a9a9dd9ef37607a.png', '6caf337ea7c5ca9a22eb8ff4919b0772.png',
+    ]],
+    ['Learning in the Classroom', null, [
+        '8043764ca91e1b3a715353b232a62426.png', '82c5ff0ef1be6cdddac363bb8974d7d4.png',
+        '589a5b37a3cea825422d9701e74af1f4.png',
+    ]],
+];
+
+/** Name shown for a photo's event; photos without an event go to "School Life". */
+function gallery_event_name(array $item): string
+{
+    $name = trim((string) ($item['event_name'] ?? ''));
+    return $name !== '' ? $name : 'School Life';
+}
+
+/**
+ * Groups photos into albums (one per event), newest event first.
+ * Each album: name, date (Y-m-d or null), cover (first photo), photos, latest.
+ */
+function gallery_albums(array $photos): array
+{
+    $albums = [];
+    foreach ($photos as $p) {
+        $name = gallery_event_name($p);
+        if (!isset($albums[$name])) {
+            $albums[$name] = ['name' => $name, 'date' => $p['event_date'] ?? null, 'photos' => [], 'latest' => ''];
+        }
+        $albums[$name]['photos'][] = $p;
+        $albums[$name]['date'] = $albums[$name]['date'] ?: ($p['event_date'] ?? null);
+        $albums[$name]['latest'] = max($albums[$name]['latest'], (string) $p['created_at']);
+    }
+    foreach ($albums as &$a) {
+        $a['cover'] = $a['photos'][0];
+    }
+    unset($a);
+    // Newest event first; "School Life" (photos with no event) always last.
+    uasort($albums, fn ($x, $y) => (($x['name'] === 'School Life') <=> ($y['name'] === 'School Life')) ?: strcmp((string) ($y['date'] ?: substr($y['latest'], 0, 10)), (string) ($x['date'] ?: substr($x['latest'], 0, 10))));
+    return array_values($albums);
+}
+
+/** "OCTOBER 1, 2026" style date for album cards, or '' when unknown. */
+function gallery_event_date(?string $date): string
+{
+    return $date ? strtoupper(date('F j, Y', strtotime($date))) : '';
+}
+
+/**
  * Creates the gallery_items table on demand, so an existing live install
  * (which pre-dates the Gallery feature) picks it up automatically the
  * first time any page loads — no manual SQL import required.
@@ -80,6 +145,29 @@ function ensure_gallery_table_exists(PDO $pdo): void
                 created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4"
         );
+
+        // Event (album) of each photo/video: the Photos page shows one album per event.
+        $hasEvent = (int) $pdo->query(
+            "SELECT COUNT(*) FROM information_schema.COLUMNS
+             WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'gallery_items' AND COLUMN_NAME = 'event_name'"
+        )->fetchColumn();
+        if ($hasEvent === 0) {
+            $pdo->exec("ALTER TABLE gallery_items ADD COLUMN event_name VARCHAR(150) NULL AFTER title, ADD COLUMN event_date DATE NULL AFTER event_name");
+        }
+        // Put the photos already on the site into their events (owner, 2026-11-07).
+        // Runs until done: once set, these photos never have an empty event again.
+        $firstFiles = array_merge(...array_column(GALLERY_FIRST_EVENTS, 2));
+        $marks = implode(',', array_fill(0, count($firstFiles), '?'));
+        $waiting = $pdo->prepare("SELECT COUNT(*) FROM gallery_items WHERE event_name IS NULL AND file_name IN ($marks)");
+        $waiting->execute($firstFiles);
+        if ((int) $waiting->fetchColumn() > 0) {
+            $setEvent = $pdo->prepare('UPDATE gallery_items SET event_name = :n, event_date = :d WHERE file_name = :f AND event_name IS NULL');
+            foreach (GALLERY_FIRST_EVENTS as [$name, $date, $files]) {
+                foreach ($files as $f) {
+                    $setEvent->execute(['n' => $name, 'd' => $date, 'f' => $f]);
+                }
+            }
+        }
     } catch (Throwable $e) {
         // Silently skip this cycle; the next request will try again.
     }
