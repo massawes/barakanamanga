@@ -37,7 +37,11 @@ document.addEventListener('DOMContentLoaded', function () {
         // instead of leaving the page.
         nav.querySelectorAll('.dropdown-trigger').forEach(function (trigger) {
             trigger.addEventListener('click', function (e) {
-                if (!isMobileMenu()) return;
+                // "ICT Services" has no page: on a computer the click only shows its list.
+                if (!isMobileMenu()) {
+                    if (trigger.hasAttribute('data-menu-only')) e.preventDefault();
+                    return;
+                }
                 e.preventDefault();
                 trigger.parentElement.classList.toggle('open');
             });

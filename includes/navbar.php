@@ -38,6 +38,15 @@ $navLinks = [
         ],
     ],
     'results.php'   => 'Results',
+    // ICT Services has no page of its own: the label only opens the list.
+    // To add another service, add one more line under 'children'
+    // (a full https:// address opens in a new tab).
+    '#ict-services' => [
+        'label' => 'ICT Services',
+        'children' => [
+            'https://namangaresults.freepage.cc' => 'Student Result System',
+        ],
+    ],
     'upload-task.php' => 'Upload Tasks',
     // 'others.php'  => 'Other Subjects', // reachable from the homepage card and footer
     // 'contact.php' => 'Contact', // temporarily removed from navigation
@@ -66,18 +75,26 @@ $navLinks = [
                 <?php foreach ($navLinks as $file => $label): ?>
                     <?php if (is_array($label)): ?>
                         <?php $sectionActive = (bool) array_filter(array_keys($label['children']), fn ($href) => parse_url($href, PHP_URL_PATH) === $currentPage); ?>
+                        <?php $menuOnly = str_starts_with($file, '#'); ?>
                         <li class="has-dropdown">
-                            <a href="<?= e($base) ?>/<?= e($file) ?>"
-                               class="dropdown-trigger <?= $sectionActive ? 'active' : '' ?>" aria-haspopup="true">
+                            <a href="<?= $menuOnly ? e($file) : e($base) . '/' . e($file) ?>"
+                               class="dropdown-trigger <?= $sectionActive ? 'active' : '' ?>" aria-haspopup="true"<?= $menuOnly ? ' data-menu-only' : '' ?>>
                                 <?= e($label['label']) ?><?= svg_icon('chevron-down', 'icon-svg dropdown-caret') ?>
                             </a>
                             <ul class="dropdown-menu">
                                 <?php foreach ($label['children'] as $childFile => $childLabel): ?>
+                                    <?php $external = preg_match('#^https?://#i', $childFile) === 1; ?>
                                     <li>
-                                        <a href="<?= e($base) ?>/<?= e($childFile) ?>"
-                                           class="<?= $isCurrentLink($childFile) ? 'active' : '' ?>">
-                                            <?= e($childLabel) ?>
-                                        </a>
+                                        <?php if ($external): ?>
+                                            <a href="<?= e($childFile) ?>" target="_blank" rel="noopener">
+                                                <?= e($childLabel) ?>
+                                            </a>
+                                        <?php else: ?>
+                                            <a href="<?= e($base) ?>/<?= e($childFile) ?>"
+                                               class="<?= $isCurrentLink($childFile) ? 'active' : '' ?>">
+                                                <?= e($childLabel) ?>
+                                            </a>
+                                        <?php endif; ?>
                                     </li>
                                 <?php endforeach; ?>
                             </ul>

@@ -2269,6 +2269,14 @@ body.nav-open .assistant-widget { display: none; }
     .main-nav > ul > li:not(.nav-auth) > a { padding: 0 9px; font-size: 0.84rem; }
     .nav-search-toggle { width: 58px; }
 }
+/* Smallest computer screens: a little tighter so "Home" is not cut off */
+@media (min-width: 1100.02px) and (max-width: 1240px) {
+    .main-nav > ul > li:not(.nav-auth) > a { padding: 0 6px; font-size: 0.82rem; }
+}
+/* Computer: keep each dropdown item on one line ("Student Result System") */
+@media (min-width: 1100.02px) {
+    .main-nav .dropdown-menu a { white-space: nowrap; }
+}
 
 /* ---- Section subtitle under a centred title ---- */
 .section-subtitle {
