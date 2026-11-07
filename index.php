@@ -30,10 +30,9 @@ try {
 
 
 // Resource cards: [page, title, text, count, count word, link text]; the
-// card photo is assets/images/cards/<key>.jpg (see includes/card-photos.php).
+// card drawing comes from the key (see includes/card-photos.php).
 $resourceCards = [
     'notes'     => ['notes.php', 'Notes', 'TIE textbooks, syllabus and past papers for every subject, Form 1 to Form 4.', $counts['notes'], 'file', 'View Notes'],
-    'summary'   => ['summaries.php', 'Summary', 'Quick revision summaries for Form 1 to Form 4 topics.', $counts['summary'], 'file', 'View Summaries'],
     'theory'    => ['theory.php', 'Theory Past Papers', 'Complete theory examination papers organised by Form and year.', $counts['theory'], 'file', 'View Papers'],
     'practical' => ['practical.php', 'Form 4 Practical', 'Complete Form 4 computer practical examination papers.', $counts['practical'], 'file', 'View Practicals'],
     'software'  => ['software.php', 'Software', 'Educational and programming software used in ICT lessons.', $counts['software'], 'item', 'View Software'],
@@ -109,17 +108,7 @@ include __DIR__ . '/includes/header.php';
         <p class="section-subtitle">Notes, past papers and more for every student</p>
         <div class="photo-cards-grid">
             <?php foreach ($resourceCards as $key => [$page, $title, $text, $count, $word, $linkText]): ?>
-                <a href="<?= e($base) ?>/<?= e($page) ?>" class="photo-card">
-                    <span class="photo-card-img">
-                        <img src="<?= e(card_photo_url($key)) ?>" alt="Students studying" loading="lazy" width="900" height="600">
-                    </span>
-                    <span class="photo-card-body">
-                        <span class="photo-card-title"><?= e($title) ?></span>
-                        <span class="photo-card-text"><?= e($text) ?></span>
-                        <span class="photo-card-count"><?= (int) $count ?> <?= e($word) ?><?= $count === 1 ? '' : 's' ?></span>
-                        <span class="photo-card-link"><?= e($linkText) ?> &rsaquo;</span>
-                    </span>
-                </a>
+                <?= render_photo_card($base . '/' . $page, $key, $title, $text, count_label((int) $count, $word), $linkText) ?>
             <?php endforeach; ?>
         </div>
         <?= render_card_photo_credits(array_keys($resourceCards)) ?>

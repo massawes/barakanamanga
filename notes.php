@@ -131,17 +131,9 @@ include __DIR__ . '/includes/header.php';
 
             <div class="photo-cards-grid">
                 <?php foreach (VALID_FORMS as $form): ?>
-                    <a href="<?= e($base) ?>/notes.php?form=<?= e($form) ?>" class="photo-card">
-                        <span class="photo-card-img">
-                            <img src="<?= e(card_photo_url($form)) ?>" alt="Students studying" loading="lazy" width="900" height="600">
-                        </span>
-                        <span class="photo-card-body">
-                            <span class="photo-card-title"><?= e(form_label($form)) ?></span>
-                            <span class="photo-card-text">All <?= e(form_label($form)) ?> subjects &mdash; <?= notes_new_syllabus($form) ? 'new' : 'old' ?> syllabus.</span>
-                            <span class="photo-card-count"><?= count(notes_subjects($form)) ?> subjects</span>
-                            <span class="photo-card-link">View <?= e(form_label($form)) ?> &rsaquo;</span>
-                        </span>
-                    </a>
+                    <?= render_photo_card($base . '/notes.php?form=' . $form, $form, form_label($form),
+                        'All ' . form_label($form) . ' subjects — ' . (notes_new_syllabus($form) ? 'new' : 'old') . ' syllabus.',
+                        count_label(count(notes_subjects($form)), 'subject'), 'View ' . form_label($form)) ?>
                 <?php endforeach; ?>
             </div>
             <?= render_card_photo_credits(VALID_FORMS) ?>
