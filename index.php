@@ -43,7 +43,8 @@ $resourceCards = [
 // "Our Great Faculties": [photo in assets/images/staff/, name, role].
 // Add a row here for each new staff photo.
 $faculty = [
-    ['massawe.jpg', 'Mr. Massawe', 'ICT Teacher'],
+    // Head of School. Photo: save it as assets/images/staff/mtesigwa.jpg (until then his initials show).
+    ['mtesigwa.jpg', 'Mr. Mtesigwa N. Missana', 'Head of School'],
 ];
 
 $pageTitle = 'Namanga Secondary School Website | Longido, Arusha, Tanzania';
@@ -156,7 +157,12 @@ include __DIR__ . '/includes/header.php';
         <div class="faculty-grid">
             <?php foreach ($faculty as [$photo, $name, $role]): ?>
                 <div class="faculty-card">
-                    <img src="<?= e($base) ?>/assets/images/staff/<?= e($photo) ?>" alt="<?= e($name . ', ' . $role) ?>" loading="lazy" width="640" height="800">
+                    <?php if (is_file(__DIR__ . '/assets/images/staff/' . $photo)): ?>
+                        <img src="<?= e($base) ?>/assets/images/staff/<?= e($photo) ?>" alt="<?= e($name . ', ' . $role) ?>" loading="lazy" width="640" height="800">
+                    <?php else: ?>
+                        <?php // No photo yet: show a coloured box with the initials (Mtesigwa Missana = MM). ?>
+                        <div class="faculty-initials" aria-hidden="true"><?= e(implode('', array_map(fn ($w) => $w[0], array_slice(array_values(array_filter(explode(' ', preg_replace('/^(Mr|Mrs|Ms|Dr)\.\s*/', '', $name)), fn ($w) => strlen($w) > 2)), 0, 2)))) ?></div>
+                    <?php endif; ?>
                     <h3 class="faculty-name"><?= e($name) ?></h3>
                     <p class="faculty-role"><?= e($role) ?></p>
                 </div>

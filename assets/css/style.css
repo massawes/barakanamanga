@@ -2388,6 +2388,11 @@ body.nav-open .assistant-widget { display: none; }
 }
 .faculty-card { background: var(--white); border: 1px solid #E6E6E6; border-bottom: 3px solid var(--orange); text-align: center; }
 .faculty-card img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; object-position: top; }
+.faculty-initials {
+    display: flex; align-items: center; justify-content: center;
+    aspect-ratio: 4 / 5; background: var(--navy); color: var(--gold);
+    font-family: var(--font-heading); font-size: 4rem; font-weight: 700; letter-spacing: 2px;
+}
 .faculty-name { margin: 16px 0 4px; font-size: 1rem; font-weight: 700; text-transform: uppercase; color: #2B2B2B; }
 .faculty-role { margin: 0 0 16px; color: var(--orange); font-size: 0.9rem; }
 
