@@ -25,12 +25,16 @@ $statBoxes = [
     [$counts['notes'], 'Notes', 'notes', 'adm-box-sky', 'upload-notes.php'],
     [$counts['theory'], 'Theory Papers', 'theory', 'adm-box-gold', 'upload-theory.php'],
     [$counts['practical'], 'Practical Papers', 'practical', 'adm-box-red', 'upload-practical.php'],
-    [$galleryCount, 'Gallery Items', 'gallery', 'adm-box-teal', 'manage-gallery.php'],
 ];
+if (is_admin_role()) {
+    $statBoxes[] = [$galleryCount, 'Gallery Items', 'gallery', 'adm-box-teal', 'manage-gallery.php'];
+}
 ?>
 
 <h1>Dashboard</h1>
-<p class="muted">Overview of resources currently published on the website.</p>
+<p class="muted"><?= is_admin_role()
+    ? 'Overview of resources currently published on the website.'
+    : 'Teacher dashboard: upload notes and exam papers for the students.' ?></p>
 
 <div class="adm-boxes">
     <?php foreach ($statBoxes as [$count, $label, $icon, $colour, $page]): ?>
@@ -51,12 +55,12 @@ $statBoxes = [
         <a href="<?= e($base) ?>/admin/upload-notes.php" class="btn btn-primary">+ Add Notes</a>
         <a href="<?= e($base) ?>/admin/upload-theory.php" class="btn btn-primary">+ Add Theory Paper</a>
         <a href="<?= e($base) ?>/admin/upload-practical.php" class="btn btn-primary">+ Add Practical</a>
-        <a href="<?= e($base) ?>/admin/upload-gallery.php" class="btn btn-primary">+ Add Gallery</a>
         <?php if (is_admin_role()): ?>
+        <a href="<?= e($base) ?>/admin/upload-gallery.php" class="btn btn-primary">+ Add Gallery</a>
         <a href="<?= e($base) ?>/admin/manage-resources.php" class="btn btn-outline">Manage Resources</a>
-        <?php endif; ?>
         <a href="<?= e($base) ?>/admin/manage-gallery.php" class="btn btn-outline">Manage Gallery</a>
         <a href="<?= e($base) ?>/admin/manage-slides.php" class="btn btn-outline">Homepage Slideshow</a>
+        <?php endif; ?>
         <?php if (is_super_admin()): ?>
         <a href="<?= e($base) ?>/admin/manage-users.php" class="btn btn-outline">Manage Staff Accounts</a>
         <?php endif; ?>

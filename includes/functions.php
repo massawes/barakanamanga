@@ -29,6 +29,22 @@ function ensure_super_admin_setup(PDO $pdo): void
             $pdo->exec("ALTER TABLE admins ADD COLUMN is_super_admin TINYINT(1) NOT NULL DEFAULT 0 AFTER role");
         }
 
+        // Teacher accounts: full name + "must change the temporary password" flag.
+        $extra = [
+            'full_name' => "ALTER TABLE admins ADD COLUMN full_name VARCHAR(150) NULL AFTER username",
+            'must_change_password' => "ALTER TABLE admins ADD COLUMN must_change_password TINYINT(1) NOT NULL DEFAULT 0 AFTER is_super_admin",
+        ];
+        foreach ($extra as $column => $sql) {
+            $has = $pdo->prepare(
+                "SELECT COUNT(*) FROM information_schema.COLUMNS
+                 WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'admins' AND COLUMN_NAME = :c"
+            );
+            $has->execute(['c' => $column]);
+            if ((int) $has->fetchColumn() === 0) {
+                $pdo->exec($sql);
+            }
+        }
+
         $hasSuperAdmin = (int) $pdo->query("SELECT COUNT(*) FROM admins WHERE is_super_admin = 1")->fetchColumn();
         if ($hasSuperAdmin === 0) {
             $firstAdminId = $pdo->query(

@@ -11,22 +11,28 @@ $loggedIn = is_admin_logged_in();
 // Sidebar: key => [label, icon, page] for a single link, or
 // key => [label, icon, [activePage => [label, page], ...]] for a group.
 $adminMenu = ['dashboard' => ['Dashboard', 'dashboard', 'dashboard.php']];
-$adminMenu['upload'] = ['Upload', 'upload', [
+// Teachers (Staff) see only the notes and exam-paper uploads. Photos and
+// videos (gallery, slideshow) and managing everything are for Admins.
+$uploadLinks = [
     'upload-notes'     => ['Notes', 'upload-notes.php'],
     'upload-theory'    => ['Theory Paper', 'upload-theory.php'],
     'upload-practical' => ['Practical', 'upload-practical.php'],
-    'upload-gallery'   => ['Gallery', 'upload-gallery.php'],
-]];
-$manageLinks = [];
+];
 if (is_admin_role()) {
-    $manageLinks['manage'] = ['Resources', 'manage-resources.php'];
+    $uploadLinks['upload-gallery'] = ['Gallery (photos/videos)', 'upload-gallery.php'];
 }
-$manageLinks['manage-gallery'] = ['Gallery', 'manage-gallery.php'];
-$manageLinks['manage-slides'] = ['Homepage Slideshow', 'manage-slides.php'];
-$adminMenu['manage'] = ['Manage', 'manage', $manageLinks];
+$adminMenu['upload'] = ['Upload', 'upload', $uploadLinks];
+if (is_admin_role()) {
+    $adminMenu['manage'] = ['Manage', 'manage', [
+        'manage'         => ['Resources', 'manage-resources.php'],
+        'manage-gallery' => ['Gallery', 'manage-gallery.php'],
+        'manage-slides'  => ['Homepage Slideshow', 'manage-slides.php'],
+    ]];
+}
 if (is_super_admin()) {
     $adminMenu['manage-users'] = ['Staff Accounts', 'users', 'manage-users.php'];
 }
+$adminMenu['change-password'] = ['Change Password', 'users', 'change-password.php'];
 
 // Breadcrumb: Home / [group /] current page
 $crumbs = [];
@@ -106,6 +112,7 @@ foreach ($adminMenu as $key => [$label, , $target]) {
                 <div class="adm-user-menu">
                     <p class="adm-user-role"><?= is_super_admin() ? 'Super Admin' : (is_admin_role() ? 'Admin' : 'Staff') ?></p>
                     <a href="<?= e($base) ?>/index.php" target="_blank" rel="noopener">View Website</a>
+                    <a href="<?= e($base) ?>/admin/change-password.php">Change Password</a>
                     <a href="<?= e($base) ?>/admin/logout.php">Logout</a>
                 </div>
             </details>

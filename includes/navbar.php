@@ -119,7 +119,6 @@ $navLinks = [
                         <a href="<?= e($base) ?>/admin/dashboard.php" class="nav-auth-link">Dashboard</a>
                     <?php else: ?>
                         <a href="<?= e($base) ?>/admin/login.php" class="nav-auth-link">Staff Login</a>
-                        <a href="<?= e($base) ?>/admin/register.php" class="nav-auth-link nav-auth-register">Register</a>
                     <?php endif; ?>
                 </li>
             </ul>

@@ -34,8 +34,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($admin && password_verify($password, $admin['password'])) {
             $_SESSION['login_attempts'] = 0;
-            admin_login((int) $admin['id'], $admin['username'], $admin['role'], (bool) ($admin['is_super_admin'] ?? false));
-            redirect(base_url() . '/admin/dashboard.php');
+            $mustChange = !empty($admin['must_change_password']);
+            admin_login((int) $admin['id'], $admin['username'], $admin['role'], (bool) ($admin['is_super_admin'] ?? false), $mustChange);
+            redirect(base_url() . '/admin/' . ($mustChange ? 'change-password.php' : 'dashboard.php'));
         } else {
             $_SESSION['login_attempts']++;
             if ($_SESSION['login_attempts'] >= 5) {
@@ -84,7 +85,7 @@ include __DIR__ . '/../includes/header.php';
             </form>
 
             <p class="auth-alt-action">
-                New staff member? <a href="<?= e(base_url()) ?>/admin/register.php">Register here</a> to get an account for uploading and editing resources.
+                No account? Ask the school Super Admin to create one for you.
             </p>
         </div>
     </div>

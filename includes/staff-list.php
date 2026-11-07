@@ -1,0 +1,66 @@
+<?php
+/**
+ * All teachers of Namanga Secondary School (2026), from the school's staff
+ * list. The Super Admin can create an account for every name on this list
+ * with one button on Manage Staff Accounts:
+ *   username = first name in small letters, temporary password = the same
+ *   first name; the teacher must change it on the first login.
+ * Names that already have an account (same username) are skipped.
+ * To add a teacher later: add one line here, or use the "Create account" form.
+ */
+return [
+    'ABDALLAH MOHAMED DHAHABU',
+    'ABDULLAH YUSUPH ALLY',
+    'ABEL GODFREY MSEMO',
+    'ALFRED LAURENT LOHAY',
+    'ALLY RAMADHANI MSUYA',
+    'ANASTAZIA BUGOLO MCHELE',
+    'BAHATI LUHENDE MALALE',
+    'BONIFACE TILUBUZYA MAGETTA',
+    'BRIGHTON MWANAHANZA CHARLES',
+    'CAROLINE STANLEY MDEE',
+    'CATHERINE LUCAS MASANYIWA',
+    'CHAUSIKU ABDALLAH HUSSEN',
+    'CHUGA',
+    'ELIA MOSES MMBUJI',
+    'ELISHA',
+    'ELIZABETH WEREMA',
+    'EMILIANA EDWARD NJAU',
+    'ERASTO LAIS KIRUSHA',
+    'ERICK SOLOMON MAHOO',
+    'FABIUS ADABAT ALFRED',
+    'FAUSTINI SLAA BOMBO',
+    'FESTO MBILINYI',
+    'FRANK THOMAS GESURA',
+    'HABIBU ALLY',
+    'HAPPY MERESSO MOLLEL',
+    'JANEROSE PAUL MAYO',
+    'JOHN CHARLES BUNDALA',
+    'JOSHUA LEONARD MAEDA',
+    'JUDICAR HUMPHREY NAISO',
+    'LEAH SAFINA JOHN',
+    'LIBERATHA FIDELIS',
+    'MAGRETH AMNAAY SIKUKU',
+    'MAISA SILAS MAISA',
+    'MARY SHOO',
+    'MATOKEO TULUMANYWA',
+    'MOHAMED ALLY KHAMIS',
+    'MTESIGWA N. MISSANA',
+    'NAZALIUS ERASTO SHUMBUSHO',
+    'NDEOYA NDEFIYWA SIKAWA',
+    'PETER MPAAYO LAIZER',
+    'PROVIUS PROTACE BWEMERO',
+    'RAJABU HARUNA VURUGU',
+    'REGAN',
+    'SAYUNI EDWARD OLOGOTU',
+    'SECHELELA JELEMIA MENDA',
+    'SIGIFRIDI ANTHONY FUNDI',
+    'SOILA MOSES MOOSHE',
+    'STELLA JOSEPH LUKUMAY',
+    'THEODATHA THEODORY KOKUBANZA',
+    'THERESIA DIONISI FISSOO',
+    'TIMOTHY AZIZI MCHOMVU',
+    'VENANCE MATHEW SARWATY',
+    'WILSON JOHN',
+    'WINIFRIDA CHARLES',
+];

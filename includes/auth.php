@@ -4,7 +4,9 @@
  *
  * Two roles:
  *   - admin: full control (upload, edit, view, delete, manage staff accounts)
- *   - staff: can upload, edit and view — but never delete anything.
+ *   - staff (teachers): can upload notes and exam papers, edit and view —
+ *     never delete, and never upload photos/videos (gallery, slideshow).
+ * Accounts are created only by the Super Admin (there is no public register page).
  * Included by every admin page (via bootstrap) to enforce login and role.
  */
 
@@ -22,6 +24,28 @@ function require_admin_login(): void
     if (!is_admin_logged_in()) {
         redirect(base_url() . '/admin/login.php');
     }
+    // A new account (or one whose password was reset) still uses the
+    // temporary password: it must choose its own before doing anything else.
+    if (!empty($_SESSION['admin_must_change']) && basename($_SERVER['SCRIPT_NAME'] ?? '') !== 'change-password.php') {
+        redirect(base_url() . '/admin/change-password.php');
+    }
+}
+
+/**
+ * Temporary password for a new teacher account: the first name in small
+ * letters (e.g. "ERICK SOLOMON MAHOO" -> "erick"). The teacher must change
+ * it on the first login.
+ */
+function temporary_password_for(string $fullName): string
+{
+    $first = preg_split('/[\s.]+/', trim($fullName), -1, PREG_SPLIT_NO_EMPTY)[0] ?? '';
+    return strtolower($first);
+}
+
+/** Username for a new account: the first name in small letters. */
+function username_for(string $fullName): string
+{
+    return preg_replace('/[^a-z0-9]/', '', temporary_password_for($fullName));
 }
 
 function current_admin_role(): string
@@ -71,7 +95,7 @@ function require_super_admin(): void
     }
 }
 
-function admin_login(int $adminId, string $username, string $role, bool $isSuperAdmin = false): void
+function admin_login(int $adminId, string $username, string $role, bool $isSuperAdmin = false, bool $mustChange = false): void
 {
     // Prevent session fixation.
     session_regenerate_id(true);
@@ -79,6 +103,7 @@ function admin_login(int $adminId, string $username, string $role, bool $isSuper
     $_SESSION['admin_username'] = $username;
     $_SESSION['admin_role'] = $role;
     $_SESSION['admin_is_super'] = $isSuperAdmin;
+    $_SESSION['admin_must_change'] = $mustChange;
 }
 
 function admin_logout(): void

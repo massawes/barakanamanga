@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../includes/bootstrap.php';
 require_admin_login();
+require_admin_role(); // Photos and videos (gallery, homepage slideshow): Admin only, not teachers.
 
 // ---- Handle delete ----
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'delete') {
