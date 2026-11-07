@@ -8,7 +8,7 @@ if ($query !== '') {
     $like = '%' . $query . '%';
     $stmt = $pdo->prepare(
         "SELECT * FROM resources
-         WHERE title LIKE :q1 OR description LIKE :q2
+         WHERE (title LIKE :q1 OR description LIKE :q2) AND resource_type <> 'summary'
          ORDER BY resource_type, FIELD(form_level,'form1','form2','form3','form4'), year DESC, created_at DESC"
     );
     $stmt->execute(['q1' => $like, 'q2' => $like]);
@@ -25,7 +25,7 @@ include __DIR__ . '/includes/header.php';
     <div class="container">
         <h1>Search Resources</h1>
         <form action="<?= e($base) ?>/search.php" method="get" class="page-search-form">
-            <input type="text" name="q" placeholder="Search notes, summaries, past papers, software..." value="<?= e($query) ?>">
+            <input type="text" name="q" placeholder="Search notes, past papers, software..." value="<?= e($query) ?>">
             <button type="submit" class="btn btn-primary">Search</button>
         </form>
     </div>

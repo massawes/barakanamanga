@@ -22,7 +22,7 @@ if (!class_exists('ZipArchive')) {
     );
 }
 
-$validCategories = ['notes', 'summary', 'theory', 'practical', 'software', 'others', 'gallery'];
+$validCategories = ['notes', 'theory', 'practical', 'software', 'others', 'gallery'];
 $category = $_GET['category'] ?? '';
 
 if (!in_array($category, $validCategories, true)) {

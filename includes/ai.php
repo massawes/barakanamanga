@@ -119,8 +119,8 @@ function ai_text(string $key, string $lang): string
                           'sw' => 'Samahani, ombi hilo halikueleweka. Tafadhali onyesha upya ukurasa na ujaribu tena.'],
         'ai_off'      => ['en' => 'The AI assistant is not available right now, but here is what I found on this website:',
                           'sw' => 'Msaidizi wa AI haupatikani kwa sasa, lakini hiki ndicho nilichopata kwenye tovuti hii:'],
-        'ai_off_none' => ['en' => 'The AI assistant is not available right now, and nothing on this website matched your question. Please try other words, or browse the menu (Notes, Summary, Theory Past Papers, Form 4 Practical, Software, Other Subjects).',
-                          'sw' => 'Msaidizi wa AI haupatikani kwa sasa, na sikupata kitu kwenye tovuti hii kinacholingana na swali lako. Jaribu maneno mengine, au tumia menyu (Notes, Summary, Theory Past Papers, Form 4 Practical, Software, Other Subjects).'],
+        'ai_off_none' => ['en' => 'The AI assistant is not available right now, and nothing on this website matched your question. Please try other words, or browse the menu (Notes, Theory Past Papers, Form 4 Practical, Software, Other Subjects).',
+                          'sw' => 'Msaidizi wa AI haupatikani kwa sasa, na sikupata kitu kwenye tovuti hii kinacholingana na swali lako. Jaribu maneno mengine, au tumia menyu (Notes, Theory Past Papers, Form 4 Practical, Software, Other Subjects).'],
         'ai_busy'     => ['en' => 'The AI assistant is very busy right now. Please try again in a minute. Here is what I found on this website:',
                           'sw' => 'Msaidizi wa AI una kazi nyingi sasa hivi. Tafadhali jaribu tena baada ya dakika moja. Hiki ndicho nilichopata kwenye tovuti hii:'],
         'server'      => ['en' => 'Sorry, something went wrong on our side. Please try again.',
@@ -219,7 +219,6 @@ function ai_parse_query(string $query): array
     ];
     $typeKeywords = [
         'notes'     => ['notes', 'note', 'maelezo', 'kitabu', 'vitabu', 'book', 'books'],
-        'summary'   => ['summary', 'summaries', 'muhtasari'],
         'theory'    => ['past paper', 'past papers', 'theory', 'nadharia', 'mtihani', 'mitihani', 'exam', 'exams', 'paper', 'papers'],
         'practical' => ['practical', 'practicals', 'vitendo'],
         'software'  => ['software', 'programu', 'program', 'application'],
@@ -341,7 +340,7 @@ function ai_search_resources(PDO $pdo, string $query, int $limit = 6): array
 
     // ---- 1. The resources table (uploaded files) ----
     if ($q['keywords'] !== [] || $q['types'] !== [] || $q['form'] !== null) {
-        $conditions = [];
+        $conditions = ["resource_type <> 'summary'"]; // Summary removed from the site
         $params = [];
         $score = [];
 
@@ -675,7 +674,7 @@ WHAT YOU DO:
 - Explain school subjects (ICT/Computer Studies, Mathematics, Physics, Chemistry, Biology, Geography, History, English, Kiswahili, Civics, Business, etc.) simply and step by step, following the Tanzanian secondary syllabus where you can.
 - Give study and exam-revision tips.
 - Help people find files on this website using ONLY the WEBSITE RESOURCES listed below.
-- Website sections: Notes, Summary, Theory Past Papers (NECTA FTNA/CSEE and school exams), Form 4 Practical, Software, Other Subjects, Upload Tasks, The Latest (photos and videos), Results (NECTA results links), About Us.
+- Website sections: Notes, Theory Past Papers (NECTA FTNA/CSEE and school exams), Form 4 Practical, Software, Other Subjects, Upload Tasks, The Latest (photos and videos), Results (NECTA results links), About Us.
 
 STRICT RULES:
 - Never invent a resource, file, book title, exam, link or URL. Do NOT write any URL or web address in your reply. When WEBSITE RESOURCES lists files, they really exist on this website and are shown to the user as clickable cards under your answer: tell the user they are available and to use the cards below (or the Kiswahili equivalent).

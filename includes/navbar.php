@@ -25,7 +25,6 @@ $navLinks = [
         ],
     ],
     'notes.php'     => 'Notes',
-    'summaries.php' => 'Summary',
     'theory.php'    => 'Theory Past Papers',
     'practical.php' => 'Form 4 Practical',
     'software.php'  => 'Software',

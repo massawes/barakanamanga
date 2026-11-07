@@ -20,7 +20,6 @@
             <ul>
                 <li><a href="<?= e($base) ?>/index.php">Home</a></li>
                 <li><a href="<?= e($base) ?>/notes.php">Notes</a></li>
-                <li><a href="<?= e($base) ?>/summaries.php">Summary</a></li>
                 <li><a href="<?= e($base) ?>/theory.php">Theory Past Papers</a></li>
                 <li><a href="<?= e($base) ?>/practical.php">Form 4 Practical</a></li>
                 <li><a href="<?= e($base) ?>/software.php">Software</a></li>

@@ -80,7 +80,7 @@ include __DIR__ . '/includes/header.php';
         <div class="cta-band">
             <div>
                 <h2>Study resources for every student</h2>
-                <p>Free notes, summaries and past papers for Form 1 to Form 4.</p>
+                <p>Free notes and past papers for Form 1 to Form 4.</p>
             </div>
             <a href="<?= e($base) ?>/index.php#resources" class="btn btn-primary btn-large">Start learning</a>
         </div>

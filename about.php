@@ -54,7 +54,7 @@ include __DIR__ . '/includes/header.php';
                 <p>Alongside the core subjects, our students learn Information &amp; Computer Studies in the
                 school computer room, gaining practical digital skills they will use for life.</p>
                 <p>This website is part of that effort. It is the school's home online, where students
-                can download notes, revision summaries, past papers and educational software for free,
+                can download notes, past papers and educational software for free,
                 and find the school's NECTA results.</p>
                 <a href="<?= e($base) ?>/index.php#resources" class="btn btn-gold">Explore resources</a>
             </div>

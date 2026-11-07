@@ -13,7 +13,6 @@ $loggedIn = is_admin_logged_in();
 $adminMenu = ['dashboard' => ['Dashboard', 'dashboard', 'dashboard.php']];
 $adminMenu['upload'] = ['Upload', 'upload', [
     'upload-notes'     => ['Notes', 'upload-notes.php'],
-    'upload-summary'   => ['Summary', 'upload-summary.php'],
     'upload-theory'    => ['Theory Paper', 'upload-theory.php'],
     'upload-practical' => ['Practical', 'upload-practical.php'],
     'upload-software'  => ['Software', 'upload-software.php'],

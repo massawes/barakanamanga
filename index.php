@@ -47,7 +47,7 @@ $faculty = [
 ];
 
 $pageTitle = 'Namanga Secondary School Website | Longido, Arusha, Tanzania';
-$pageDescription = 'Official website of Namanga Secondary School, a government secondary school in Namanga, Longido District, Arusha, Tanzania. Free ICT & Computer Science notes, summaries, past papers, NECTA results and software for Form 1 to Form 4.';
+$pageDescription = 'Official website of Namanga Secondary School, a government secondary school in Namanga, Longido District, Arusha, Tanzania. Free ICT & Computer Science notes, past papers, NECTA results and software for Form 1 to Form 4.';
 $base = base_url();
 include __DIR__ . '/includes/header.php';
 ?>
@@ -125,7 +125,7 @@ include __DIR__ . '/includes/header.php';
             many Maasai families, offering O-Level education from Form 1 to Form 4.</p>
             <p>In 2024 the school opened a new girls' dormitory, built with support from the Legal Services
             Facility (LSF) and Luxembourg's North-South Cooperation, giving girls a safe place to live and study.</p>
-            <p>This website is the school's home online. Here students can download notes, revision summaries,
+            <p>This website is the school's home online. Here students can download notes,
             theory and practical past papers and educational software, and find the school's
             <a href="<?= e($base) ?>/results.php">NECTA Form 2 and Form 4 results</a>.</p>
         </div>
@@ -143,7 +143,7 @@ include __DIR__ . '/includes/header.php';
             <li class="feature-card">
                 <span class="feature-icon"><?= svg_icon('notes', 'icon-svg') ?></span>
                 <h3 class="feature-title">Free Resources</h3>
-                <p>Free notes, summaries, past papers and NECTA results on this website</p>
+                <p>Free notes, past papers and NECTA results on this website</p>
             </li>
         </ul>
     </div>

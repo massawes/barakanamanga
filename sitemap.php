@@ -17,7 +17,6 @@ $staticPages = [
     ['loc' => '/', 'priority' => '1.0'],
     ['loc' => '/results.php', 'priority' => '0.8'],
     ['loc' => '/notes.php', 'priority' => '0.8'],
-    ['loc' => '/summaries.php', 'priority' => '0.8'],
     ['loc' => '/theory.php', 'priority' => '0.8'],
     ['loc' => '/practical.php', 'priority' => '0.8'],
     ['loc' => '/software.php', 'priority' => '0.7'],

@@ -23,7 +23,6 @@ $base = base_url();
 // Coloured stat boxes: [count, label, icon, colour class, page the "More info" link opens]
 $statBoxes = [
     [$counts['notes'], 'Notes', 'notes', 'adm-box-sky', 'upload-notes.php'],
-    [$counts['summary'], 'Summaries', 'summary', 'adm-box-green', 'upload-summary.php'],
     [$counts['theory'], 'Theory Papers', 'theory', 'adm-box-gold', 'upload-theory.php'],
     [$counts['practical'], 'Practical Papers', 'practical', 'adm-box-red', 'upload-practical.php'],
     [$counts['software'], 'Software', 'software', 'adm-box-navy', 'upload-software.php'],
@@ -52,7 +51,6 @@ $statBoxes = [
     <div class="adm-card-head">Quick Actions</div>
     <div class="adm-card-body quick-actions">
         <a href="<?= e($base) ?>/admin/upload-notes.php" class="btn btn-primary">+ Add Notes</a>
-        <a href="<?= e($base) ?>/admin/upload-summary.php" class="btn btn-primary">+ Add Summary</a>
         <a href="<?= e($base) ?>/admin/upload-theory.php" class="btn btn-primary">+ Add Theory Paper</a>
         <a href="<?= e($base) ?>/admin/upload-practical.php" class="btn btn-primary">+ Add Practical</a>
         <a href="<?= e($base) ?>/admin/upload-software.php" class="btn btn-primary">+ Add Software</a>

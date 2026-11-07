@@ -4,7 +4,7 @@
 //   $pageDescription — meta description (shown under the link in Google)
 //   $noindex         — true for pages Google should not list (e.g. search results)
 $pageTitle = $pageTitle ?? 'Namanga Secondary School Website';
-$pageDescription = $pageDescription ?? 'Official website of Namanga Secondary School, Tanzania — ICT & Computer Science notes, summaries, past papers, NECTA results and software for Form 1 to Form 4.';
+$pageDescription = $pageDescription ?? 'Official website of Namanga Secondary School, Tanzania — ICT & Computer Science notes, past papers, NECTA results and software for Form 1 to Form 4.';
 $noindex = $noindex ?? false;
 $canonical = canonical_url();
 $isHome = $canonical === SITE_URL . '/';
