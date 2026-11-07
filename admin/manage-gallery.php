@@ -33,17 +33,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'renam
         flash_set('error', 'Your session expired. Please try again.');
     } else {
         $old = (string) ($_POST['old_name'] ?? '');
+        $oldYear = (int) ($_POST['old_year'] ?? 0);
         $new = trim(preg_replace('/\s+/', ' ', $_POST['event_name'] ?? ''));
+        $year = (int) ($_POST['event_year'] ?? 0);
         $date = trim($_POST['event_date'] ?? '');
         $date = preg_match('/^\d{4}-\d{2}-\d{2}$/', $date) ? $date : null;
         if ($new === '') {
             flash_set('error', 'The event name cannot be empty.');
+        } elseif (!in_array($year, gallery_year_choices(), true)) {
+            flash_set('error', 'Choose the year of the event.');
+        } elseif ($date !== null && (int) substr($date, 0, 4) !== $year) {
+            flash_set('error', 'The date ' . $date . ' is not in the year ' . $year . '. Please fix the year or the date.');
         } else {
-            // "School Life" = photos that have no event yet.
+            // "School Life" = photos that have no event yet. Only that event's photos of that year change.
             $where = $old === 'School Life' ? "(event_name IS NULL OR event_name = '' OR event_name = 'School Life')" : 'event_name = :old';
-            $stmt = $pdo->prepare("UPDATE gallery_items SET event_name = :new, event_date = :d WHERE $where");
-            $stmt->execute($old === 'School Life' ? ['new' => $new, 'd' => $date] : ['new' => $new, 'd' => $date, 'old' => $old]);
-            flash_set('success', 'Event saved: ' . $new . ' (' . $stmt->rowCount() . ' items).');
+            $where .= ' AND COALESCE(event_year, YEAR(event_date), YEAR(created_at)) = :oy';
+            $params = ['new' => $new, 'd' => $date, 'y' => $year, 'oy' => $oldYear];
+            if ($old !== 'School Life') {
+                $params['old'] = $old;
+            }
+            $stmt = $pdo->prepare("UPDATE gallery_items SET event_name = :new, event_date = :d, event_year = :y WHERE $where");
+            $stmt->execute($params);
+            flash_set('success', 'Event saved: ' . gallery_album_title($new, $year) . ' (' . $stmt->rowCount() . ' items).');
         }
     }
     redirect(base_url() . '/admin/manage-gallery.php');
@@ -57,11 +68,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'set_e
         $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
         $new = trim(preg_replace('/\s+/', ' ', $_POST['event_name'] ?? ''));
         if ($id && $new !== '') {
-            // Take the date of that event when it already exists.
-            $d = $pdo->prepare('SELECT event_date FROM gallery_items WHERE event_name = :n AND event_date IS NOT NULL LIMIT 1');
-            $d->execute(['n' => $new]);
-            $pdo->prepare('UPDATE gallery_items SET event_name = :n, event_date = :d WHERE id = :id')
-                ->execute(['n' => $new, 'd' => $d->fetchColumn() ?: null, 'id' => $id]);
+            // Take the date and year of that event when it already exists (newest one with that name).
+            $d = $pdo->prepare('SELECT event_date, event_year FROM gallery_items WHERE event_name = :n AND id <> :id
+                                ORDER BY event_year DESC, event_date DESC LIMIT 1');
+            $d->execute(['n' => $new, 'id' => $id]);
+            $ev = $d->fetch() ?: [];
+            if ($ev) {
+                $pdo->prepare('UPDATE gallery_items SET event_name = :n, event_date = :d, event_year = :y WHERE id = :id')
+                    ->execute(['n' => $new, 'd' => $ev['event_date'] ?: null, 'y' => $ev['event_year'] ?: null, 'id' => $id]);
+            } else {
+                // A new event name: the photo keeps its year, the old event date is cleared.
+                $pdo->prepare('UPDATE gallery_items SET event_name = :n, event_date = NULL WHERE id = :id')
+                    ->execute(['n' => $new, 'id' => $id]);
+            }
             flash_set('success', 'Moved to the event "' . $new . '".');
         }
     }
@@ -95,20 +114,29 @@ Change an event's name or date here, or move a photo to another event.</p>
 $events = [];
 foreach ($pdo->query('SELECT * FROM gallery_items ORDER BY created_at DESC')->fetchAll() as $row) {
     $n = gallery_event_name($row);
-    $events[$n] ??= ['date' => $row['event_date'] ?? null, 'photos' => 0, 'videos' => 0];
-    $events[$n]['date'] = $events[$n]['date'] ?: ($row['event_date'] ?? null);
-    $events[$n][$row['media_type'] === 'image' ? 'photos' : 'videos']++;
+    $y = gallery_event_year($row);
+    $k = $y . '|' . $n;
+    $events[$k] ??= ['name' => $n, 'year' => $y, 'date' => $row['event_date'] ?? null, 'photos' => 0, 'videos' => 0];
+    $events[$k]['date'] = $events[$k]['date'] ?: ($row['event_date'] ?? null);
+    $events[$k][$row['media_type'] === 'image' ? 'photos' : 'videos']++;
 }
+krsort($events); // newest year first
 ?>
 <div class="adm-card">
-    <div class="adm-card-head">Events (albums)</div>
+    <div class="adm-card-head">Events (albums), by year</div>
     <div class="adm-card-body">
-        <?php foreach ($events as $name => $ev): ?>
+        <?php foreach ($events as $ev): $name = $ev['name']; ?>
             <form method="post" action="" class="inline-form" style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px;">
                 <input type="hidden" name="action" value="rename_event">
                 <input type="hidden" name="old_name" value="<?= e($name) ?>">
+                <input type="hidden" name="old_year" value="<?= (int) $ev['year'] ?>">
                 <?= csrf_field() ?>
                 <input type="text" name="event_name" value="<?= e($name) ?>" required maxlength="150" style="flex:1 1 260px;margin:0;">
+                <select name="event_year" required style="width:auto;margin:0;" aria-label="Year">
+                    <?php foreach (gallery_year_choices() as $yc): ?>
+                        <option value="<?= $yc ?>"<?= $yc === (int) $ev['year'] ? ' selected' : '' ?>><?= $yc ?></option>
+                    <?php endforeach; ?>
+                </select>
                 <input type="date" name="event_date" value="<?= e((string) $ev['date']) ?>" style="width:auto;margin:0;">
                 <span class="muted" style="font-size:0.85rem;"><?= (int) $ev['photos'] ?> photos<?= $ev['videos'] ? ', ' . (int) $ev['videos'] . ' videos' : '' ?></span>
                 <button type="submit" class="btn btn-primary btn-small">Save</button>
@@ -117,7 +145,7 @@ foreach ($pdo->query('SELECT * FROM gallery_items ORDER BY created_at DESC')->fe
     </div>
 </div>
 <datalist id="known-events">
-    <?php foreach (array_keys($events) as $name): ?><option value="<?= e($name) ?>"><?php endforeach; ?>
+    <?php foreach (array_unique(array_column($events, 'name')) as $name): ?><option value="<?= e($name) ?>"><?php endforeach; ?>
 </datalist>
 
 <div class="filter-tabs">

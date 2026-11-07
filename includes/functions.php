@@ -94,29 +94,63 @@ function gallery_event_name(array $item): string
     return $name !== '' ? $name : 'School Life';
 }
 
+/** Year of a photo's event: the year the admin chose, else from the event date, else the upload date. */
+function gallery_event_year(array $item): int
+{
+    if (!empty($item['event_year'])) {
+        return (int) $item['event_year'];
+    }
+    return (int) substr((string) (($item['event_date'] ?? '') ?: ($item['created_at'] ?? date('Y'))), 0, 4);
+}
+
 /**
- * Groups photos into albums (one per event), newest event first.
- * Each album: name, date (Y-m-d or null), cover (first photo), photos, latest.
+ * Groups photos into albums (one per event and year), newest event first.
+ * Each album: name, year, title, date (Y-m-d or null), cover (first photo), photos, latest.
  */
 function gallery_albums(array $photos): array
 {
     $albums = [];
     foreach ($photos as $p) {
         $name = gallery_event_name($p);
-        if (!isset($albums[$name])) {
-            $albums[$name] = ['name' => $name, 'date' => $p['event_date'] ?? null, 'photos' => [], 'latest' => ''];
+        $year = gallery_event_year($p);
+        $key = $year . '|' . $name;
+        if (!isset($albums[$key])) {
+            $albums[$key] = ['name' => $name, 'year' => $year, 'title' => gallery_album_title($name, $year),
+                             'date' => $p['event_date'] ?? null, 'photos' => [], 'latest' => ''];
         }
-        $albums[$name]['photos'][] = $p;
-        $albums[$name]['date'] = $albums[$name]['date'] ?: ($p['event_date'] ?? null);
-        $albums[$name]['latest'] = max($albums[$name]['latest'], (string) $p['created_at']);
+        $albums[$key]['photos'][] = $p;
+        $albums[$key]['date'] = $albums[$key]['date'] ?: ($p['event_date'] ?? null);
+        $albums[$key]['latest'] = max($albums[$key]['latest'], (string) $p['created_at']);
     }
     foreach ($albums as &$a) {
         $a['cover'] = $a['photos'][0];
     }
     unset($a);
-    // Newest event first; "School Life" (photos with no event) always last.
-    uasort($albums, fn ($x, $y) => (($x['name'] === 'School Life') <=> ($y['name'] === 'School Life')) ?: strcmp((string) ($y['date'] ?: substr($y['latest'], 0, 10)), (string) ($x['date'] ?: substr($x['latest'], 0, 10))));
+    // Newest year first; inside a year "School Life" (photos with no event) last, then newest event first.
+    uasort($albums, fn ($x, $y) => ($y['year'] <=> $x['year'])
+        ?: (($x['name'] === 'School Life') <=> ($y['name'] === 'School Life'))
+        ?: strcmp((string) ($y['date'] ?: substr($y['latest'], 0, 10)), (string) ($x['date'] ?: substr($x['latest'], 0, 10))));
     return array_values($albums);
+}
+
+/** Title written on the photos: the event name with its year, e.g. "Form Four Graduation 2026". */
+function gallery_album_title(string $name, int $year): string
+{
+    return str_contains($name, (string) $year) ? $name : $name . ' ' . $year;
+}
+
+/** Years that have albums, newest first (for the year drop-down). */
+function gallery_years(array $albums): array
+{
+    $years = array_values(array_unique(array_column($albums, 'year')));
+    rsort($years);
+    return $years;
+}
+
+/** Years an admin can pick when uploading: next year down to 2007 (the school was founded in 2007). */
+function gallery_year_choices(): array
+{
+    return range((int) date('Y') + 1, 2007);
 }
 
 /** "OCTOBER 1, 2026" style date for album cards, or '' when unknown. */
@@ -153,6 +187,15 @@ function ensure_gallery_table_exists(PDO $pdo): void
         )->fetchColumn();
         if ($hasEvent === 0) {
             $pdo->exec("ALTER TABLE gallery_items ADD COLUMN event_name VARCHAR(150) NULL AFTER title, ADD COLUMN event_date DATE NULL AFTER event_name");
+        }
+        // Year of the event (owner 2026-11-07): the Photos page shows one year at a time.
+        $hasYear = (int) $pdo->query(
+            "SELECT COUNT(*) FROM information_schema.COLUMNS
+             WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'gallery_items' AND COLUMN_NAME = 'event_year'"
+        )->fetchColumn();
+        if ($hasYear === 0) {
+            $pdo->exec("ALTER TABLE gallery_items ADD COLUMN event_year SMALLINT UNSIGNED NULL AFTER event_date");
+            $pdo->exec("UPDATE gallery_items SET event_year = COALESCE(YEAR(event_date), YEAR(created_at)) WHERE event_year IS NULL");
         }
         // Put the photos already on the site into their events (owner, 2026-11-07).
         // Runs until done: once set, these photos never have an empty event again.
@@ -935,11 +978,11 @@ function create_optimized_image(string $relativePath, int $maxWidth): bool
             $saved = imagegif($resized, $target);
             break;
         case IMAGETYPE_WEBP:
-            $saved = imagewebp($resized, $target, 80);
+            $saved = imagewebp($resized, $target, 88);
             break;
         default:
             imageinterlace($resized, true); // progressive JPEG shows sooner
-            $saved = imagejpeg($resized, $target, 86);
+            $saved = imagejpeg($resized, $target, 90);
     }
     imagedestroy($resized);
 

@@ -21,6 +21,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($eventName === '') {
             $errors[] = 'Type the name of the event (for example: Form Four Graduation 2026).';
         }
+        // Year of the event (required): the Photos page shows one year at a time.
+        $eventYear = (int) ($_POST['event_year'] ?? 0);
+        if (!in_array($eventYear, gallery_year_choices(), true)) {
+            $errors[] = 'Choose the year of the event.';
+        } elseif ($eventDate !== '' && (int) substr($eventDate, 0, 4) !== $eventYear) {
+            $errors[] = 'The event date (' . $eventDate . ') is not in the year you chose (' . $eventYear . '). Please fix the year or the date.';
+        }
 
         $folderFiles = normalize_uploaded_files_field($_FILES['gallery_folder'] ?? null);
         $singleFile  = normalize_uploaded_files_field($_FILES['gallery_single_file'] ?? null);
@@ -32,8 +39,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if (empty($errors)) {
             $insert = $pdo->prepare(
-                "INSERT INTO gallery_items (title, event_name, event_date, media_type, file_name, file_path, file_size, original_name)
-                 VALUES (:title, :event_name, :event_date, :media_type, :file_name, :file_path, :file_size, :original_name)"
+                "INSERT INTO gallery_items (title, event_name, event_date, event_year, media_type, file_name, file_path, file_size, original_name)
+                 VALUES (:title, :event_name, :event_date, :event_year, :media_type, :file_name, :file_path, :file_size, :original_name)"
             );
 
             $useTypedTitle = (count($files) === 1 && $title !== '');
@@ -49,6 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'title'         => $itemTitle,
                     'event_name'    => $eventName,
                     'event_date'    => $eventDate !== '' ? $eventDate : null,
+                    'event_year'    => $eventYear,
                     'media_type'    => $fileData['media_type'],
                     'file_name'     => $fileData['file_name'],
                     'file_path'     => $fileData['file_path'],
@@ -89,7 +97,7 @@ include __DIR__ . '/../includes/admin-header.php';
 ?>
 
 <h1>Upload Gallery</h1>
-<p class="muted">Add photos and videos to The Latest. Type the event name and date, then choose the folder (or one file).</p>
+<p class="muted">Add photos and videos to The Latest. Type the event name, choose the year (and date), then choose the folder (or one file).</p>
 
 <?php $justUploaded = flash_get_uploaded_gallery_items(); ?>
 <?php if (!empty($justUploaded)): ?>
@@ -126,6 +134,15 @@ include __DIR__ . '/../includes/admin-header.php';
         <?php endforeach; ?>
     </datalist>
     <p class="field-hint">All photos of one event become ONE album on the Photos page, with this name written on the photos. Type an existing name to add photos to that album.</p>
+
+    <label for="event_year">Year of the event (required)</label>
+    <?php $pickedYear = (int) ($_POST['event_year'] ?? date('Y')); ?>
+    <select id="event_year" name="event_year" required>
+        <?php foreach (gallery_year_choices() as $y): ?>
+            <option value="<?= $y ?>"<?= $y === $pickedYear ? ' selected' : '' ?>><?= $y ?></option>
+        <?php endforeach; ?>
+    </select>
+    <p class="field-hint">On the Photos page visitors choose a year and see only that year's events. The year is also written after the event name on the photos (for example "Form Four Graduation <?= (int) date('Y') ?>").</p>
 
     <label for="event_date">Event date</label>
     <input type="date" id="event_date" name="event_date" value="<?= e($_POST['event_date'] ?? '') ?>">

@@ -90,34 +90,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'reset
     redirect(base_url() . '/admin/manage-users.php');
 }
 
-// ---- Handle role change (promote/demote) ----
+// Promote/Demote removed (owner 2026-11-07): teacher accounts stay Staff; no button, and the old action is refused.
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'set_role') {
-    if (!csrf_verify()) {
-        flash_set('error', 'Your session expired. Please try again.');
-    } else {
-        $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
-        $newRole = $_POST['role'] ?? '';
-        if ($id && in_array($newRole, ['admin', 'staff'], true)) {
-            if ($id === (int) $_SESSION['admin_id']) {
-                flash_set('error', 'You cannot change your own role.');
-            } else {
-                // Never allow the last remaining Admin to be demoted.
-                if ($newRole === 'staff') {
-                    $adminCount = (int) $pdo->query("SELECT COUNT(*) AS total FROM admins WHERE role = 'admin'")->fetch()['total'];
-                    $target = $pdo->prepare('SELECT role FROM admins WHERE id = :id');
-                    $target->execute(['id' => $id]);
-                    $targetRole = $target->fetchColumn();
-                    if ($targetRole === 'admin' && $adminCount <= 1) {
-                        flash_set('error', 'You cannot demote the last remaining Admin account.');
-                        redirect(base_url() . '/admin/manage-users.php');
-                    }
-                }
-                $update = $pdo->prepare('UPDATE admins SET role = :role WHERE id = :id');
-                $update->execute(['role' => $newRole, 'id' => $id]);
-                flash_set('success', 'Account role updated successfully.');
-            }
-        }
-    }
+    flash_set('error', 'Changing an account to Admin is not allowed.');
     redirect(base_url() . '/admin/manage-users.php');
 }
 
@@ -159,7 +134,7 @@ include __DIR__ . '/../includes/admin-header.php';
 <p class="muted">Only you (Super Admin) create accounts: there is no public register page. A new account gets
 username and temporary password = the teacher's first name in small letters (e.g. ERICK SOLOMON MAHOO &rarr; <strong>erick</strong> / <strong>erick</strong>).
 On the first login the teacher must choose a new password.
-Teachers (Staff) upload notes and exam papers only. Only Admin accounts upload photos/videos, manage the slideshow and delete.</p>
+Teachers (Staff) upload notes and exam papers only. Only the Super Admin uploads photos/videos, manages the slideshow and deletes.</p>
 
 <div class="adm-card">
     <div class="adm-card-head">Create a teacher account</div>
@@ -224,15 +199,6 @@ $missing = array_values(array_filter($listNames, fn ($n) => !in_array(username_f
                     <td data-label="Created"><?= e(format_date($account['created_at'])) ?></td>
                     <td data-label="Actions" class="actions-cell">
                         <?php if (!$isSelf): ?>
-                            <form method="post" action="" class="inline-form">
-                                <input type="hidden" name="action" value="set_role">
-                                <input type="hidden" name="id" value="<?= (int) $account['id'] ?>">
-                                <input type="hidden" name="role" value="<?= $account['role'] === 'admin' ? 'staff' : 'admin' ?>">
-                                <?= csrf_field() ?>
-                                <button type="submit" class="btn btn-outline btn-small">
-                                    <?= $account['role'] === 'admin' ? 'Demote to Staff' : 'Promote to Admin' ?>
-                                </button>
-                            </form>
                             <form method="post" action="" class="inline-form" onsubmit="return confirm('Reset this password to the temporary one (first name)?');">
                                 <input type="hidden" name="action" value="reset_password">
                                 <input type="hidden" name="id" value="<?= (int) $account['id'] ?>">

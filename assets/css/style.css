@@ -2525,40 +2525,80 @@ body.nav-open .assistant-widget { display: none; }
 .photo-tile:nth-child(7n + 5) { grid-column: span 2; }
 .photo-tile { cursor: zoom-in; }
 
-/* Date + event name written on the photo, over a soft dark shade. */
+/* Event name (with its year) written at the TOP of the photo in an elegant
+   serif, the date under it, over a soft dark shade (owner 2026-11-07). */
 .media-label {
     position: absolute;
     left: 0;
     right: 0;
-    bottom: 0;
+    top: 0;
     display: flex;
     flex-direction: column;
-    gap: 4px;
-    padding: 70px 24px 22px;
-    background: linear-gradient(to top, rgba(10, 8, 30, 0.82) 0%, rgba(10, 8, 30, 0.45) 55%, rgba(10, 8, 30, 0) 100%);
+    gap: 6px;
+    padding: 22px 24px 70px;
+    background: linear-gradient(to bottom, rgba(10, 8, 30, 0.8) 0%, rgba(10, 8, 30, 0.42) 55%, rgba(10, 8, 30, 0) 100%);
     color: var(--white);
     pointer-events: none;
 }
+.media-title {
+    font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+    font-size: 1.5rem;
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: 0.005em;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+}
+/* Short gold line under the name, then the date. */
+.media-title::after {
+    content: "";
+    display: block;
+    width: 46px;
+    height: 3px;
+    margin-top: 10px;
+    border-radius: 2px;
+    background: var(--gold, #F5B700);
+}
 .media-date {
     font-family: var(--font-heading);
-    font-size: 0.82rem;
+    font-size: 0.78rem;
     font-weight: 600;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
+    opacity: 0.92;
     text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
 }
-.media-title {
-    font-family: var(--font-heading);
-    font-size: 1.45rem;
-    font-weight: 700;
-    line-height: 1.12;
-    letter-spacing: -0.02em;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.45);
-}
 .album-card:first-child .media-title,
-.photo-tile:first-child .media-title { font-size: 2rem; }
-.photo-tile .media-label { padding: 50px 18px 16px; }
+.photo-tile:first-child .media-title { font-size: 2.2rem; }
+.photo-tile .media-label { padding: 16px 18px 50px; }
 .photo-tile:not(:first-child) .media-title { font-size: 1.1rem; }
+.photo-tile:not(:first-child) .media-title::after { width: 32px; margin-top: 7px; }
+
+/* Year drop-down above the albums, on the right like the reference. */
+.year-picker {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 26px;
+}
+.year-picker label { font-family: var(--font-heading); font-weight: 600; color: var(--navy); }
+.year-picker select {
+    width: 220px;
+    max-width: 60vw;
+    margin: 0;
+    padding: 10px 40px 10px 14px;
+    border: 2px solid var(--navy);
+    border-radius: 10px;
+    background: var(--white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%232A1F5E' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 14px center;
+    color: var(--navy);
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+}
+.year-picker select:focus { outline: 3px solid rgba(245, 183, 0, 0.5); outline-offset: 2px; }
 
 .album-back { margin: 0 0 18px; }
 .album-back a { font-family: var(--font-heading); font-weight: 600; color: var(--navy); text-decoration: none; }
@@ -2589,6 +2629,61 @@ body.nav-open .assistant-widget { display: none; }
     .photo-tile { border-radius: 16px; }
     .photo-tile:nth-child(7n + 5) { grid-column: span 2; }
     .photo-tile:not(:first-child) .media-label { display: none; }
-    .media-title, .album-card:first-child .media-title, .photo-tile:first-child .media-title { font-size: 1.35rem; }
+    .media-title, .album-card:first-child .media-title, .photo-tile:first-child .media-title { font-size: 1.4rem; }
+    .year-picker { justify-content: stretch; }
+    .year-picker select { flex: 1; width: auto; max-width: none; }
     .video-wall { grid-template-columns: 1fr; }
+}
+
+/* ---- Top bar: social buttons (yellow squares) + Staff Login, above the header ----
+   Buttons are listed in includes/navbar.php ($socialLinks). */
+.top-bar { background: var(--navy); }
+.top-bar-inner {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 6px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 14px;
+}
+.top-social { display: flex; align-items: center; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.top-social a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 9px;
+    background: var(--gold);
+    color: var(--navy);
+    transition: transform 0.15s ease, background 0.15s ease;
+}
+.top-social a:hover { background: var(--white); transform: translateY(-2px); }
+.top-social svg { width: 20px; height: 20px; fill: currentColor; }
+.top-login {
+    display: inline-flex;
+    align-items: center;
+    height: 32px;
+    padding: 0 14px;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 9px;
+    color: var(--white);
+    font-size: 0.85rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+.top-login:hover { background: var(--gold); border-color: var(--gold); color: var(--navy); }
+/* Computer: login now lives in the top bar, so hide the old one on the right of the logo row */
+@media (min-width: 1100.02px) {
+    .main-nav > ul > li.nav-auth { display: none; }
+    .site-header { border-top: 0; }
+}
+/* Phones: centre the bar, slightly smaller buttons */
+@media (max-width: 480px) {
+    .top-bar-inner { justify-content: center; padding: 6px 12px; gap: 10px; }
+    .top-social { gap: 8px; }
+    .top-social a { width: 30px; height: 30px; }
+    .top-social svg { width: 18px; height: 18px; }
+    .top-login { height: 30px; padding: 0 10px; font-size: 0.8rem; }
 }

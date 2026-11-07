@@ -20,24 +20,42 @@ try {
 }
 
 $albums = $type === 'image' ? gallery_albums($items) : [];
+
+// Year drop-down: one year at a time, newest year first (owner 2026-11-07).
+$years = gallery_years($albums);
+$year = (int) ($_GET['year'] ?? 0);
+if (!in_array($year, $years, true)) {
+    $year = $years[0] ?? (int) date('Y');
+}
+
 $album = null;
 if ($type === 'image' && $albumName !== '') {
     foreach ($albums as $a) {
-        if ($a['name'] === $albumName) {
+        // Old links have no year: then the newest album with that name is used.
+        if ($a['name'] === $albumName && (!isset($_GET['year']) || $a['year'] === $year)) {
             $album = $a;
+            break;
         }
     }
+    if ($album) {
+        $year = $album['year'];
+    }
 }
+$yearAlbums = array_values(array_filter($albums, fn ($a) => $a['year'] === $year));
 
 if ($type === 'video') {
     [$heading, $intro] = ['Videos', 'Videos from life at Namanga Secondary School.'];
 } elseif ($album) {
-    [$heading, $intro] = [$album['name'], trim(gallery_event_date($album['date']) . ' · ' . count($album['photos']) . ' photos', ' ·')];
+    [$heading, $intro] = [$album['title'], trim(gallery_event_date($album['date']) . ' · ' . count($album['photos']) . ' photos', ' ·')];
 } else {
-    [$heading, $intro] = ['Photos', 'Photos from life at Namanga Secondary School, by event.'];
+    [$heading, $intro] = ['Photos', 'Photos from life at Namanga Secondary School, by event and year.'];
 }
 $pageTitle = $heading . ' | The Latest | Namanga Secondary School';
-$pageDescription = $type === 'video' ? $intro : ($album ? $album['name'] . ' — photos from Namanga Secondary School.' : $intro);
+$pageDescription = $type === 'video' ? $intro : ($album ? $album['title'] . ' — photos from Namanga Secondary School.' : $intro);
+
+// Sharp photos: phones and laptops with sharp screens get the bigger copy.
+$srcset = fn (string $path) => e($base) . '/' . e(optimized_image($path, 1200)) . ' 1200w, '
+    . e($base) . '/' . e(optimized_image($path, 2400)) . ' 2400w';
 include __DIR__ . '/includes/header.php';
 ?>
 
@@ -67,17 +85,19 @@ include __DIR__ . '/includes/header.php';
             </div>
 
         <?php elseif ($album): ?>
-            <p class="album-back"><a href="<?= e($base) ?>/gallery.php?type=image">&larr; All photo albums</a></p>
+            <p class="album-back"><a href="<?= e($base) ?>/gallery.php?type=image&amp;year=<?= (int) $album['year'] ?>">&larr; All <?= (int) $album['year'] ?> photo albums</a></p>
             <div class="photo-wall">
                 <?php foreach ($album['photos'] as $i => $item): ?>
-                    <?php $caption = $album['name'] . ' — photo ' . ($i + 1) . ' of ' . count($album['photos']); ?>
+                    <?php $caption = $album['title'] . ' — photo ' . ($i + 1) . ' of ' . count($album['photos']); ?>
                     <a href="<?= e($base) ?>/<?= e(optimized_image($item['file_path'], 2400)) ?>" target="_blank" rel="noopener"
                        class="photo-tile gallery-photo-link" data-title="<?= e($caption) ?>">
                         <img src="<?= e($base) ?>/<?= e(optimized_image($item['file_path'], 1200)) ?>"
+                             srcset="<?= $srcset($item['file_path']) ?>"
+                             sizes="(max-width: 600px) 50vw, (max-width: 1000px) 50vw, <?= $i === 0 ? '50vw' : '25vw' ?>"
                              alt="<?= e($caption) ?>" loading="lazy" decoding="async">
                         <span class="media-label">
+                            <span class="media-title"><?= e($album['title']) ?></span>
                             <?php if ($d = gallery_event_date($album['date'])): ?><span class="media-date"><?= e($d) ?></span><?php endif; ?>
-                            <span class="media-title"><?= e($album['name']) ?></span>
                         </span>
                     </a>
                 <?php endforeach; ?>
@@ -95,18 +115,35 @@ include __DIR__ . '/includes/header.php';
             <?php if ($albumName !== ''): ?>
                 <p class="empty-state">That album was not found. Here are all the photo albums.</p>
             <?php endif; ?>
+            <form method="get" action="<?= e($base) ?>/gallery.php" class="year-picker">
+                <input type="hidden" name="type" value="image">
+                <label for="year-select">Year</label>
+                <select id="year-select" name="year" onchange="this.form.submit()">
+                    <?php foreach ($years as $y): ?>
+                        <option value="<?= (int) $y ?>"<?= $y === $year ? ' selected' : '' ?>><?= (int) $y ?></option>
+                    <?php endforeach; ?>
+                </select>
+                <noscript><button type="submit" class="btn btn-primary btn-small">Show</button></noscript>
+            </form>
+
+            <?php if (empty($yearAlbums)): ?>
+                <p class="empty-state">No photos for <?= (int) $year ?> yet.</p>
+            <?php else: ?>
             <div class="album-wall">
-                <?php foreach ($albums as $a): ?>
-                    <a href="<?= e($base) ?>/gallery.php?type=image&amp;album=<?= e(rawurlencode($a['name'])) ?>" class="album-card">
+                <?php foreach ($yearAlbums as $i => $a): ?>
+                    <a href="<?= e($base) ?>/gallery.php?type=image&amp;year=<?= (int) $a['year'] ?>&amp;album=<?= e(rawurlencode($a['name'])) ?>" class="album-card">
                         <img src="<?= e($base) ?>/<?= e(optimized_image($a['cover']['file_path'], 1200)) ?>"
-                             alt="<?= e($a['name']) ?>" loading="lazy" decoding="async">
+                             srcset="<?= $srcset($a['cover']['file_path']) ?>"
+                             sizes="(max-width: 600px) 100vw, (max-width: 1000px) 50vw, <?= $i === 0 ? '50vw' : '25vw' ?>"
+                             alt="<?= e($a['title']) ?>" loading="lazy" decoding="async">
                         <span class="media-label">
+                            <span class="media-title"><?= e($a['title']) ?></span>
                             <span class="media-date"><?= e(gallery_event_date($a['date']) ?: count($a['photos']) . (count($a['photos']) === 1 ? ' PHOTO' : ' PHOTOS')) ?></span>
-                            <span class="media-title"><?= e($a['name']) ?></span>
                         </span>
                     </a>
                 <?php endforeach; ?>
             </div>
+            <?php endif; ?>
         <?php endif; ?>
     </div>
 </section>
