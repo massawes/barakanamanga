@@ -9,8 +9,8 @@ if ($id) {
     $stmt = $pdo->prepare('SELECT * FROM resources WHERE id = :id LIMIT 1');
     $stmt->execute(['id' => $id]);
     $resource = $stmt->fetch();
-    // Summary was removed from the website: treat its files as not found.
-    if ($resource && $resource['resource_type'] === 'summary') {
+    // Summary, Software and Other Subjects were removed from the website: treat its files as not found.
+    if ($resource && in_array($resource['resource_type'], HIDDEN_TYPES, true)) {
         $resource = null;
     }
 }

@@ -27,7 +27,6 @@ $navLinks = [
     'notes.php'     => 'Notes',
     'theory.php'    => 'Theory Past Papers',
     'practical.php' => 'Form 4 Practical',
-    'software.php'  => 'Software',
     'gallery.php'   => [
         'label' => 'The Latest',
         'children' => [
@@ -46,8 +45,6 @@ $navLinks = [
             'https://namangaresults.freepage.cc' => 'Student Result System',
         ],
     ],
-    'upload-task.php' => 'Upload Tasks',
-    // 'others.php'  => 'Other Subjects', // reachable from the homepage card and footer
     // 'contact.php' => 'Contact', // temporarily removed from navigation
 ];
 ?>

@@ -22,8 +22,6 @@
                 <li><a href="<?= e($base) ?>/notes.php">Notes</a></li>
                 <li><a href="<?= e($base) ?>/theory.php">Theory Past Papers</a></li>
                 <li><a href="<?= e($base) ?>/practical.php">Form 4 Practical</a></li>
-                <li><a href="<?= e($base) ?>/software.php">Software</a></li>
-                <li><a href="<?= e($base) ?>/others.php">Other Subjects</a></li>
                 <li><a href="<?= e($base) ?>/gallery.php">The Latest</a></li>
             </ul>
         </div>

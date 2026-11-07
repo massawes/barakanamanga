@@ -4,9 +4,9 @@ require_admin_login();
 require_admin_role(); // Not shown/usable by Staff ("normal") accounts — Admin only.
 
 $typeFilter = $_GET['type'] ?? '';
-$sql = "SELECT * FROM resources WHERE resource_type <> 'summary'"; // Summary removed (2026-11-07)
+$sql = "SELECT * FROM resources WHERE resource_type NOT IN ('summary', 'software', 'others')"; // removed sections (2026-11-07)
 $params = [];
-if (in_array($typeFilter, VALID_TYPES, true)) {
+if (in_array($typeFilter, array_diff(VALID_TYPES, HIDDEN_TYPES), true)) {
     $sql .= ' AND resource_type = :type';
     $params['type'] = $typeFilter;
 }
@@ -27,7 +27,7 @@ include __DIR__ . '/../includes/admin-header.php';
 
 <div class="filter-tabs">
     <a href="<?= e($base) ?>/admin/manage-resources.php" class="<?= $typeFilter === '' ? 'active' : '' ?>">All</a>
-    <?php foreach (array_diff(VALID_TYPES, ['summary']) as $type): ?>
+    <?php foreach (array_diff(VALID_TYPES, HIDDEN_TYPES) as $type): ?>
         <a href="<?= e($base) ?>/admin/manage-resources.php?type=<?= e($type) ?>"
            class="<?= $typeFilter === $type ? 'active' : '' ?>"><?= e(type_label($type)) ?></a>
     <?php endforeach; ?>

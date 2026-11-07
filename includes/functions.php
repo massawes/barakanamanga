@@ -259,6 +259,9 @@ function type_label(string $type): string
 
 const VALID_FORMS = ['form1', 'form2', 'form3', 'form4'];
 const VALID_TYPES = ['notes', 'summary', 'theory', 'practical', 'software', 'others'];
+
+// Sections removed from the website (owner, 2026-11-07). Their files and rows are kept but never shown.
+const HIDDEN_TYPES = ['summary', 'software', 'others'];
 const RESOURCES_PER_PAGE = 12;
 
 // ------------------------------------------------------------

@@ -25,8 +25,6 @@ $statBoxes = [
     [$counts['notes'], 'Notes', 'notes', 'adm-box-sky', 'upload-notes.php'],
     [$counts['theory'], 'Theory Papers', 'theory', 'adm-box-gold', 'upload-theory.php'],
     [$counts['practical'], 'Practical Papers', 'practical', 'adm-box-red', 'upload-practical.php'],
-    [$counts['software'], 'Software', 'software', 'adm-box-navy', 'upload-software.php'],
-    [$counts['others'], 'Other Subjects', 'others', 'adm-box-pink', 'upload-others.php'],
     [$galleryCount, 'Gallery Items', 'gallery', 'adm-box-teal', 'manage-gallery.php'],
 ];
 ?>
@@ -53,8 +51,6 @@ $statBoxes = [
         <a href="<?= e($base) ?>/admin/upload-notes.php" class="btn btn-primary">+ Add Notes</a>
         <a href="<?= e($base) ?>/admin/upload-theory.php" class="btn btn-primary">+ Add Theory Paper</a>
         <a href="<?= e($base) ?>/admin/upload-practical.php" class="btn btn-primary">+ Add Practical</a>
-        <a href="<?= e($base) ?>/admin/upload-software.php" class="btn btn-primary">+ Add Software</a>
-        <a href="<?= e($base) ?>/admin/upload-others.php" class="btn btn-primary">+ Add Others</a>
         <a href="<?= e($base) ?>/admin/upload-gallery.php" class="btn btn-primary">+ Add Gallery</a>
         <?php if (is_admin_role()): ?>
         <a href="<?= e($base) ?>/admin/manage-resources.php" class="btn btn-outline">Manage Resources</a>

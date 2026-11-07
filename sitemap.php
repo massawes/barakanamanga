@@ -19,14 +19,11 @@ $staticPages = [
     ['loc' => '/notes.php', 'priority' => '0.8'],
     ['loc' => '/theory.php', 'priority' => '0.8'],
     ['loc' => '/practical.php', 'priority' => '0.8'],
-    ['loc' => '/software.php', 'priority' => '0.7'],
-    ['loc' => '/others.php', 'priority' => '0.6'],
     ['loc' => '/gallery.php', 'priority' => '0.6'],
     ['loc' => '/about.php', 'priority' => '0.7'],
     ['loc' => '/mission-vision.php', 'priority' => '0.6'],
     ['loc' => '/history.php', 'priority' => '0.6'],
     ['loc' => '/our-students.php', 'priority' => '0.6'],
-    ['loc' => '/tasks.php', 'priority' => '0.6'],
     ['loc' => '/contact.php', 'priority' => '0.5'],
 ];
 

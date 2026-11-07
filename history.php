@@ -66,7 +66,7 @@ include __DIR__ . '/includes/header.php';
                         <span class="timeline-year">2026</span>
                         <h3>Our school goes online</h3>
                         <p>The school launches its official website, giving students free access to notes,
-                        past papers, software and NECTA results.</p>
+                        past papers and NECTA results.</p>
                     </div>
                 </div>
             </div>

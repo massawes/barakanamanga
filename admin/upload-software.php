@@ -2,6 +2,9 @@
 require_once __DIR__ . '/../includes/bootstrap.php';
 require_admin_login();
 
+// This section was removed from the website (owner, 2026-11-07).
+redirect(base_url() . '/admin/dashboard.php');
+
 $errors = [];
 $failures = [];
 $successCount = 0;

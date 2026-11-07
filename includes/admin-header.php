@@ -15,8 +15,6 @@ $adminMenu['upload'] = ['Upload', 'upload', [
     'upload-notes'     => ['Notes', 'upload-notes.php'],
     'upload-theory'    => ['Theory Paper', 'upload-theory.php'],
     'upload-practical' => ['Practical', 'upload-practical.php'],
-    'upload-software'  => ['Software', 'upload-software.php'],
-    'upload-others'    => ['Others', 'upload-others.php'],
     'upload-gallery'   => ['Gallery', 'upload-gallery.php'],
 ]];
 $manageLinks = [];

@@ -35,8 +35,6 @@ $resourceCards = [
     'notes'     => ['notes.php', 'Notes', 'TIE textbooks, syllabus and past papers for every subject, Form 1 to Form 4.', $counts['notes'], 'file', 'View Notes'],
     'theory'    => ['theory.php', 'Theory Past Papers', 'Complete theory examination papers organised by Form and year.', $counts['theory'], 'file', 'View Papers'],
     'practical' => ['practical.php', 'Form 4 Practical', 'Complete Form 4 computer practical examination papers.', $counts['practical'], 'file', 'View Practicals'],
-    'software'  => ['software.php', 'Software', 'Educational and programming software used in ICT lessons.', $counts['software'], 'item', 'View Software'],
-    'others'    => ['others.php', 'Other Subjects', 'Resources for other subjects beyond ICT and Computer Science.', $counts['others'], 'file', 'View Other Subjects'],
     'gallery'   => ['gallery.php', 'Gallery', 'Photos and videos from life at Namanga Secondary School.', $galleryCount, 'item', 'View Gallery'],
 ];
 
@@ -48,7 +46,7 @@ $faculty = [
 ];
 
 $pageTitle = 'Namanga Secondary School Website | Longido, Arusha, Tanzania';
-$pageDescription = 'Official website of Namanga Secondary School, a government secondary school in Namanga, Longido District, Arusha, Tanzania. Free ICT & Computer Science notes, past papers, NECTA results and software for Form 1 to Form 4.';
+$pageDescription = 'Official website of Namanga Secondary School, a government secondary school in Namanga, Longido District, Arusha, Tanzania. Free ICT & Computer Science notes, past papers and NECTA results for Form 1 to Form 4.';
 $base = base_url();
 include __DIR__ . '/includes/header.php';
 ?>
@@ -127,7 +125,7 @@ include __DIR__ . '/includes/header.php';
             <p>In 2024 the school opened a new girls' dormitory, built with support from the Legal Services
             Facility (LSF) and Luxembourg's North-South Cooperation, giving girls a safe place to live and study.</p>
             <p>This website is the school's home online. Here students can download notes,
-            theory and practical past papers and educational software, and find the school's
+            theory and practical past papers, and find the school's
             <a href="<?= e($base) ?>/results.php">NECTA Form 2 and Form 4 results</a>.</p>
         </div>
         <ul class="feature-grid">

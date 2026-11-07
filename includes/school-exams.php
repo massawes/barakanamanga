@@ -83,6 +83,13 @@ function school_exams(): array
     if ($data === null) {
         $file = __DIR__ . '/school-exams-data.php';
         $data = is_file($file) ? require $file : [];
+        // Papers moved from the old "Other Subjects" section.
+        $extra = __DIR__ . '/school-exams-extra.php';
+        foreach (is_file($extra) ? require $extra : [] as $form => $subjects) {
+            foreach ($subjects as $subject => $papers) {
+                $data[$form][$subject] = array_merge($data[$form][$subject] ?? [], $papers);
+            }
+        }
     }
     return $data;
 }

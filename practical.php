@@ -171,11 +171,6 @@ include __DIR__ . '/includes/header.php';
                             Internal Exams <span class="card-count"><?= $internalCount ?> paper<?= $internalCount === 1 ? '' : 's' ?></span>
                         </a>
                     </li>
-                    <li>
-                        <a href="<?= e($base) ?>/tasks.php?form=form4">
-                            Student Tasks <span class="card-count"><?= $taskCount ?> task<?= $taskCount === 1 ? '' : 's' ?></span>
-                        </a>
-                    </li>
                 </ul>
             </div>
 
