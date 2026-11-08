@@ -20,12 +20,12 @@ try {
 }
 
 // Homepage slideshow images, managed from admin/manage-slides.php.
-// If none have been uploaded yet, the hero falls back to a plain navy banner.
+// If none have been uploaded yet, the slider shows the school photos.
 $slides = [];
 try {
     $slides = $pdo->query('SELECT * FROM hero_slides ORDER BY sort_order ASC, id ASC')->fetchAll();
 } catch (Exception $e) {
-    // hero_slides table not created yet (older installs) — fail quietly, plain banner shows instead.
+    // hero_slides table not created yet (older installs) — fail quietly, school photos show instead.
 }
 
 
@@ -51,53 +51,40 @@ $base = base_url();
 include __DIR__ . '/includes/header.php';
 ?>
 
-<section class="hero">
-    <?php // Slideshow photos fill the whole hero, behind the text. ?>
-    <?php if (!empty($slides)): ?>
-        <div class="hero-slideshow" aria-hidden="true">
-            <?php foreach ($slides as $i => $slide): ?>
-                <?php $slideUrl = $base . '/' . optimized_image($slide['image_path'], 2400); ?>
-                <?php if ($i === 0): ?>
-                    <div class="hero-slide active" style="background-image: url('<?= e($slideUrl) ?>');"></div>
-                <?php else: ?>
-                    <?php // Later slides load just before they are shown (see script.js). ?>
-                    <div class="hero-slide" data-bg="<?= e($slideUrl) ?>"></div>
-                <?php endif; ?>
+<?php // Slideshow of photos only (owner 2026-11-08): arrows, dots, changes by itself every 5 seconds. ?>
+<?php
+$slideUrls = [];
+foreach ($slides as $slide) {
+    $slideUrls[] = $base . '/' . optimized_image($slide['image_path'], 2400);
+}
+if (!$slideUrls) {
+    // No slides uploaded yet: show the school photos instead.
+    foreach (['assembly.jpg', 'ceremony.jpg', 'students-red.jpg'] as $photo) {
+        $slideUrls[] = $base . '/assets/images/school/' . $photo;
+    }
+}
+?>
+<section class="slider" aria-label="School photos" aria-roledescription="carousel">
+    <h1 class="visually-hidden">Namanga Secondary School</h1>
+    <div class="slider-track">
+        <?php foreach ($slideUrls as $i => $slideUrl): ?>
+            <?php if ($i === 0): ?>
+                <div class="slider-slide active" style="background-image: url('<?= e($slideUrl) ?>');" role="group" aria-label="Photo 1 of <?= count($slideUrls) ?>"></div>
+            <?php else: ?>
+                <?php // Later photos load just before they are shown (see script.js). ?>
+                <div class="slider-slide" data-bg="<?= e($slideUrl) ?>" role="group" aria-label="Photo <?= $i + 1 ?> of <?= count($slideUrls) ?>"></div>
+            <?php endif; ?>
+        <?php endforeach; ?>
+    </div>
+    <?php if (count($slideUrls) > 1): ?>
+        <button type="button" class="slider-btn slider-prev" aria-label="Previous photo">&#10094;</button>
+        <button type="button" class="slider-btn slider-next" aria-label="Next photo">&#10095;</button>
+        <div class="slider-dots">
+            <?php foreach ($slideUrls as $i => $slideUrl): ?>
+                <button type="button" class="slider-dot<?= $i === 0 ? ' active' : '' ?>" aria-label="Show photo <?= $i + 1 ?>"></button>
             <?php endforeach; ?>
         </div>
     <?php endif; ?>
-    <div class="hero-shade" aria-hidden="true"></div>
-
-    <div class="hero-inner">
-        <div class="hero-content">
-            <span class="hero-badge">Welcome to</span>
-            <h1 class="hero-title">
-                <span class="hero-title-white">Namanga</span>
-                <span class="hero-title-gold">Secondary School</span>
-            </h1>
-            <p class="hero-motto">&ldquo;Education for Liberty and Prosperity&rdquo;</p>
-            <p class="hero-text">A center of excellence in education, nurturing knowledge, discipline and future leaders.</p>
-            <div class="hero-buttons">
-                <a href="#resources" class="btn btn-hero btn-hero-gold">Explore Resources <span aria-hidden="true">&rarr;</span></a>
-                <a href="<?= e($base) ?>/about.php" class="btn btn-hero btn-hero-outline">About Us</a>
-            </div>
-        </div>
-
-        <ul class="hero-card">
-            <li>
-                <span class="hero-card-icon"><?= svg_icon('school', 'icon-svg') ?></span>
-                <span><strong>Quality Education</strong><small>For a Brighter Future</small></span>
-            </li>
-            <li>
-                <span class="hero-card-icon"><?= svg_icon('students', 'icon-svg') ?></span>
-                <span><strong>Supportive Community</strong><small>Students &middot; Teachers &middot; Parents</small></span>
-            </li>
-            <li>
-                <span class="hero-card-icon"><?= svg_icon('star', 'icon-svg') ?></span>
-                <span><strong>Our Goal</strong><small>Knowledge &middot; Discipline &middot; Success</small></span>
-            </li>
-        </ul>
-    </div>
 </section>
 
 <section id="resources" class="resource-cards">

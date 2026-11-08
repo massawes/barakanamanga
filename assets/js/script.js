@@ -105,28 +105,51 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 6000);
     });
 
-    // Homepage hero slideshow — cross-fades through the images uploaded
-    // in admin/manage-slides.php. Pure CSS opacity transition, no library.
-    // Only the first photo is downloaded with the page; each later one is
-    // fetched a few seconds before its turn, so the homepage opens fast.
-    var slides = document.querySelectorAll('.hero-slide');
-    var loadSlide = function (slide) {
-        var url = slide && slide.getAttribute('data-bg');
-        if (url) {
-            slide.style.backgroundImage = "url('" + url + "')";
-            slide.removeAttribute('data-bg');
-        }
-    };
+    // Homepage slideshow (photos only): changes by itself every 5 seconds;
+    // arrows, dots and a finger swipe move it by hand. Only the first photo
+    // is downloaded with the page; each later one a little before its turn.
+    var slider = document.querySelector('.slider');
+    var slides = slider ? slider.querySelectorAll('.slider-slide') : [];
     if (slides.length > 1) {
+        var dots = slider.querySelectorAll('.slider-dot');
         var current = 0;
-        setTimeout(function () { loadSlide(slides[1]); }, 1500);
-        setInterval(function () {
+        var timer = null;
+        var loadSlide = function (slide) {
+            var url = slide && slide.getAttribute('data-bg');
+            if (url) {
+                slide.style.backgroundImage = "url('" + url + "')";
+                slide.removeAttribute('data-bg');
+            }
+        };
+        var show = function (index) {
+            index = (index + slides.length) % slides.length;
             slides[current].classList.remove('active');
-            current = (current + 1) % slides.length;
+            if (dots[current]) dots[current].classList.remove('active');
+            current = index;
             loadSlide(slides[current]);
             slides[current].classList.add('active');
+            if (dots[current]) dots[current].classList.add('active');
             loadSlide(slides[(current + 1) % slides.length]);
-        }, 5000);
+        };
+        var restart = function () {
+            clearInterval(timer);
+            timer = setInterval(function () { show(current + 1); }, 5000);
+        };
+        setTimeout(function () { loadSlide(slides[1]); loadSlide(slides[slides.length - 1]); }, 1500);
+        slider.querySelector('.slider-prev').addEventListener('click', function () { show(current - 1); restart(); });
+        slider.querySelector('.slider-next').addEventListener('click', function () { show(current + 1); restart(); });
+        dots.forEach(function (dot, i) {
+            dot.addEventListener('click', function () { show(i); restart(); });
+        });
+        var touchX = null;
+        slider.addEventListener('touchstart', function (e) { touchX = e.touches[0].clientX; }, { passive: true });
+        slider.addEventListener('touchend', function (e) {
+            if (touchX === null) return;
+            var dx = e.changedTouches[0].clientX - touchX;
+            touchX = null;
+            if (Math.abs(dx) > 40) { show(dx < 0 ? current + 1 : current - 1); restart(); }
+        });
+        restart();
     }
 
     // Show/hide password toggle (the "eye" icon) — works on any password

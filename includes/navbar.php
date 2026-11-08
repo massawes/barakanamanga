@@ -78,6 +78,18 @@ $socialLinks = [
         <?php endif; ?>
     </div>
 </div>
+<?php // Big white header (owner 2026-11-08, like atc.ac.tz): coat of arms | names + motto | school logo. ?>
+<div class="gov-header">
+    <a class="gov-header-inner" href="<?= e($base) ?>/index.php">
+        <img src="<?= e($base) ?>/assets/images/coat-of-arms.png" alt="Coat of arms of Tanzania" class="gov-arms" width="240" height="278">
+        <span class="gov-text">
+            <span class="gov-country">The United Republic of Tanzania</span>
+            <span class="gov-school">Namanga Secondary School</span>
+            <span class="gov-motto">Education for Liberty and Prosperity</span>
+        </span>
+        <img src="<?= e($base) ?>/assets/images/logo-navy.png" alt="Namanga Secondary School logo" class="gov-logo" width="480" height="279">
+    </a>
+</div>
 <header class="site-header">
     <div class="navbar">
         <a class="brand" href="<?= e($base) ?>/index.php">
