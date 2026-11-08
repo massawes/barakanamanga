@@ -2858,3 +2858,28 @@ body.nav-open .assistant-widget { display: none; }
 @media (prefers-reduced-motion: reduce) {
     .slider-slide { transition: none; }
 }
+
+/* ---------------- Message from the Head of School (owner 2026-11-08, like atc.ac.tz) ---------------- */
+.head-message { padding: 48px 0 24px; }
+.head-message-box { background: #F3F7FB; padding: 28px 28px 32px; }
+.head-message-title { display: inline-block; margin: 0 0 24px; padding-top: 14px; border-top: 2px solid var(--navy); font-family: var(--font-heading); font-size: 1.3rem; font-weight: 600; color: var(--navy); letter-spacing: .01em; }
+.head-message-grid { display: grid; grid-template-columns: 200px 1fr; gap: 36px; align-items: start; }
+.head-message-person img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; object-position: top; border-radius: 10px; margin-bottom: 14px; }
+.head-message-name { display: block; color: var(--navy); font-family: var(--font-heading); font-size: 1rem; }
+.head-message-role { display: inline-block; margin-top: 4px; padding-bottom: 10px; border-bottom: 2px solid var(--gold); color: #444; }
+.head-message-text p { margin: 0 0 12px; text-align: justify; line-height: 1.7; color: #333; }
+.head-message-more { display: none; }
+.head-message-text.is-open .head-message-more { display: block; }
+.head-message-sign { text-align: center; margin: 22px 0 8px; }
+.head-message-sign em { display: block; font-weight: 600; color: #333; margin-bottom: 8px; }
+.head-message-sign strong { display: block; color: var(--navy); }
+.head-message-sign span { display: block; color: #333; }
+.head-message-toggle { margin-top: 6px; padding: 0; border: 0; background: none; color: var(--navy); font: inherit; font-weight: 600; text-decoration: underline; cursor: pointer; }
+.head-message-toggle:hover { color: var(--orange); }
+@media (max-width: 700px) {
+    .head-message { padding: 32px 0 16px; }
+    .head-message-box { padding: 20px 16px 24px; }
+    .head-message-grid { grid-template-columns: 1fr; gap: 20px; }
+    .head-message-person { max-width: 220px; }
+    .head-message-text p { text-align: left; }
+}

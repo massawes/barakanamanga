@@ -38,12 +38,8 @@ $resourceCards = [
     'gallery'   => ['gallery.php', 'Gallery', 'Photos and videos from life at Namanga Secondary School.', $galleryCount, 'item', 'View Gallery'],
 ];
 
-// "Our Great Faculties": [photo in assets/images/staff/, name, role].
-// Add a row here for each new staff photo.
-$faculty = [
-    // Head of School. Photo: save it as assets/images/staff/mtesigwa.jpg (until then his initials show).
-    ['mtesigwa.jpg', 'Mr. Mtesigwa N. Missana', 'Head of School'],
-];
+// Head of School: photo in assets/images/staff/, shown with his message right under the slideshow (owner 2026-11-08).
+$head = ['photo' => 'mtesigwa.jpg', 'name' => 'Mr. Mtesigwa N. Missana', 'role' => 'Head of School'];
 
 $pageTitle = 'Namanga Secondary School Website | Longido, Arusha, Tanzania';
 $pageDescription = 'Official website of Namanga Secondary School, a government secondary school in Namanga, Longido District, Arusha, Tanzania. Free ICT & Computer Science notes, past papers and NECTA results for Form 1 to Form 4.';
@@ -86,6 +82,54 @@ if (!$slideUrls) {
         </div>
     <?php endif; ?>
 </section>
+
+<section class="head-message" aria-labelledby="head-message-title">
+    <div class="container">
+        <div class="head-message-box">
+            <h2 id="head-message-title" class="head-message-title">MESSAGE FROM THE HEAD OF SCHOOL</h2>
+            <div class="head-message-grid">
+                <div class="head-message-person">
+                    <?php if (is_file(__DIR__ . '/assets/images/staff/' . $head['photo'])): ?>
+                        <img src="<?= e($base) ?>/assets/images/staff/<?= e($head['photo']) ?>" alt="<?= e($head['name'] . ', ' . $head['role']) ?>" width="480" height="600">
+                    <?php endif; ?>
+                    <strong class="head-message-name"><?= e($head['name']) ?></strong>
+                    <span class="head-message-role"><?= e($head['role']) ?></span>
+                </div>
+                <div class="head-message-text" id="head-message-text">
+                    <p>Welcome to Namanga Secondary School. On behalf of our teachers, support staff and students, I am pleased to welcome you to our website. Whether you are a student, a parent or guardian, a former student or a friend of the school, we are glad that you are here.</p>
+                    <p>Founded in 2007, Namanga Secondary School is a government, co-educational O-Level school in Namanga, Longido District, Arusha Region, right on the Tanzania&ndash;Kenya border. We serve boys and girls from Namanga and the surrounding Longido communities, including many Maasai families, from Form 1 to Form 4.</p>
+                    <div class="head-message-more">
+                        <p>Our motto, <em>&ldquo;Education for Liberty and Prosperity&rdquo;</em>, guides everything we do. We believe that a good education frees a young person to think, to make good choices and to build a better life for themselves, their families and their community.</p>
+                        <p>Our dedicated teachers follow the national curriculum and prepare our students carefully for the Form Two and Form Four national examinations set by NECTA. Beyond the classroom, we value discipline, respect, hard work, honesty and responsibility, and we encourage every student to take part in sports, clubs, cultural activities and service to the community.</p>
+                        <p>We give special attention to the education of girls. In 2024 the school opened a new girls&rsquo; dormitory, built with support from the Legal Services Facility (LSF) and Luxembourg&rsquo;s North&ndash;South Cooperation, giving our girls a safe place to live and study.</p>
+                        <p>This website is part of our commitment to learning. Here students can download free notes and past papers, parents can follow the life of the school and check their child&rsquo;s results through our <a href="https://namangaresults.freepage.cc" target="_blank" rel="noopener">Student Result System</a>, and everyone can learn more about Namanga Secondary School.</p>
+                        <p>Parents and guardians are our most important partners. I invite you to work closely with us: follow your child&rsquo;s progress, attend school meetings and keep in touch with the class teachers. Together we can help every student reach their full potential.</p>
+                        <p>To our students: use your time at Namanga well. Attend every lesson, respect your teachers and fellow students, ask questions, read widely and never give up. Your future is built by the effort you make today.</p>
+                        <p>Thank you for visiting our website. You are always welcome at Namanga Secondary School.</p>
+                        <div class="head-message-sign">
+                            <em>EDUCATION FOR LIBERTY AND PROSPERITY</em>
+                            <strong><?= e($head['name']) ?></strong>
+                            <span>HEAD OF SCHOOL</span>
+                        </div>
+                    </div>
+                    <button type="button" class="head-message-toggle" aria-expanded="false" aria-controls="head-message-text">Read More</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var box = document.getElementById('head-message-text');
+    var btn = box && box.querySelector('.head-message-toggle');
+    if (!btn) { return; }
+    btn.addEventListener('click', function () {
+        var open = box.classList.toggle('is-open');
+        btn.textContent = open ? 'Read Less' : 'Read More';
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+});
+</script>
 
 <section id="resources" class="resource-cards">
     <div class="container">
@@ -131,27 +175,6 @@ if (!$slideUrls) {
                 <p>Free notes, past papers and NECTA results on this website</p>
             </li>
         </ul>
-    </div>
-</section>
-
-<section class="faculty-section">
-    <div class="container">
-        <h2 class="section-title">Our Great Faculties</h2>
-        <p class="section-subtitle">Well experienced staff</p>
-        <div class="faculty-grid">
-            <?php foreach ($faculty as [$photo, $name, $role]): ?>
-                <div class="faculty-card">
-                    <?php if (is_file(__DIR__ . '/assets/images/staff/' . $photo)): ?>
-                        <img src="<?= e($base) ?>/assets/images/staff/<?= e($photo) ?>" alt="<?= e($name . ', ' . $role) ?>" loading="lazy" width="640" height="800">
-                    <?php else: ?>
-                        <?php // No photo yet: show a coloured box with the initials (Mtesigwa Missana = MM). ?>
-                        <div class="faculty-initials" aria-hidden="true"><?= e(implode('', array_map(fn ($w) => $w[0], array_slice(array_values(array_filter(explode(' ', preg_replace('/^(Mr|Mrs|Ms|Dr)\.\s*/', '', $name)), fn ($w) => strlen($w) > 2)), 0, 2)))) ?></div>
-                    <?php endif; ?>
-                    <h3 class="faculty-name"><?= e($name) ?></h3>
-                    <p class="faculty-role"><?= e($role) ?></p>
-                </div>
-            <?php endforeach; ?>
-        </div>
     </div>
 </section>
 
