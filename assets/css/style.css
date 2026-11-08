@@ -2687,3 +2687,26 @@ body.nav-open .assistant-widget { display: none; }
     .top-social svg { width: 18px; height: 18px; }
     .top-login { height: 30px; padding: 0 10px; font-size: 0.8rem; }
 }
+
+/* ---------------- Footer layout (owner 2026-11-08: like the reference picture) ---------------- */
+.site-footer { background: #1565C0; color: #fff; }
+.site-footer a { color: #fff; }
+.footer-content { grid-template-columns: 1fr 1.35fr 1.6fr .9fr; gap: 32px; padding: 48px 20px 40px; }
+.site-footer h4 { color: #fff; font-family: inherit; font-size: 1.05rem; font-weight: 700; letter-spacing: .02em; margin-bottom: 18px; }
+.footer-brand .footer-logo { height: 100px; }
+.footer-brand .footer-motto { color: #fff; font-style: normal; font-size: .95rem; }
+.footer-contact p { margin: 0 0 12px; line-height: 1.9; }
+.footer-contact a[href^="mailto"] { white-space: nowrap; }
+.footer-links ul { list-style: none; margin: 0; padding: 0; }
+.footer-links li { position: relative; padding-left: 16px; margin-bottom: 10px; line-height: 1.35; }
+.footer-links li::before { content: ""; position: absolute; left: 0; top: .5em; width: 6px; height: 6px; border-top: 2px solid #fff; border-right: 2px solid #fff; transform: rotate(45deg); }
+.footer-social-icons { list-style: none; display: flex; gap: 10px; margin: 16px 0 0; padding: 0; }
+.footer-social-icons li { margin: 0; }
+.footer-social-icons a { width: 38px; height: 38px; border-radius: 50%; background: rgba(255,255,255,.15); display: flex; align-items: center; justify-content: center; transition: background .2s; }
+.footer-social-icons a:hover { background: var(--gold); }
+.footer-social-icons svg { width: 17px; height: 17px; fill: #fff; }
+.footer-bottom { background: var(--navy); color: #fff; border-top: 0; padding: 22px 20px; font-size: .95rem; }
+.footer-bottom p { margin: 4px 0; }
+.footer-bottom strong { color: var(--gold); }
+@media (max-width: 900px) { .footer-content { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 560px) { .footer-content { grid-template-columns: 1fr; } .footer-contact a[href^="mailto"] { white-space: normal; word-break: break-all; } }

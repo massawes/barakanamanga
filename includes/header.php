@@ -44,6 +44,7 @@ $isHome = $canonical === SITE_URL . '/';
             'identifier' => ['@type' => 'PropertyValue', 'propertyID' => 'NECTA centre number', 'value' => 'S2911'],
             'url' => SITE_URL . '/',
             'telephone' => '+255695389537',
+            'email' => 'namangasecondary@gmail.com',
             'logo' => SITE_URL . '/assets/images/logo-square.png',
             'image' => [
                 SITE_URL . '/assets/images/school/students-red.jpg',

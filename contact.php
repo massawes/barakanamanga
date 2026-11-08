@@ -20,7 +20,9 @@ include __DIR__ . '/includes/header.php';
             <h3>Namanga Secondary School</h3>
             <p><strong>Department:</strong> ICT &amp; Computer Science</p>
             <p><strong>Location:</strong> Namanga, Longido District, Arusha Region, Tanzania</p>
-            <p class="note">Phone and email details can be added here by the school administration.</p>
+            <p><strong>Address:</strong> P.O. Box 8560, Namanga, Arusha - Tanzania</p>
+            <p><strong>Phone:</strong> <a href="tel:+255695389537">+255 695 389 537</a></p>
+            <p><strong>Email:</strong> <a href="mailto:namangasecondary@gmail.com">namangasecondary@gmail.com</a></p>
         </div>
     </div>
 </section>
