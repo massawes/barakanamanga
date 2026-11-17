@@ -62,6 +62,10 @@ $socialLinks = [
 ?>
 <div class="top-bar">
     <div class="top-bar-inner">
+        <a href="tel:+255695389537" class="top-phone" aria-label="Call 0695 389 537">
+            <span class="top-phone-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.02-.24 11.36 11.36 0 0 0 3.57.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1.02l-2.2 2.2z"/></svg></span>
+            <span>0695389537</span>
+        </a>
         <ul class="top-social" aria-label="Follow Namanga Secondary School">
             <?php foreach ($socialLinks as $socialName => [$socialUrl, $socialPath]): ?>
                 <li>

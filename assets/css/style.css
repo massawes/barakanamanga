@@ -2883,3 +2883,14 @@ body.nav-open .assistant-widget { display: none; }
     .head-message-person { max-width: 220px; }
     .head-message-text p { text-align: left; }
 }
+
+/* Top bar (owner 2026-11-17): phone number + social buttons + login, all in the CENTRE */
+.top-bar-inner { justify-content: center; flex-wrap: wrap; }
+.top-phone { display: inline-flex; align-items: center; gap: 8px; color: var(--white); font-weight: 700; font-size: 0.95rem; white-space: nowrap; text-decoration: none; }
+.top-phone-icon { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 9px; background: var(--gold); color: var(--navy); }
+.top-phone-icon svg { width: 18px; height: 18px; fill: currentColor; }
+.top-phone:hover .top-phone-icon { background: var(--white); }
+@media (max-width: 480px) {
+    .top-phone { font-size: 0.85rem; gap: 6px; }
+    .top-phone-icon { width: 30px; height: 30px; }
+}
