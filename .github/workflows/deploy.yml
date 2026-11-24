@@ -70,6 +70,7 @@ jobs:
             **/.git*/**
             .github/**
             README.md
+            CLAUDE.md
             DOCKER.md
             Dockerfile
             docker-compose.yml
