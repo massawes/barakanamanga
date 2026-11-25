@@ -22,7 +22,7 @@ jobs:
           KEY=$(openssl rand -hex 24); NAME="_vpsmove_$(openssl rand -hex 8).php"
           echo "::add-mask::$KEY"
           sed "s/__KEY__/$KEY/" .github/vps-move/dump.php > "$NAME"
-          FTP="lftp -u ${{ vars.FTP_USERNAME }},$FTP_PASS ${{ vars.FTP_SERVER }}"
+          SRV=$(printf %s "${{ vars.FTP_SERVER }}" | tr -d "[:space:]"); FTP="lftp -u ${{ vars.FTP_USERNAME }},$FTP_PASS $SRV"
           $FTP -e "set ftp:ssl-allow no; put $NAME -o /htdocs/$NAME; bye"
           trap '$FTP -e "set ftp:ssl-allow no; rm -f /htdocs/$NAME; bye"; echo removed temp file' EXIT
           U="https://namangawebsite.freepage.cc/$NAME?k=$KEY"
@@ -39,7 +39,8 @@ jobs:
         env:
           FTP_PASS: ${{ secrets.FTP_PASSWORD }}
         run: |
-          lftp -u "${{ vars.FTP_USERNAME }},$FTP_PASS" "${{ vars.FTP_SERVER }}" -e "
+          SRV=$(printf %s "${{ vars.FTP_SERVER }}" | tr -d "[:space:]")
+          lftp -u "${{ vars.FTP_USERNAME }},$FTP_PASS" "$SRV" -e "
             set ftp:ssl-allow no; set net:max-retries 5; set net:timeout 60;
             mirror --parallel=4 /htdocs/uploads copy/uploads;
             get -e /htdocs/config/ai.php -o copy/ai.php;
