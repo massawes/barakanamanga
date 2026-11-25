@@ -36,3 +36,9 @@ so the owner can continue from any terminal. The owner writes Swahili: reply in 
   Anything uploaded on InfinityFree after 2026-11-25 20:16 is NOT on the VPS (copy again the same way if needed).
 - 2026-11-17: last site work (top bar phone number; Head of School message under the slideshow).
 - 2026-11-24: CLAUDE.md added (and excluded from the FTP deploy). No code change.
+- 2026-11-25 (late): **Google moved to namangasecondary.sc.tz.** SITE_URL (includes/functions.php), robots.txt, schema
+  alternateName and all result links now use the new domain. Old `deploy.yml` (full FTP deploy) REMOVED; new
+  `redirect-old-site.yml` puts a 301 .htaccess on InfinityFree (google*.html verification file stays reachable).
+  Search Console (owner's Google account): new URL-prefix property https://namangasecondary.sc.tz/ (auto-verified by the
+  HTML file), sitemap submitted, **Change of address** freepage.cc -> namangasecondary.sc.tz CONFIRMED.
+  deploy.sh now sends only files changed since the last deploy (~20 s); `bash deploy.sh --full` for everything.
