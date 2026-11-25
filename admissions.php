@@ -83,7 +83,7 @@ include __DIR__ . '/includes/header.php';
                 <h2 class="school-h2">Questions about joining?</h2>
                 <p>For transfers from another school, or any question about admission, please contact the school
                 office. Transfers between government schools follow the procedures of the Ministry and TAMISEMI.</p>
-                <p><strong>Phone:</strong> <a href="tel:+255695389537">+255 695 389 537</a><br>
+                <p><strong>Phone:</strong> <a href="tel:+255755958326">+255 755 958 326</a><br>
                 <strong>Email:</strong> <a href="mailto:namanga@longido.dc.go.tz">namanga@longido.dc.go.tz</a><br>
                 <strong>Address:</strong> P.O. Box 6560, Namanga, Arusha &ndash; Tanzania</p>
                 <a href="<?= e(site_link('contact.php')) ?>" class="btn btn-outline">Contact the school</a>

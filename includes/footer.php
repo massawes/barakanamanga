@@ -11,7 +11,7 @@
         <div class="footer-contact">
             <h4>CONTACT US</h4>
             <p>Namanga Secondary School<br>P.O. Box 6560, Namanga<br>Longido District<br>Arusha - Tanzania</p>
-            <p><strong>Phone:</strong> <a href="tel:+255695389537">+255 695 389 537</a><br>
+            <p><strong>Phone:</strong> <a href="tel:+255755958326">+255 755 958 326</a><br>
             <strong>Email:</strong> <a href="mailto:namanga@longido.dc.go.tz">namanga@longido.dc.go.tz</a></p>
             <?php if (!empty($socialLinks)): ?>
                 <ul class="footer-social-icons">

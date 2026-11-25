@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/includes/bootstrap.php';
 $pageTitle = 'Contact Us | Namanga Secondary School';
-$pageDescription = 'Contact Namanga Secondary School: P.O. Box 6560 Namanga, Longido District, Arusha, Tanzania. Phone +255 695 389 537, email namanga@longido.dc.go.tz.';
+$pageDescription = 'Contact Namanga Secondary School: P.O. Box 6560 Namanga, Longido District, Arusha, Tanzania. Phone +255 755 958 326, email namanga@longido.dc.go.tz.';
 $base = base_url();
 include __DIR__ . '/includes/header.php';
 ?>
@@ -22,8 +22,8 @@ include __DIR__ . '/includes/header.php';
             </div>
             <div class="contact-card">
                 <h3><?= svg_icon('chat', 'icon-svg icon-svg-small') ?> Phone &amp; WhatsApp</h3>
-                <p><a href="tel:+255695389537">+255 695 389 537</a></p>
-                <p><a class="btn btn-gold btn-small" href="https://wa.me/255695389537?text=Habari%20Namanga%20Secondary%20School" target="_blank" rel="noopener">Chat on WhatsApp</a></p>
+                <p><a href="tel:+255755958326">+255 755 958 326</a></p>
+                <p><a class="btn btn-gold btn-small" href="https://wa.me/255755958326?text=Habari%20Namanga%20Secondary%20School" target="_blank" rel="noopener">Chat on WhatsApp</a></p>
             </div>
             <div class="contact-card">
                 <h3><?= svg_icon('send', 'icon-svg icon-svg-small') ?> Email</h3>
