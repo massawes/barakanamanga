@@ -21,19 +21,19 @@ function maintenance_gate(): void
     }
     $code = trim((string) @file_get_contents($flag));
     $signedInStaff = !empty($_SESSION['admin_id']);
-    if ($code !== '' && ($signedInStaff || hash_equals($code, (string) ($_GET['preview'] ?? '')))) {
+    $previewCookieOk = $code !== '' && hash_equals($code, (string) ($_COOKIE['nss_preview'] ?? ''));
+    if ($code !== '' && ($signedInStaff || $previewCookieOk || hash_equals($code, (string) ($_GET['preview'] ?? '')))) {
         // One preview works on both websites (school + masomo.): the cookie is shared by all
         // *.namangasecondary.sc.tz addresses. Its name is unique, so the other systems ignore it.
-        // Signed-in staff get it too, so they can move between the two websites.
-        if (($_COOKIE['nss_preview'] ?? '') !== $code || isset($_GET['preview'])) {
-            $host = strtolower(preg_replace('/:\d+$/', '', (string) ($_SERVER['HTTP_HOST'] ?? '')));
-            $shared = $host === 'namangasecondary.sc.tz' || str_ends_with($host, '.namangasecondary.sc.tz');
-            setcookie('nss_preview', $code, ['expires' => time() + 30 * 86400, 'path' => '/', 'domain' => $shared ? '.namangasecondary.sc.tz' : '',
-                'secure' => true, 'httponly' => true, 'samesite' => 'Lax']);
-        }
+        // Always (re)issued, so an older cookie that only worked on one address is upgraded,
+        // and signed-in staff can move between the two websites.
+        $host = strtolower(preg_replace('/:\d+$/', '', (string) ($_SERVER['HTTP_HOST'] ?? '')));
+        $shared = $host === 'namangasecondary.sc.tz' || str_ends_with($host, '.namangasecondary.sc.tz');
+        setcookie('nss_preview', $code, ['expires' => time() + 30 * 86400, 'path' => '/', 'domain' => $shared ? '.namangasecondary.sc.tz' : '',
+            'secure' => true, 'httponly' => true, 'samesite' => 'Lax']);
         return;
     }
-    if ($signedInStaff || ($code !== '' && hash_equals($code, (string) ($_COOKIE['nss_preview'] ?? '')))) {
+    if ($signedInStaff) {
         return;
     }
 
