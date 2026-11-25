@@ -21,7 +21,6 @@ if (!is_portal()) {
         ['loc' => '/admissions.php', 'priority' => '0.8'],
         ['loc' => '/results.php', 'priority' => '0.8'],
         ['loc' => '/announcements.php', 'priority' => '0.7'],
-        ['loc' => '/mission-vision.php', 'priority' => '0.6'],
         ['loc' => '/history.php', 'priority' => '0.6'],
         ['loc' => '/our-students.php', 'priority' => '0.6'],
         ['loc' => '/gallery.php', 'priority' => '0.6'],

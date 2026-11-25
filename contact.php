@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/includes/bootstrap.php';
 $pageTitle = 'Contact Us | Namanga Secondary School';
-$pageDescription = 'Contact Namanga Secondary School: P.O. Box 8560 Namanga, Longido District, Arusha, Tanzania. Phone +255 695 389 537, email namangasecondary@gmail.com.';
+$pageDescription = 'Contact Namanga Secondary School: P.O. Box 6560 Namanga, Longido District, Arusha, Tanzania. Phone +255 695 389 537, email namanga@longido.dc.go.tz.';
 $base = base_url();
 include __DIR__ . '/includes/header.php';
 ?>
@@ -18,7 +18,7 @@ include __DIR__ . '/includes/header.php';
         <div class="contact-grid">
             <div class="contact-card">
                 <h3><?= svg_icon('pin', 'icon-svg icon-svg-small') ?> Address</h3>
-                <p>Namanga Secondary School<br>P.O. Box 8560, Namanga<br>Longido District, Arusha Region<br>Tanzania</p>
+                <p>Namanga Secondary School<br>P.O. Box 6560, Namanga<br>Longido District, Arusha Region<br>Tanzania</p>
             </div>
             <div class="contact-card">
                 <h3><?= svg_icon('chat', 'icon-svg icon-svg-small') ?> Phone &amp; WhatsApp</h3>
@@ -27,7 +27,7 @@ include __DIR__ . '/includes/header.php';
             </div>
             <div class="contact-card">
                 <h3><?= svg_icon('send', 'icon-svg icon-svg-small') ?> Email</h3>
-                <p><a href="mailto:namangasecondary@gmail.com">namangasecondary@gmail.com</a></p>
+                <p><a href="mailto:namanga@longido.dc.go.tz">namanga@longido.dc.go.tz</a></p>
                 <p class="note">For results, use the <a href="https://results.namangasecondary.sc.tz">Student Result System</a>.</p>
             </div>
         </div>

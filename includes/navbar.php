@@ -38,7 +38,6 @@ if (is_portal()) {
             'label' => 'About Us',
             'children' => [
                 'about.php'          => 'About the School',
-                'mission-vision.php' => 'Mission & Vision',
                 'history.php'        => 'Our History',
                 'our-students.php'   => 'Student Life',
             ],

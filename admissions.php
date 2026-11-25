@@ -84,8 +84,8 @@ include __DIR__ . '/includes/header.php';
                 <p>For transfers from another school, or any question about admission, please contact the school
                 office. Transfers between government schools follow the procedures of the Ministry and TAMISEMI.</p>
                 <p><strong>Phone:</strong> <a href="tel:+255695389537">+255 695 389 537</a><br>
-                <strong>Email:</strong> <a href="mailto:namangasecondary@gmail.com">namangasecondary@gmail.com</a><br>
-                <strong>Address:</strong> P.O. Box 8560, Namanga, Arusha &ndash; Tanzania</p>
+                <strong>Email:</strong> <a href="mailto:namanga@longido.dc.go.tz">namanga@longido.dc.go.tz</a><br>
+                <strong>Address:</strong> P.O. Box 6560, Namanga, Arusha &ndash; Tanzania</p>
                 <a href="<?= e(site_link('contact.php')) ?>" class="btn btn-outline">Contact the school</a>
             </div>
             <div class="split-media">

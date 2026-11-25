@@ -2,7 +2,6 @@
 // Tab row shown at the top of every "Our School" page.
 $schoolPages = [
     'about.php'          => ['About Us', 'school'],
-    'mission-vision.php' => ['Mission & Vision', 'target'],
     'history.php'        => ['Our History', 'history'],
     'our-students.php'   => ['Our Students', 'students'],
 ];

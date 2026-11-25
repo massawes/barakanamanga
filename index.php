@@ -96,7 +96,7 @@ if (!$slideUrls) {
                 </div>
                 <div class="head-message-text" id="head-message-text">
                     <p>Welcome to Namanga Secondary School. On behalf of our teachers, support staff and students, I am pleased to welcome you to our website. Whether you are a student, a parent or guardian, a former student or a friend of the school, we are glad that you are here.</p>
-                    <p>Founded in 2007, Namanga Secondary School is a government, co-educational O-Level school in Namanga, Longido District, Arusha Region, right on the Tanzania&ndash;Kenya border. We serve boys and girls from Namanga and the surrounding Longido communities, including many Maasai families, from Form 1 to Form 4.</p>
+                    <p>Namanga Secondary School is a government, co-educational O-Level school in Namanga, Longido District, Arusha Region, right on the Tanzania&ndash;Kenya border. We serve boys and girls from Namanga and the surrounding Longido communities, including many Maasai families, from Form 1 to Form 4.</p>
                     <div class="head-message-more">
                         <p>Our motto, <em>&ldquo;Education for Liberty and Prosperity&rdquo;</em>, guides everything we do. We believe that a good education frees a young person to think, to make good choices and to build a better life for themselves, their families and their community.</p>
                         <p>Our dedicated teachers follow the national curriculum and prepare our students carefully for the Form Two and Form Four national examinations set by NECTA. Beyond the classroom, we value discipline, respect, hard work, honesty and responsibility, and we encourage every student to take part in sports, clubs, cultural activities and service to the community.</p>
@@ -147,7 +147,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <section class="school-glance" aria-label="The school at a glance">
     <div class="container">
         <div class="facts-band">
-            <div class="fact"><span class="fact-value">2007</span><span class="fact-label">Year founded</span></div>
+            <div class="fact"><span class="fact-value">Longido</span><span class="fact-label">District, Arusha Region</span></div>
             <div class="fact"><span class="fact-value">S2911</span><span class="fact-label">NECTA centre number</span></div>
             <div class="fact"><span class="fact-value">Form 1&ndash;4</span><span class="fact-label">O-Level, boys &amp; girls</span></div>
             <div class="fact"><span class="fact-value"><?= school_subject_count() ?></span><span class="fact-label">Subjects taught</span></div>
@@ -227,9 +227,9 @@ document.addEventListener('DOMContentLoaded', function () {
         <div class="location-grid">
             <div class="location-info">
                 <h3>Namanga Secondary School</h3>
-                <p>P.O. Box 8560, Namanga<br>Longido District, Arusha Region, Tanzania</p>
+                <p>P.O. Box 6560, Namanga<br>Longido District, Arusha Region, Tanzania</p>
                 <p><strong>Phone:</strong> <a href="tel:+255695389537">+255 695 389 537</a><br>
-                <strong>Email:</strong> <a href="mailto:namangasecondary@gmail.com">namangasecondary@gmail.com</a></p>
+                <strong>Email:</strong> <a href="mailto:namanga@longido.dc.go.tz">namanga@longido.dc.go.tz</a></p>
                 <a class="btn btn-gold" href="https://www.google.com/maps/dir/?api=1&amp;destination=Namanga+Secondary+School%2C+Namanga%2C+Tanzania" target="_blank" rel="noopener">Get directions</a>
             </div>
             <div class="map-frame">

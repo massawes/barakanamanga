@@ -147,7 +147,7 @@ function gallery_years(array $albums): array
     return $years;
 }
 
-/** Years an admin can pick when uploading: next year down to 2007 (the school was founded in 2007). */
+/** Years an admin can pick when uploading: next year down to 2007 (oldest past papers on the site). */
 function gallery_year_choices(): array
 {
     return range((int) date('Y') + 1, 2007);

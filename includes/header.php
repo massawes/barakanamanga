@@ -42,11 +42,10 @@ $isHome = $canonical === SITE_URL . '/';
             'description' => 'Secondary school in Namanga, Longido District, Arusha, Tanzania (NECTA centre S2911), offering Form 1 to Form 4 education. Motto: Education for Liberty and Prosperity.',
             'disambiguatingDescription' => 'The Tanzanian Namanga Secondary School in Longido District, Arusha Region (NECTA S2911), not the school of the same name in Namanga, Kenya.',
             'slogan' => 'Education for Liberty and Prosperity',
-            'foundingDate' => '2007',
             'identifier' => ['@type' => 'PropertyValue', 'propertyID' => 'NECTA centre number', 'value' => 'S2911'],
             'url' => SCHOOL_URL . '/',
             'telephone' => '+255695389537',
-            'email' => 'namangasecondary@gmail.com',
+            'email' => 'namanga@longido.dc.go.tz',
             'logo' => SCHOOL_URL . '/assets/images/logo-square.png',
             'image' => [
                 SCHOOL_URL . '/assets/images/school/students-red.jpg',
@@ -55,7 +54,7 @@ $isHome = $canonical === SITE_URL . '/';
             ],
             'address' => [
                 '@type' => 'PostalAddress',
-                'postOfficeBoxNumber' => 'P.O. Box 8560',
+                'postOfficeBoxNumber' => 'P.O. Box 6560',
                 'streetAddress' => 'Namanga, Longido District',
                 'addressLocality' => 'Namanga',
                 'addressRegion' => 'Arusha',

@@ -29,8 +29,7 @@ include __DIR__ . '/includes/header.php';
                 <p>We serve boys and girls from Namanga and the surrounding Longido communities,
                 including many Maasai families, and offer O-Level education from Form 1 to Form 4,
                 preparing students for the national FTNA (Form Two) and CSEE (Form Four) examinations.</p>
-                <p>Our motto, <strong>&ldquo;Education for Liberty and Prosperity&rdquo;</strong>, reflects our
-                belief that a good education opens the door to a free and prosperous future.</p>
+                <p>Our motto: <strong>&ldquo;Education for Liberty and Prosperity&rdquo;</strong>.</p>
             </div>
             <div class="split-media">
                 <div class="photo-frame">
@@ -71,7 +70,6 @@ include __DIR__ . '/includes/header.php';
                 <h2 class="school-h2">Get to know our school</h2>
             </div>
             <div class="photo-cards-grid">
-                <?= render_photo_card($base . '/mission-vision.php', 'about-mission', 'Mission & Vision', 'What we work for every day, and the values that guide us.', null, 'Read more') ?>
                 <?= render_photo_card($base . '/history.php', 'about-history', 'Our History', 'How our school has grown with the Namanga community.', null, 'Read more') ?>
                 <?= render_photo_card($base . '/our-students.php', 'about-students', 'Our Students', 'Student life, learning and activities at Namanga.', null, 'Read more') ?>
             </div>
