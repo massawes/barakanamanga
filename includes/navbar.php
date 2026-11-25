@@ -40,6 +40,7 @@ if (is_portal()) {
                 'about.php'          => 'About the School',
                 'history.php'        => 'Our History',
                 'our-students.php'   => 'Student Life',
+                'alumni.php'         => 'Alumni',
             ],
         ],
         'academics.php'  => 'Academics',

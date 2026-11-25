@@ -49,6 +49,7 @@
                     <li><a href="<?= e(site_link('admissions.php')) ?>">Admissions</a></li>
                     <li><a href="<?= e(site_link('announcements.php')) ?>">News &amp; Announcements</a></li>
                     <li><a href="<?= e(site_link('gallery.php')) ?>">Gallery</a></li>
+                    <li><a href="<?= e(site_link('alumni.php')) ?>">Alumni (former students)</a></li>
                     <li><a href="<?= e(other_site_home()) ?>">Student Portal (Masomo)</a></li>
                 <?php endif; ?>
                 <li><a href="<?= e($base) ?>/admin/login.php">Staff Login</a></li>

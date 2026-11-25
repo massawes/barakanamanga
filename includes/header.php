@@ -94,5 +94,6 @@ $isHome = $canonical === SITE_URL . '/';
 <link rel="stylesheet" href="<?= e(base_url()) ?>/assets/css/style.css?v=<?= (int) @filemtime(__DIR__ . '/../assets/css/style.css') ?>">
 </head>
 <body>
+<?= maintenance_banner() ?>
 <?php include __DIR__ . '/navbar.php'; ?>
 <main>

@@ -9,12 +9,23 @@
  * These still work normally: staff who are signed in, everything under /admin/ (so staff can sign in),
  * the sitemap, and anyone who opened the site once with ?preview=<code in config/maintenance.on>.
  */
+/** Red strip at the top of every page for staff / preview viewers while maintenance is ON. */
+function maintenance_banner(): string
+{
+    if (empty($GLOBALS['nss_maintenance_on'])) {
+        return '';
+    }
+    return '<div class="maintenance-strip" role="status">MAINTENANCE MODE IMEWASHWA &mdash; wageni wanaona ukurasa wa &ldquo;Tovuti iko kwenye maboresho&rdquo;. Wewe unaona website kwa sababu umeingia / una preview.</div>';
+}
+
 function maintenance_gate(): void
 {
     $flag = __DIR__ . '/../config/maintenance.on';
     if (!is_file($flag) || PHP_SAPI === 'cli') {
         return;
     }
+    // Staff / preview viewers still see the site, with a red strip saying maintenance is ON (see maintenance_banner()).
+    $GLOBALS['nss_maintenance_on'] = true;
     $script = str_replace('\\', '/', $_SERVER['SCRIPT_NAME'] ?? '');
     if (str_contains($script, '/admin/') || str_contains($script, '/api/') || basename($script) === 'sitemap.php') {
         return;

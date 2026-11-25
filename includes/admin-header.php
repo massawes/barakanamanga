@@ -28,8 +28,10 @@ if (is_admin_role()) {
     $adminMenu['manage'] = ['Manage', 'manage', [
         'manage'         => ['Resources', 'manage-resources.php'],
         'manage-gallery' => ['Gallery', 'manage-gallery.php'],
-        'manage-slides'  => ['Homepage Slideshow', 'manage-slides.php'],
+        'manage-slides'  => ['Homepage Photo', 'manage-slides.php'],
         'manage-announcements' => ['Announcements / News', 'manage-announcements.php'],
+        'manage-departments'   => ['Departments (Heads)', 'manage-departments.php'],
+        'manage-alumni'        => ['Alumni', 'manage-alumni.php'],
     ]];
 }
 if (is_super_admin()) {
@@ -61,6 +63,7 @@ foreach ($adminMenu as $key => [$label, , $target]) {
 <link rel="stylesheet" href="<?= e($base) ?>/assets/css/style.css?v=<?= (int) @filemtime(__DIR__ . '/../assets/css/style.css') ?>">
 </head>
 <body class="admin-body<?= $loggedIn ? '' : ' adm-guest' ?>">
+<?= maintenance_banner() ?>
 <?php if ($loggedIn): ?>
 <aside class="adm-sidebar" id="admSidebar">
     <a class="adm-brand" href="<?= e($base) ?>/admin/dashboard.php">

@@ -71,40 +71,48 @@ $base = base_url();
 include __DIR__ . '/includes/header.php';
 ?>
 
-<?php // Slideshow of photos only (owner 2026-11-08): arrows, dots, changes by itself every 5 seconds. ?>
 <?php
-$slideUrls = [];
-foreach ($slides as $slide) {
-    $slideUrls[] = $base . '/' . optimized_image($slide['image_path'], 2400);
-}
-if (!$slideUrls) {
-    // No slides uploaded yet: show the school photos instead.
-    foreach (['assembly.jpg', 'ceremony.jpg', 'students-red.jpg'] as $photo) {
-        $slideUrls[] = $base . '/assets/images/school/' . $photo;
-    }
-}
+// One big school photo instead of a slideshow (owner 2026-11-26, like ilboru.ac.tz): the FIRST photo in
+// Admin > Manage > Homepage Photo (manage-slides.php); the school photo when none is uploaded.
+$heroUrl = $slides
+    ? $base . '/' . optimized_image($slides[0]['image_path'], 2400)
+    : $base . '/assets/images/school/students-red.jpg';
+
+// Highlights under the photo. A real photo is used when the file exists in assets/images/school/,
+// otherwise an icon (no photo is shown that is not really of that place).
+$highlights = [
+    ['ict-student-1.jpg', 'practical', 'Best ICT Lab', 'Computer lessons in our ICT lab'],
+    ['science-lab.jpg', 'target', 'Science Labs', 'Physics, Chemistry and Biology practicals'],
+    ['ceremony.jpg', 'students', 'Skilled Teachers', 'Dedicated teachers for every subject'],
+];
 ?>
-<section class="slider" aria-label="School photos" aria-roledescription="carousel">
-    <h1 class="visually-hidden">Namanga Secondary School</h1>
-    <div class="slider-track">
-        <?php foreach ($slideUrls as $i => $slideUrl): ?>
-            <?php if ($i === 0): ?>
-                <div class="slider-slide active" style="background-image: url('<?= e($slideUrl) ?>');" role="group" aria-label="Photo 1 of <?= count($slideUrls) ?>"></div>
-            <?php else: ?>
-                <?php // Later photos load just before they are shown (see script.js). ?>
-                <div class="slider-slide" data-bg="<?= e($slideUrl) ?>" role="group" aria-label="Photo <?= $i + 1 ?> of <?= count($slideUrls) ?>"></div>
-            <?php endif; ?>
-        <?php endforeach; ?>
+<section class="hero-single" style="background-image: url('<?= e($heroUrl) ?>');" aria-label="Namanga Secondary School">
+    <div class="hero-single-overlay">
+        <div class="container">
+            <h1 class="hero-single-title">Namanga Secondary School</h1>
+            <p class="hero-single-motto">Education for Liberty and Prosperity</p>
+        </div>
     </div>
-    <?php if (count($slideUrls) > 1): ?>
-        <button type="button" class="slider-btn slider-prev" aria-label="Previous photo">&#10094;</button>
-        <button type="button" class="slider-btn slider-next" aria-label="Next photo">&#10095;</button>
-        <div class="slider-dots">
-            <?php foreach ($slideUrls as $i => $slideUrl): ?>
-                <button type="button" class="slider-dot<?= $i === 0 ? ' active' : '' ?>" aria-label="Show photo <?= $i + 1 ?>"></button>
+</section>
+
+<section class="highlights" aria-label="Highlights">
+    <div class="container">
+        <div class="highlights-grid">
+            <?php foreach ($highlights as [$photo, $icon, $title, $text]): ?>
+                <div class="highlight">
+                    <?php if (is_file(__DIR__ . '/assets/images/school/' . $photo)): ?>
+                        <img class="highlight-img" src="<?= e($base) ?>/assets/images/school/<?= e($photo) ?>" alt="<?= e($title) ?>" loading="lazy">
+                    <?php else: ?>
+                        <span class="highlight-img highlight-icon" aria-hidden="true"><?= svg_icon($icon, 'icon-svg') ?></span>
+                    <?php endif; ?>
+                    <div>
+                        <h2 class="highlight-title"><?= e($title) ?></h2>
+                        <p class="highlight-text"><?= e($text) ?></p>
+                    </div>
+                </div>
             <?php endforeach; ?>
         </div>
-    <?php endif; ?>
+    </div>
 </section>
 
 <section class="head-message" aria-labelledby="head-message-title">
@@ -176,6 +184,45 @@ document.addEventListener('DOMContentLoaded', function () {
             <div class="fact"><span class="fact-value">S2911</span><span class="fact-label">NECTA centre number</span></div>
             <div class="fact"><span class="fact-value">Form 1&ndash;4</span><span class="fact-label">O-Level, boys &amp; girls</span></div>
             <div class="fact"><span class="fact-value"><?= school_subject_count() ?></span><span class="fact-label">Subjects taught</span></div>
+        </div>
+    </div>
+</section>
+
+<?php $departments = school_departments($pdo); ?>
+<?php if ($departments): ?>
+<section class="home-departments" aria-labelledby="home-departments-title">
+    <div class="container">
+        <h2 class="section-title" id="home-departments-title">What We Learn</h2>
+        <p class="section-subtitle">Our subjects and departments<?= array_filter(array_column($departments, 'head_name')) ? ' &mdash; tap a subject to see its Head of Department' : '' ?></p>
+        <?= render_department_tiles($departments) ?>
+    </div>
+</section>
+<?php endif; ?>
+
+<section class="home-services" aria-labelledby="home-services-title">
+    <div class="container">
+        <h2 class="section-title" id="home-services-title">Services</h2>
+        <div class="services-grid">
+            <div class="service">
+                <span class="service-icon"><?= svg_icon('practical', 'icon-svg') ?></span>
+                <h3>ICT Lab &amp; e-Learning</h3>
+                <p>Computer lessons in our ICT lab, upgraded through the Wanawake Tunaweza project of the Legal Services Facility (LSF) and North&ndash;South Cooperation.</p>
+            </div>
+            <div class="service">
+                <span class="service-icon"><?= svg_icon('school', 'icon-svg') ?></span>
+                <h3>Girls&rsquo; Boarding</h3>
+                <p>A girls&rsquo; dormitory, opened in 2024, gives girls a safe place to live and focus on their studies.</p>
+            </div>
+            <div class="service">
+                <span class="service-icon"><?= svg_icon('notes', 'icon-svg') ?></span>
+                <h3>Student Portal</h3>
+                <p>Free notes, NECTA and school past papers and Form 4 practicals online at <a href="<?= e(other_site_home()) ?>">masomo.namangasecondary.sc.tz</a>.</p>
+            </div>
+            <div class="service">
+                <span class="service-icon"><?= svg_icon('results', 'icon-svg') ?></span>
+                <h3>Results Online</h3>
+                <p>Parents check their child&rsquo;s term and examination results at <a href="https://results.namangasecondary.sc.tz">results.namangasecondary.sc.tz</a>.</p>
+            </div>
         </div>
     </div>
 </section>

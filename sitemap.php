@@ -25,6 +25,7 @@ if (!is_portal()) {
         ['loc' => '/our-students.php', 'priority' => '0.6'],
         ['loc' => '/gallery.php', 'priority' => '0.6'],
         ['loc' => '/contact.php', 'priority' => '0.6'],
+        ['loc' => '/alumni.php', 'priority' => '0.5'],
     ];
     foreach (latest_announcements($pdo, 200) as $announcement) {
         $staticPages[] = ['loc' => '/announcements.php?id=' . (int) $announcement['id'], 'priority' => '0.5'];

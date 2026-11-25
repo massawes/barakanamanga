@@ -46,6 +46,10 @@ ensure_resource_owner_column($pdo);
 // Announcements / News for the school website (auto-created table, see includes/announcements.php).
 require_once __DIR__ . '/announcements.php';
 require_once __DIR__ . '/school-info.php';
+require_once __DIR__ . '/departments.php'; // Heads of Department (admin/manage-departments.php)
+ensure_departments_table($pdo);
+require_once __DIR__ . '/alumni.php';      // Alumni register (alumni.php, admin/manage-alumni.php)
+ensure_alumni_table($pdo);
 require_once __DIR__ . '/necta-results.php'; // NECTA results, updated automatically by cron/necta-check.php
 ensure_announcements_table($pdo);
 
