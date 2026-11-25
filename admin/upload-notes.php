@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../includes/bootstrap.php';
 require_admin_login();
+$ownerId = current_admin_id(); // saved with each upload: teachers may later edit/delete only their own files
 
 $errors = [];
 $failures = [];
@@ -28,8 +29,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if (empty($errors)) {
             $insert = $pdo->prepare(
-                "INSERT INTO resources (title, description, resource_type, form_level, file_name, file_path, file_size, original_name)
-                 VALUES (:title, NULL, 'notes', :form_level, :file_name, :file_path, :file_size, :original_name)"
+                "INSERT INTO resources (uploaded_by, title, description, resource_type, form_level, file_name, file_path, file_size, original_name)
+                 VALUES ({$ownerId}, :title, NULL, 'notes', :form_level, :file_name, :file_path, :file_size, :original_name)"
             );
 
             $useTypedTitle = (count($files) === 1 && $title !== '');

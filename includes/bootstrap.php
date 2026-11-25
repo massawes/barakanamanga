@@ -40,6 +40,9 @@ ensure_super_admin_setup($pdo);
 // that pre-date the Gallery feature — no manual SQL import needed).
 ensure_gallery_table_exists($pdo);
 
+// Who uploaded each resource (teachers may edit/delete only their own, see can_manage_resource()).
+ensure_resource_owner_column($pdo);
+
 // Announcements / News for the school website (auto-created table, see includes/announcements.php).
 require_once __DIR__ . '/announcements.php';
 require_once __DIR__ . '/school-info.php';

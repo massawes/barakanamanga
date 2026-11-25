@@ -1,6 +1,8 @@
 <?php
 require_once __DIR__ . '/../includes/bootstrap.php';
 require_admin_login();
+require_admin_role(); // owner 2026-11-26: teachers upload only notes, theory papers and practicals
+$ownerId = current_admin_id(); // saved with each upload: teachers may later edit/delete only their own files
 
 // This section was removed from the website (owner, 2026-11-07).
 redirect(base_url() . '/admin/dashboard.php');
@@ -26,8 +28,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if (empty($errors)) {
             $insert = $pdo->prepare(
-                "INSERT INTO resources (title, description, resource_type, form_level, file_name, file_path, file_size, original_name)
-                 VALUES (:title, NULL, 'others', NULL, :file_name, :file_path, :file_size, :original_name)"
+                "INSERT INTO resources (uploaded_by, title, description, resource_type, form_level, file_name, file_path, file_size, original_name)
+                 VALUES ({$ownerId}, :title, NULL, 'others', NULL, :file_name, :file_path, :file_size, :original_name)"
             );
 
             $useTypedTitle = (count($files) === 1 && $title !== '');

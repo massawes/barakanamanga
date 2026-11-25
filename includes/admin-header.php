@@ -22,6 +22,8 @@ if (is_admin_role()) {
     $uploadLinks['upload-gallery'] = ['Gallery (photos/videos)', 'upload-gallery.php'];
 }
 $adminMenu['upload'] = ['Upload', 'upload', $uploadLinks];
+// Everyone: the files they uploaded themselves (edit / delete their own only).
+$adminMenu['my-resources'] = ['My Uploads', 'manage', 'my-resources.php'];
 if (is_admin_role()) {
     $adminMenu['manage'] = ['Manage', 'manage', [
         'manage'         => ['Resources', 'manage-resources.php'],

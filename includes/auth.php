@@ -48,6 +48,46 @@ function username_for(string $fullName): string
     return preg_replace('/[^a-z0-9]/', '', temporary_password_for($fullName));
 }
 
+/** Id of the signed-in account (0 when nobody is signed in). */
+function current_admin_id(): int
+{
+    return (int) ($_SESSION['admin_id'] ?? 0);
+}
+
+/**
+ * Owner rule (owner 2026-11-26): Admins (admin + second) may edit or delete any resource;
+ * a teacher (Staff) only what they uploaded themselves (resources.uploaded_by).
+ */
+function can_manage_resource(array $resource): bool
+{
+    if (is_admin_role()) {
+        return true;
+    }
+    return current_admin_id() > 0 && (int) ($resource['uploaded_by'] ?? 0) === current_admin_id();
+}
+
+/** Where to go back after editing/deleting a resource: Admins to all resources, teachers to their own uploads. */
+function resource_list_url(): string
+{
+    return base_url() . '/admin/' . (is_admin_role() ? 'manage-resources.php' : 'my-resources.php');
+}
+
+/** Adds resources.uploaded_by (who uploaded each file) to an existing database. Old files have no owner: only Admins manage them. */
+function ensure_resource_owner_column(PDO $pdo): void
+{
+    try {
+        $has = (int) $pdo->query(
+            "SELECT COUNT(*) FROM information_schema.COLUMNS
+             WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'resources' AND COLUMN_NAME = 'uploaded_by'"
+        )->fetchColumn();
+        if ($has === 0) {
+            $pdo->exec('ALTER TABLE resources ADD COLUMN uploaded_by INT UNSIGNED NULL AFTER original_name, ADD KEY idx_uploaded_by (uploaded_by)');
+        }
+    } catch (Throwable $e) {
+        // Try again on a later request.
+    }
+}
+
 function current_admin_role(): string
 {
     return $_SESSION['admin_role'] ?? 'staff';

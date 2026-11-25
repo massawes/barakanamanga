@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../includes/bootstrap.php';
 require_admin_login();
+$ownerId = current_admin_id(); // saved with each upload: teachers may later edit/delete only their own files
 
 $errors = [];
 $failures = [];
@@ -26,8 +27,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Try to detect the exam year from each filename (e.g. "... 2026.pdf");
             // left NULL when the filename doesn't contain a plausible year.
             $insert = $pdo->prepare(
-                "INSERT INTO resources (title, description, resource_type, form_level, year, file_name, file_path, file_size, original_name)
-                 VALUES (:title, NULL, 'practical', 'form4', :year, :file_name, :file_path, :file_size, :original_name)"
+                "INSERT INTO resources (uploaded_by, title, description, resource_type, form_level, year, file_name, file_path, file_size, original_name)
+                 VALUES ({$ownerId}, :title, NULL, 'practical', 'form4', :year, :file_name, :file_path, :file_size, :original_name)"
             );
 
             $useTypedTitle = (count($files) === 1 && $title !== '');

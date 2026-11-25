@@ -5,7 +5,7 @@ require_admin_login();
 $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT) ?: filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
 if (!$id) {
     flash_set('error', 'Resource not found.');
-    redirect(base_url() . '/admin/manage-resources.php');
+    redirect(resource_list_url());
 }
 
 $stmt = $pdo->prepare('SELECT * FROM resources WHERE id = :id LIMIT 1');
@@ -14,7 +14,12 @@ $resource = $stmt->fetch();
 
 if (!$resource) {
     flash_set('error', 'Resource not found.');
-    redirect(base_url() . '/admin/manage-resources.php');
+    redirect(resource_list_url());
+}
+// Teachers may edit only what they uploaded themselves; Admins may edit everything.
+if (!can_manage_resource($resource)) {
+    flash_set('error', 'You can only edit the files you uploaded yourself.');
+    redirect(resource_list_url());
 }
 
 $errors = [];
@@ -100,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
 
             flash_set('success', 'Resource updated successfully.');
-            redirect(base_url() . '/admin/manage-resources.php');
+            redirect(resource_list_url());
         }
     }
     // Reload current values into $resource for redisplay on error.
@@ -163,7 +168,7 @@ include __DIR__ . '/../includes/admin-header.php';
     <p class="field-hint">Leave empty to keep the current file. No file size limit.</p>
 
     <button type="submit" class="btn btn-primary">Save Changes</button>
-    <a href="<?= e(base_url()) ?>/admin/manage-resources.php" class="btn btn-outline">Cancel</a>
+    <a href="<?= e(resource_list_url()) ?>" class="btn btn-outline">Cancel</a>
 </form>
 
 <?php include __DIR__ . '/../includes/admin-footer.php'; ?>
