@@ -29,7 +29,8 @@
                 <li><a href="https://www.moe.go.tz" target="_blank" rel="noopener">Ministry of Education, Science and Technology</a></li>
                 <li><a href="https://www.tamisemi.go.tz" target="_blank" rel="noopener">President's Office - Regional Administration and Local Government (TAMISEMI)</a></li>
                 <li><a href="https://www.tie.go.tz" target="_blank" rel="noopener">Tanzania Institute of Education (TIE)</a></li>
-                <li><a href="https://results.namangasecondary.sc.tz" target="_blank" rel="noopener">Student Result System</a></li>
+                <li><a href="https://results.namangasecondary.sc.tz" target="_blank" rel="noopener">Student Result System &mdash; results.namangasecondary.sc.tz</a></li>
+                <li><a href="https://masomo.namangasecondary.sc.tz">Student Portal (Masomo) &mdash; masomo.namangasecondary.sc.tz</a></li>
             </ul>
         </div>
 

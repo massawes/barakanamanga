@@ -34,9 +34,9 @@ $head = ['photo' => 'mtesigwa.jpg', 'name' => 'Mr. Mtesigwa N. Missana', 'role' 
 
 // Quick links for parents, students and visitors.
 $quickLinks = [
-    ['https://results.namangasecondary.sc.tz', 'results', 'Student Results', 'Term and examination results for parents and students.'],
+    ['https://results.namangasecondary.sc.tz', 'results', 'Student Results', 'Term and examination results for parents and students. results.namangasecondary.sc.tz'],
     [site_link('admissions.php'), 'students', 'Admissions', 'Joining Form One: selection, reporting and requirements.'],
-    [other_site_home(), 'notes', 'Student Portal', 'Free notes, past papers and practicals (Masomo).'],
+    [other_site_home(), 'notes', 'Student Portal', 'Free notes, past papers and practicals. masomo.namangasecondary.sc.tz'],
     [site_link('results.php'), 'star', 'NECTA Results', 'Our Form Two (FTNA) and Form Four (CSEE) results.'],
 ];
 
