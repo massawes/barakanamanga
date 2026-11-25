@@ -245,7 +245,9 @@ function base_url(): string
 // The one public address of the live site. Canonical links, the sitemap
 // and structured data always point here (even when browsing on XAMPP),
 // so Google only ever sees a single URL for each page.
-const SITE_URL = 'https://namangasecondary.sc.tz';
+// Two websites share this code (see includes/site.php): SITE_URL is the address of the one being viewed.
+require_once __DIR__ . '/site.php';
+define('SITE_URL', current_site_url());
 
 /**
  * Absolute public URL of the page being viewed, for <link rel="canonical">.

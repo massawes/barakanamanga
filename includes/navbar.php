@@ -13,39 +13,62 @@ $isCurrentLink = function (string $href) use ($currentPage): bool {
     return ($query['type'] ?? '') === ($_GET['type'] ?? '');
 };
 
-$navLinks = [
-    'index.php'     => 'Home',
-    'about.php'     => [
-        'label' => 'Our School',
-        'children' => [
-            'about.php'          => 'About Us',
-            'mission-vision.php' => 'Mission & Vision',
-            'history.php'        => 'Our History',
-            'our-students.php'   => 'Our Students',
+// Two websites (see includes/site.php): the school website tells people about the school;
+// the Student Portal (masomo.) holds the learning materials. Each has its own menu.
+// A page of the other website gets its full address automatically (site_link()).
+if (is_portal()) {
+    $navLinks = [
+        'index.php'     => 'Portal Home',
+        'notes.php'     => 'Notes',
+        'theory.php'    => 'Theory Past Papers',
+        'practical.php' => 'Form 4 Practical',
+        '#results'      => [
+            'label' => 'Results',
+            'children' => [
+                'https://results.namangasecondary.sc.tz' => 'Student Result System',
+                'results.php'                            => 'NECTA Results',
+            ],
         ],
-    ],
-    'notes.php'     => 'Notes',
-    'theory.php'    => 'Theory Past Papers',
-    'practical.php' => 'Form 4 Practical',
-    'gallery.php'   => [
-        'label' => 'The Latest',
-        'children' => [
-            'gallery.php?type=image' => 'Photos',
-            'gallery.php?type=video' => 'Videos',
+    ];
+    $siteSwitch = ['School Website', other_site_home()];
+} else {
+    $navLinks = [
+        'index.php'     => 'Home',
+        'about.php'     => [
+            'label' => 'About Us',
+            'children' => [
+                'about.php'          => 'About the School',
+                'mission-vision.php' => 'Mission & Vision',
+                'history.php'        => 'Our History',
+                'our-students.php'   => 'Student Life',
+            ],
         ],
-    ],
-    'results.php'   => 'Results',
-    // ICT Services has no page of its own: the label only opens the list.
-    // To add another service, add one more line under 'children'
-    // (a full https:// address opens in a new tab).
-    '#ict-services' => [
-        'label' => 'ICT Services',
-        'children' => [
-            'https://results.namangasecondary.sc.tz' => 'Student Result System',
+        'academics.php'  => 'Academics',
+        'admissions.php' => 'Admissions',
+        '#results'      => [
+            'label' => 'Results',
+            'children' => [
+                'results.php'                            => 'NECTA Results (Form 2 & 4)',
+                'https://results.namangasecondary.sc.tz' => 'Student Result System',
+            ],
         ],
-    ],
-    // 'contact.php' => 'Contact', // temporarily removed from navigation
-];
+        'announcements.php' => 'News',
+        'gallery.php'   => [
+            'label' => 'Gallery',
+            'children' => [
+                'gallery.php?type=image' => 'Photos',
+                'gallery.php?type=video' => 'Videos',
+            ],
+        ],
+        'contact.php'   => 'Contact',
+    ];
+    $siteSwitch = ['Student Portal', other_site_home()];
+}
+
+// Local link to a page of this website, or the full address when the page belongs to the other one.
+$navHref = static function (string $file) use ($base): string {
+    return $file === 'index.php' ? $base . '/index.php' : site_link($file);
+};
 
 // Social buttons in the top bar. To add one (e.g. Instagram), add a line here
 // with its address and an icon path (24x24 viewBox).
@@ -89,7 +112,7 @@ $socialLinks = [
         <span class="gov-text">
             <span class="gov-country">The United Republic of Tanzania</span>
             <span class="gov-school">Namanga Secondary School</span>
-            <span class="gov-motto">Education for Liberty and Prosperity</span>
+            <span class="gov-motto"><?= is_portal() ? 'Student Learning Portal &middot; Masomo' : 'Education for Liberty and Prosperity' ?></span>
         </span>
         <img src="<?= e($base) ?>/assets/images/logo-navy.png" alt="Namanga Secondary School logo" class="gov-logo" width="480" height="279">
     </a>
@@ -119,7 +142,7 @@ $socialLinks = [
                         <?php $sectionActive = (bool) array_filter(array_keys($label['children']), fn ($href) => parse_url($href, PHP_URL_PATH) === $currentPage); ?>
                         <?php $menuOnly = str_starts_with($file, '#'); ?>
                         <li class="has-dropdown">
-                            <a href="<?= $menuOnly ? e($file) : e($base) . '/' . e($file) ?>"
+                            <a href="<?= $menuOnly ? e($file) : e($navHref($file)) ?>"
                                class="dropdown-trigger <?= $sectionActive ? 'active' : '' ?>" aria-haspopup="true"<?= $menuOnly ? ' data-menu-only' : '' ?>>
                                 <?= e($label['label']) ?><?= svg_icon('chevron-down', 'icon-svg dropdown-caret') ?>
                             </a>
@@ -132,7 +155,7 @@ $socialLinks = [
                                                 <?= e($childLabel) ?>
                                             </a>
                                         <?php else: ?>
-                                            <a href="<?= e($base) ?>/<?= e($childFile) ?>"
+                                            <a href="<?= e($navHref($childFile)) ?>"
                                                class="<?= $isCurrentLink($childFile) ? 'active' : '' ?>">
                                                 <?= e($childLabel) ?>
                                             </a>
@@ -143,15 +166,16 @@ $socialLinks = [
                         </li>
                     <?php else: ?>
                         <li>
-                            <a href="<?= e($base) ?>/<?= e($file) ?>"
+                            <a href="<?= e($navHref($file)) ?>"
                                class="<?= $currentPage === $file ? 'active' : '' ?>">
                                 <?= e($label) ?>
                             </a>
                         </li>
                     <?php endif; ?>
                 <?php endforeach; ?>
+                <?php if (is_portal()): // Searching notes and papers belongs to the Student Portal. ?>
                 <li class="nav-search">
-                    <form action="<?= e($base) ?>/search.php" method="get" class="nav-search-form">
+                    <form action="<?= e(site_link('search.php')) ?>" method="get" class="nav-search-form">
                         <span class="nav-search-icon" aria-hidden="true"><?= svg_icon('search', 'icon-svg icon-svg-small') ?></span>
                         <input type="text" name="q" id="navSearchInput" placeholder="Search resources..."
                                value="<?= e($_GET['q'] ?? '') ?>" aria-label="Search resources">
@@ -159,6 +183,10 @@ $socialLinks = [
                         <?php // Desktop: this square button opens the search box (see .nav-search-toggle). ?>
                         <label for="navSearchInput" class="nav-search-toggle" aria-hidden="true"><?= svg_icon('search', 'icon-svg') ?></label>
                     </form>
+                </li>
+                <?php endif; ?>
+                <li class="nav-site-switch">
+                    <a href="<?= e($siteSwitch[1]) ?>" class="site-switch-btn"><?= svg_icon(is_portal() ? 'school' : 'notes', 'icon-svg icon-svg-small') ?> <?= e($siteSwitch[0]) ?></a>
                 </li>
                 <li class="nav-auth">
                     <?php if (is_admin_logged_in()): ?>

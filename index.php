@@ -1,23 +1,13 @@
 <?php
 require_once __DIR__ . '/includes/bootstrap.php';
 
-// Dashboard-style counts for the homepage (nice to have, cheap query).
-$counts = ['notes' => 0, 'summary' => 0, 'theory' => 0, 'practical' => 0, 'software' => 0, 'others' => 0];
-try {
-    $stmt = $pdo->query("SELECT resource_type, COUNT(*) AS total FROM resources GROUP BY resource_type");
-    foreach ($stmt->fetchAll() as $row) {
-        $counts[$row['resource_type']] = (int) $row['total'];
-    }
-} catch (Exception $e) {
-    // If the table doesn't exist yet (fresh install before SQL import), fail quietly.
+// Two websites share this file (see includes/site.php): the Student Portal has its own home page.
+if (is_portal()) {
+    require __DIR__ . '/includes/portal-home.php';
+    return;
 }
 
-$galleryCount = 0;
-try {
-    $galleryCount = (int) $pdo->query('SELECT COUNT(*) FROM gallery_items')->fetchColumn();
-} catch (Exception $e) {
-    // gallery_items table not created yet — fail quietly.
-}
+// ---------------- School website home page ----------------
 
 // Homepage slideshow images, managed from admin/manage-slides.php.
 // If none have been uploaded yet, the slider shows the school photos.
@@ -28,21 +18,30 @@ try {
     // hero_slides table not created yet (older installs) — fail quietly, school photos show instead.
 }
 
+// Latest announcements (admin/manage-announcements.php). The section is hidden when there are none.
+$announcements = latest_announcements($pdo, 4);
 
-// Resource cards: [page, title, text, count, count word, link text]; the
-// card drawing comes from the key (see includes/card-photos.php).
-$resourceCards = [
-    'notes'     => ['notes.php', 'Notes', 'TIE textbooks, syllabus and past papers for every subject, Form 1 to Form 4.', $counts['notes'], 'file', 'View Notes'],
-    'theory'    => ['theory.php', 'Theory Past Papers', 'Complete theory examination papers organised by Form and year.', $counts['theory'], 'file', 'View Papers'],
-    'practical' => ['practical.php', 'Form 4 Practical', 'Complete Form 4 computer practical examination papers.', $counts['practical'], 'file', 'View Practicals'],
-    'gallery'   => ['gallery.php', 'Gallery', 'Photos and videos from life at Namanga Secondary School.', $galleryCount, 'item', 'View Gallery'],
-];
+// Latest photos from the Gallery.
+$latestPhotos = [];
+try {
+    $latestPhotos = $pdo->query("SELECT id, title, event_name, file_path FROM gallery_items WHERE media_type = 'image' ORDER BY COALESCE(event_date, created_at) DESC, id DESC LIMIT 6")->fetchAll();
+} catch (Exception $e) {
+    // Gallery not ready yet.
+}
 
 // Head of School: photo in assets/images/staff/, shown with his message right under the slideshow (owner 2026-11-08).
 $head = ['photo' => 'mtesigwa.jpg', 'name' => 'Mr. Mtesigwa N. Missana', 'role' => 'Head of School'];
 
-$pageTitle = 'Namanga Secondary School Website | Longido, Arusha, Tanzania';
-$pageDescription = 'Official website of Namanga Secondary School, a government secondary school in Namanga, Longido District, Arusha, Tanzania. Free ICT & Computer Science notes, past papers and NECTA results for Form 1 to Form 4.';
+// Quick links for parents, students and visitors.
+$quickLinks = [
+    ['https://results.namangasecondary.sc.tz', 'results', 'Student Results', 'Term and examination results for parents and students.'],
+    [site_link('admissions.php'), 'students', 'Admissions', 'Joining Form One: selection, reporting and requirements.'],
+    [other_site_home(), 'notes', 'Student Portal', 'Free notes, past papers and practicals (Masomo).'],
+    [site_link('results.php'), 'star', 'NECTA Results', 'Our Form Two (FTNA) and Form Four (CSEE) results.'],
+];
+
+$pageTitle = 'Namanga Secondary School | Longido, Arusha, Tanzania';
+$pageDescription = 'Official website of Namanga Secondary School (NECTA S2911), a government co-educational secondary school in Namanga, Longido District, Arusha, Tanzania. News, admissions, academics and results.';
 $base = base_url();
 include __DIR__ . '/includes/header.php';
 ?>
@@ -102,7 +101,7 @@ if (!$slideUrls) {
                         <p>Our motto, <em>&ldquo;Education for Liberty and Prosperity&rdquo;</em>, guides everything we do. We believe that a good education frees a young person to think, to make good choices and to build a better life for themselves, their families and their community.</p>
                         <p>Our dedicated teachers follow the national curriculum and prepare our students carefully for the Form Two and Form Four national examinations set by NECTA. Beyond the classroom, we value discipline, respect, hard work, honesty and responsibility, and we encourage every student to take part in sports, clubs, cultural activities and service to the community.</p>
                         <p>We give special attention to the education of girls. In 2024 the school opened a new girls&rsquo; dormitory, built with support from the Legal Services Facility (LSF) and Luxembourg&rsquo;s North&ndash;South Cooperation, giving our girls a safe place to live and study.</p>
-                        <p>This website is part of our commitment to learning. Here students can download free notes and past papers, parents can follow the life of the school and check their child&rsquo;s results through our <a href="https://results.namangasecondary.sc.tz" target="_blank" rel="noopener">Student Result System</a>, and everyone can learn more about Namanga Secondary School.</p>
+                        <p>This website is part of our commitment to learning. Parents can follow the life of the school and check their child&rsquo;s results through our <a href="https://results.namangasecondary.sc.tz" target="_blank" rel="noopener">Student Result System</a>, students can download free notes and past papers from our <a href="<?= e(other_site_home()) ?>">Student Portal</a>, and everyone can learn more about Namanga Secondary School.</p>
                         <p>Parents and guardians are our most important partners. I invite you to work closely with us: follow your child&rsquo;s progress, attend school meetings and keep in touch with the class teachers. Together we can help every student reach their full potential.</p>
                         <p>To our students: use your time at Namanga well. Attend every lesson, respect your teachers and fellow students, ask questions, read widely and never give up. Your future is built by the effort you make today.</p>
                         <p>Thank you for visiting our website. You are always welcome at Namanga Secondary School.</p>
@@ -131,50 +130,112 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 
-<section id="resources" class="resource-cards">
+<section class="quick-links" aria-label="Quick links">
     <div class="container">
-        <h2 class="section-title">Resource Categories</h2>
-        <p class="section-subtitle">Notes, past papers and more for every student</p>
-        <div class="photo-cards-grid">
-            <?php foreach ($resourceCards as $key => [$page, $title, $text, $count, $word, $linkText]): ?>
-                <?= render_photo_card($base . '/' . $page, $key, $title, $text, count_label((int) $count, $word), $linkText) ?>
+        <div class="quick-grid">
+            <?php foreach ($quickLinks as [$href, $icon, $title, $text]): ?>
+                <a class="quick-tile" href="<?= e($href) ?>">
+                    <span class="quick-icon"><?= svg_icon($icon, 'icon-svg') ?></span>
+                    <span class="quick-title"><?= e($title) ?></span>
+                    <span class="quick-text"><?= e($text) ?></span>
+                </a>
             <?php endforeach; ?>
         </div>
-        <?= render_card_photo_credits(array_keys($resourceCards)) ?>
     </div>
 </section>
 
-<section class="home-intro">
+<section class="school-glance" aria-label="The school at a glance">
     <div class="container">
-        <h2 class="section-title">Who are we?</h2>
-        <div class="intro-card">
-            <p><strong>Namanga Secondary School</strong> is a government, co-educational secondary school in
-            Namanga ward, Longido District, Arusha Region, Tanzania, right on the Tanzania&ndash;Kenya border.
-            The school serves boys and girls from Namanga and the surrounding Longido communities, including
-            many Maasai families, offering O-Level education from Form 1 to Form 4.</p>
-            <p>In 2024 the school opened a new girls' dormitory, built with support from the Legal Services
-            Facility (LSF) and Luxembourg's North-South Cooperation, giving girls a safe place to live and study.</p>
-            <p>This website is the school's home online. Here students can download notes,
-            theory and practical past papers, and find the school's
-            <a href="<?= e($base) ?>/results.php">NECTA Form 2 and Form 4 results</a>.</p>
+        <div class="facts-band">
+            <div class="fact"><span class="fact-value">2007</span><span class="fact-label">Year founded</span></div>
+            <div class="fact"><span class="fact-value">S2911</span><span class="fact-label">NECTA centre number</span></div>
+            <div class="fact"><span class="fact-value">Form 1&ndash;4</span><span class="fact-label">O-Level, boys &amp; girls</span></div>
+            <div class="fact"><span class="fact-value"><?= school_subject_count() ?></span><span class="fact-label">Subjects taught</span></div>
         </div>
-        <ul class="feature-grid">
-            <li class="feature-card">
-                <span class="feature-icon"><?= svg_icon('school', 'icon-svg') ?></span>
-                <h3 class="feature-title">Government School</h3>
-                <p>Government school for boys and girls, Form 1 to Form 4</p>
-            </li>
-            <li class="feature-card">
-                <span class="feature-icon"><?= svg_icon('pin', 'icon-svg') ?></span>
-                <h3 class="feature-title">Our Location</h3>
-                <p>Located in Namanga, Longido District, on the Tanzania&ndash;Kenya border</p>
-            </li>
-            <li class="feature-card">
-                <span class="feature-icon"><?= svg_icon('notes', 'icon-svg') ?></span>
-                <h3 class="feature-title">Free Resources</h3>
-                <p>Free notes, past papers and NECTA results on this website</p>
-            </li>
-        </ul>
+    </div>
+</section>
+
+<?php if ($announcements): ?>
+<section class="home-news" aria-labelledby="home-news-title">
+    <div class="container">
+        <h2 class="section-title" id="home-news-title">News &amp; Announcements</h2>
+        <div class="news-grid">
+            <?php foreach ($announcements as $item): ?>
+                <article class="news-card">
+                    <div class="news-meta">
+                        <span class="news-cat"><?= e(announcement_category_label($item['category'])) ?></span>
+                        <time datetime="<?= e($item['published_on']) ?>"><?= e(date('d M Y', strtotime($item['published_on']))) ?></time>
+                    </div>
+                    <h3 class="news-title"><a href="<?= e(site_link('announcements.php?id=' . (int) $item['id'])) ?>"><?= e($item['title']) ?></a></h3>
+                    <p><?= e(announcement_excerpt($item['body'], 150)) ?></p>
+                    <a class="news-more" href="<?= e(site_link('announcements.php?id=' . (int) $item['id'])) ?>">Read more<?= $item['attachment_path'] ? ' &middot; attachment' : '' ?></a>
+                </article>
+            <?php endforeach; ?>
+        </div>
+        <p class="center-link"><a class="btn btn-outline" href="<?= e(site_link('announcements.php')) ?>">All news &amp; announcements</a></p>
+    </div>
+</section>
+<?php endif; ?>
+
+<section class="home-about">
+    <div class="container">
+        <div class="school-section split">
+            <div>
+                <span class="eyebrow">About the school</span>
+                <h2 class="school-h2">A school at the gateway of Tanzania</h2>
+                <p><strong>Namanga Secondary School</strong> is a government, co-educational secondary school in
+                Namanga ward, Longido District, Arusha Region, right on the Tanzania&ndash;Kenya border. We serve
+                boys and girls from Namanga and the surrounding Longido communities, including many Maasai families,
+                offering O-Level education from Form 1 to Form 4.</p>
+                <p>In 2024 the school opened a new girls&rsquo; dormitory, built with support from the Legal Services
+                Facility (LSF) and Luxembourg&rsquo;s North&ndash;South Cooperation, giving girls a safe place to live and study.</p>
+                <div class="btn-row">
+                    <a href="<?= e(site_link('about.php')) ?>" class="btn btn-gold">More about us</a>
+                    <a href="<?= e(site_link('academics.php')) ?>" class="btn btn-outline">Academics</a>
+                </div>
+            </div>
+            <div class="split-media">
+                <div class="photo-frame">
+                    <img src="<?= e($base) ?>/assets/images/school/assembly.jpg" alt="Namanga Secondary School students at a school assembly" loading="lazy">
+                    <span class="photo-caption">Students at a school assembly</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<?php if ($latestPhotos): ?>
+<section class="home-photos" aria-labelledby="home-photos-title">
+    <div class="container">
+        <h2 class="section-title" id="home-photos-title">Life at Namanga</h2>
+        <p class="section-subtitle">Recent photos from the school</p>
+        <div class="home-photo-grid">
+            <?php foreach ($latestPhotos as $photo): ?>
+                <a href="<?= e(site_link('gallery.php?type=image')) ?>" class="home-photo">
+                    <img src="<?= e($base) ?>/<?= e(optimized_image($photo['file_path'], 600)) ?>" alt="<?= e($photo['event_name'] ?: $photo['title']) ?>" loading="lazy">
+                </a>
+            <?php endforeach; ?>
+        </div>
+        <p class="center-link"><a class="btn btn-outline" href="<?= e(site_link('gallery.php?type=image')) ?>">Open the gallery</a></p>
+    </div>
+</section>
+<?php endif; ?>
+
+<section class="home-location" aria-labelledby="home-location-title">
+    <div class="container">
+        <h2 class="section-title" id="home-location-title">Find Us</h2>
+        <div class="location-grid">
+            <div class="location-info">
+                <h3>Namanga Secondary School</h3>
+                <p>P.O. Box 8560, Namanga<br>Longido District, Arusha Region, Tanzania</p>
+                <p><strong>Phone:</strong> <a href="tel:+255695389537">+255 695 389 537</a><br>
+                <strong>Email:</strong> <a href="mailto:namangasecondary@gmail.com">namangasecondary@gmail.com</a></p>
+                <a class="btn btn-gold" href="https://www.google.com/maps/dir/?api=1&amp;destination=Namanga+Secondary+School%2C+Namanga%2C+Tanzania" target="_blank" rel="noopener">Get directions</a>
+            </div>
+            <div class="map-frame">
+                <iframe title="Map: Namanga Secondary School" src="https://www.google.com/maps?q=Namanga+Secondary+School,+Namanga,+Tanzania&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+            </div>
+        </div>
     </div>
 </section>
 

@@ -27,6 +27,7 @@ if (is_admin_role()) {
         'manage'         => ['Resources', 'manage-resources.php'],
         'manage-gallery' => ['Gallery', 'manage-gallery.php'],
         'manage-slides'  => ['Homepage Slideshow', 'manage-slides.php'],
+        'manage-announcements' => ['Announcements / News', 'manage-announcements.php'],
     ]];
 }
 if (is_super_admin()) {

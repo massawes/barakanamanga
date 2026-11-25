@@ -3,8 +3,10 @@
 //   $pageTitle       — text for <title>
 //   $pageDescription — meta description (shown under the link in Google)
 //   $noindex         — true for pages Google should not list (e.g. search results)
-$pageTitle = $pageTitle ?? 'Namanga Secondary School Website';
-$pageDescription = $pageDescription ?? 'Official website of Namanga Secondary School, Tanzania — ICT & Computer Science notes, past papers and NECTA results for Form 1 to Form 4.';
+$pageTitle = $pageTitle ?? (is_portal() ? 'Student Portal | Namanga Secondary School' : 'Namanga Secondary School Website');
+$pageDescription = $pageDescription ?? (is_portal()
+    ? 'Namanga Secondary School Student Portal: free notes, theory past papers and Form 4 practicals for Form 1 to Form 4.'
+    : 'Official website of Namanga Secondary School, a government secondary school in Namanga, Longido District, Arusha, Tanzania (NECTA S2911).');
 $noindex = $noindex ?? false;
 $canonical = canonical_url();
 $isHome = $canonical === SITE_URL . '/';
@@ -22,7 +24,7 @@ $isHome = $canonical === SITE_URL . '/';
 <link rel="canonical" href="<?= e($canonical) ?>">
 <?php endif; ?>
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="Namanga Secondary School">
+<meta property="og:site_name" content="<?= is_portal() ? 'Namanga Secondary School Student Portal' : 'Namanga Secondary School' ?>">
 <meta property="og:title" content="<?= e($pageTitle) ?>">
 <meta property="og:description" content="<?= e($pageDescription) ?>">
 <meta property="og:url" content="<?= e($canonical) ?>">
@@ -34,7 +36,7 @@ $isHome = $canonical === SITE_URL . '/';
     '@graph' => [
         [
             '@type' => 'HighSchool',
-            '@id' => SITE_URL . '/#school',
+            '@id' => SCHOOL_URL . '/#school',
             'name' => 'Namanga Secondary School',
             'alternateName' => ['Namanga Secondary', 'Namanga Secondary School Tanzania', 'Namanga School', 'Namanga Website', 'namangasecondary.sc.tz'],
             'description' => 'Secondary school in Namanga, Longido District, Arusha, Tanzania (NECTA centre S2911), offering Form 1 to Form 4 education. Motto: Education for Liberty and Prosperity.',
@@ -42,14 +44,14 @@ $isHome = $canonical === SITE_URL . '/';
             'slogan' => 'Education for Liberty and Prosperity',
             'foundingDate' => '2007',
             'identifier' => ['@type' => 'PropertyValue', 'propertyID' => 'NECTA centre number', 'value' => 'S2911'],
-            'url' => SITE_URL . '/',
+            'url' => SCHOOL_URL . '/',
             'telephone' => '+255695389537',
             'email' => 'namangasecondary@gmail.com',
-            'logo' => SITE_URL . '/assets/images/logo-square.png',
+            'logo' => SCHOOL_URL . '/assets/images/logo-square.png',
             'image' => [
-                SITE_URL . '/assets/images/school/students-red.jpg',
-                SITE_URL . '/assets/images/school/assembly.jpg',
-                SITE_URL . '/assets/images/school/ceremony.jpg',
+                SCHOOL_URL . '/assets/images/school/students-red.jpg',
+                SCHOOL_URL . '/assets/images/school/assembly.jpg',
+                SCHOOL_URL . '/assets/images/school/ceremony.jpg',
             ],
             'address' => [
                 '@type' => 'PostalAddress',
@@ -69,10 +71,10 @@ $isHome = $canonical === SITE_URL . '/';
         [
             '@type' => 'WebSite',
             '@id' => SITE_URL . '/#website',
-            'name' => 'Namanga Secondary School Website',
-            'alternateName' => 'Namanga Website',
+            'name' => is_portal() ? 'Namanga Secondary School Student Portal' : 'Namanga Secondary School Website',
+            'alternateName' => is_portal() ? 'Namanga Masomo' : 'Namanga Website',
             'url' => SITE_URL . '/',
-            'publisher' => ['@id' => SITE_URL . '/#school'],
+            'publisher' => ['@id' => SCHOOL_URL . '/#school'],
             'potentialAction' => [
                 '@type' => 'SearchAction',
                 'target' => SITE_URL . '/search.php?q={search_term_string}',

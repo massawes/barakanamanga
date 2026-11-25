@@ -12,19 +12,32 @@ header('Content-Type: application/xml; charset=utf-8');
 $origin = SITE_URL;
 $base = '';
 
-// Static, always-present pages.
+// Two websites (see includes/site.php): each address lists only its own pages.
+if (!is_portal()) {
+    $staticPages = [
+        ['loc' => '/', 'priority' => '1.0'],
+        ['loc' => '/about.php', 'priority' => '0.8'],
+        ['loc' => '/academics.php', 'priority' => '0.8'],
+        ['loc' => '/admissions.php', 'priority' => '0.8'],
+        ['loc' => '/results.php', 'priority' => '0.8'],
+        ['loc' => '/announcements.php', 'priority' => '0.7'],
+        ['loc' => '/mission-vision.php', 'priority' => '0.6'],
+        ['loc' => '/history.php', 'priority' => '0.6'],
+        ['loc' => '/our-students.php', 'priority' => '0.6'],
+        ['loc' => '/gallery.php', 'priority' => '0.6'],
+        ['loc' => '/contact.php', 'priority' => '0.6'],
+    ];
+    foreach (latest_announcements($pdo, 200) as $announcement) {
+        $staticPages[] = ['loc' => '/announcements.php?id=' . (int) $announcement['id'], 'priority' => '0.5'];
+    }
+    $resources = [];
+} else {
+// Student Portal pages.
 $staticPages = [
     ['loc' => '/', 'priority' => '1.0'],
-    ['loc' => '/results.php', 'priority' => '0.8'],
     ['loc' => '/notes.php', 'priority' => '0.8'],
     ['loc' => '/theory.php', 'priority' => '0.8'],
     ['loc' => '/practical.php', 'priority' => '0.8'],
-    ['loc' => '/gallery.php', 'priority' => '0.6'],
-    ['loc' => '/about.php', 'priority' => '0.7'],
-    ['loc' => '/mission-vision.php', 'priority' => '0.6'],
-    ['loc' => '/history.php', 'priority' => '0.6'],
-    ['loc' => '/our-students.php', 'priority' => '0.6'],
-    ['loc' => '/contact.php', 'priority' => '0.5'],
 ];
 
 // National past paper pages (FTNA / CSEE subjects and CSEE practicals).
@@ -75,6 +88,8 @@ try {
 } catch (Exception $e) {
     // Table not ready yet — sitemap just skips resource URLs this run.
 }
+
+} // end of the Student Portal pages
 
 echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
 ?>

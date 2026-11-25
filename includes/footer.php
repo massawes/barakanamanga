@@ -36,11 +36,20 @@
         <div class="footer-links">
             <h4>QUICK LINKS</h4>
             <ul>
-                <li><a href="<?= e($base) ?>/about.php">About Us</a></li>
-                <li><a href="<?= e($base) ?>/notes.php">Notes</a></li>
-                <li><a href="<?= e($base) ?>/theory.php">Theory Past Papers</a></li>
-                <li><a href="<?= e($base) ?>/practical.php">Form 4 Practical</a></li>
-                <li><a href="<?= e($base) ?>/gallery.php">The Latest</a></li>
+                <?php if (is_portal()): ?>
+                    <li><a href="<?= e($base) ?>/index.php">Portal Home</a></li>
+                    <li><a href="<?= e(site_link('notes.php')) ?>">Notes</a></li>
+                    <li><a href="<?= e(site_link('theory.php')) ?>">Theory Past Papers</a></li>
+                    <li><a href="<?= e(site_link('practical.php')) ?>">Form 4 Practical</a></li>
+                    <li><a href="<?= e(other_site_home()) ?>">School Website</a></li>
+                <?php else: ?>
+                    <li><a href="<?= e(site_link('about.php')) ?>">About the School</a></li>
+                    <li><a href="<?= e(site_link('academics.php')) ?>">Academics</a></li>
+                    <li><a href="<?= e(site_link('admissions.php')) ?>">Admissions</a></li>
+                    <li><a href="<?= e(site_link('announcements.php')) ?>">News &amp; Announcements</a></li>
+                    <li><a href="<?= e(site_link('gallery.php')) ?>">Gallery</a></li>
+                    <li><a href="<?= e(other_site_home()) ?>">Student Portal (Masomo)</a></li>
+                <?php endif; ?>
                 <li><a href="<?= e($base) ?>/admin/login.php">Staff Login</a></li>
             </ul>
         </div>
@@ -50,7 +59,7 @@
         <p>&copy; <?= date('Y') ?> Namanga Secondary School. All Rights Reserved.</p>
     </div>
 </footer>
-<?php include __DIR__ . '/assistant-widget.php'; ?>
+<?php if (is_portal()) { include __DIR__ . '/assistant-widget.php'; } // Ask AI belongs to the Student Portal ?>
 <script src="<?= e($base) ?>/assets/js/script.js?v=<?= (int) @filemtime(__DIR__ . '/../assets/js/script.js') ?>"></script>
 </body>
 </html>

@@ -53,10 +53,9 @@ include __DIR__ . '/includes/header.php';
                 <h2 class="school-h2">Learning for today's world</h2>
                 <p>Alongside the core subjects, our students learn Information &amp; Computer Studies in the
                 school computer room, gaining practical digital skills they will use for life.</p>
-                <p>This website is part of that effort. It is the school's home online, where students
-                can download notes and past papers for free,
-                and find the school's NECTA results.</p>
-                <a href="<?= e($base) ?>/index.php#resources" class="btn btn-gold">Explore resources</a>
+                <p>Our <strong>Student Portal</strong> is part of that effort: students can download notes,
+                theory past papers and practicals for free, at school or at home.</p>
+                <a href="<?= e(other_site_home()) ?>" class="btn btn-gold">Open the Student Portal</a>
             </div>
             <div class="split-media">
                 <div class="photo-frame frame-sky">

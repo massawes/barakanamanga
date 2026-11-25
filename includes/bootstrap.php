@@ -22,6 +22,10 @@ if (session_status() === PHP_SESSION_NONE) {
 require_once __DIR__ . "/maintenance.php";
 maintenance_gate();
 
+// Two websites, one codebase: send a page opened on the wrong address to the right one (see includes/site.php).
+require_once __DIR__ . "/site.php";
+enforce_site_split();
+
 require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/functions.php';
 require_once __DIR__ . '/auth.php';
@@ -35,6 +39,11 @@ ensure_super_admin_setup($pdo);
 // Make sure the Gallery table exists (auto-migrates existing installs
 // that pre-date the Gallery feature — no manual SQL import needed).
 ensure_gallery_table_exists($pdo);
+
+// Announcements / News for the school website (auto-created table, see includes/announcements.php).
+require_once __DIR__ . '/announcements.php';
+require_once __DIR__ . '/school-info.php';
+ensure_announcements_table($pdo);
 
 // There is no file-size limit on this site — uploads of any size are
 // allowed (the .htaccess in the project root pushes PHP's own

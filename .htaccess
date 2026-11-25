@@ -37,4 +37,6 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
     RewriteRule ^sitemap\.xml$ sitemap.php [L]
+    # robots.txt names the sitemap of the website being viewed (school or Student Portal).
+    RewriteRule ^robots\.txt$ robots.php [L]
 </IfModule>

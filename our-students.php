@@ -82,7 +82,7 @@ include __DIR__ . '/includes/header.php';
                 <h2>Study resources for every student</h2>
                 <p>Free notes and past papers for Form 1 to Form 4.</p>
             </div>
-            <a href="<?= e($base) ?>/index.php#resources" class="btn btn-primary btn-large">Start learning</a>
+            <a href="<?= e(other_site_home()) ?>" class="btn btn-primary btn-large">Open the Student Portal</a>
         </div>
     </div>
 </section>
