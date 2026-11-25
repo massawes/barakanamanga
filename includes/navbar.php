@@ -41,7 +41,7 @@ $navLinks = [
     '#ict-services' => [
         'label' => 'ICT Services',
         'children' => [
-            'https://namangaresults.freepage.cc' => 'Student Result System',
+            'https://results.namangasecondary.sc.tz' => 'Student Result System',
         ],
     ],
     // 'contact.php' => 'Contact', // temporarily removed from navigation

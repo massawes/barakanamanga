@@ -1,0 +1,30 @@
+name: Old InfinityFree site -> redirect to namangasecondary.sc.tz
+
+# Since 2026-11-25 the live website is on the VPS (https://namangasecondary.sc.tz, deploy with `bash deploy.sh`).
+# This replaces the old full FTP deploy: it only puts a .htaccess on InfinityFree that sends every visitor and
+# Google to the same page on the new domain (301 = moved permanently). The Google verification file stays reachable.
+on:
+  push:
+    branches: [master]
+    paths: ['.github/workflows/redirect-old-site.yml']
+  workflow_dispatch:
+
+jobs:
+  redirect:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Upload redirect .htaccess
+        env:
+          FTP_PASS: ${{ secrets.FTP_PASSWORD }}
+        run: |
+          sudo apt-get -qq update && sudo apt-get -qq install -y lftp
+          cat > .htaccess <<'HT'
+          RewriteEngine On
+          RewriteRule ^google[0-9a-f]+\.html$ - [L]
+          RewriteRule ^(.*)$ https://namangasecondary.sc.tz/$1 [R=301,L]
+          HT
+          sed -i 's/^ *//' .htaccess
+          cat .htaccess
+          SRV=$(printf %s "${{ vars.FTP_SERVER }}" | tr -d "[:space:]")
+          lftp -u "${{ vars.FTP_USERNAME }},$FTP_PASS" "$SRV" -e "set ftp:ssl-allow no; get /htdocs/.htaccess -o old.htaccess; put .htaccess -o /htdocs/.htaccess; bye"
+          echo "--- old .htaccess (kept in this log for reference):"; cat old.htaccess || true
