@@ -44,7 +44,7 @@ $isHome = $canonical === SITE_URL . '/';
             'slogan' => 'Education for Liberty and Prosperity',
             'identifier' => ['@type' => 'PropertyValue', 'propertyID' => 'NECTA centre number', 'value' => 'S2911'],
             'url' => SCHOOL_URL . '/',
-            'telephone' => '+255755958326',
+            'telephone' => '+255695389537',
             'email' => 'namanga@longido.dc.go.tz',
             'logo' => SCHOOL_URL . '/assets/images/logo-square.png',
             'image' => [

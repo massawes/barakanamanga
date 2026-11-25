@@ -95,7 +95,7 @@ function maintenance_gate(): void
   <div class="links">
     <a href="https://results.namangasecondary.sc.tz">Matokeo ya Wanafunzi</a>
   </div>
-  <div class="contact">Mawasiliano: <a href="tel:+255755958326">0755 958 326</a> &middot; <a href="mailto:namanga@longido.dc.go.tz">namanga@longido.dc.go.tz</a></div>
+  <div class="contact">Mawasiliano: <a href="tel:+255695389537">0695 389 537</a> &middot; <a href="mailto:namanga@longido.dc.go.tz">namanga@longido.dc.go.tz</a></div>
 </main>
 </body>
 </html>

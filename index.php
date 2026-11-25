@@ -228,7 +228,7 @@ document.addEventListener('DOMContentLoaded', function () {
             <div class="location-info">
                 <h3>Namanga Secondary School</h3>
                 <p>P.O. Box 6560, Namanga<br>Longido District, Arusha Region, Tanzania</p>
-                <p><strong>Phone:</strong> <a href="tel:+255755958326">+255 755 958 326</a><br>
+                <p><strong>Phone:</strong> <a href="tel:+255695389537">+255 695 389 537</a><br>
                 <strong>Email:</strong> <a href="mailto:namanga@longido.dc.go.tz">namanga@longido.dc.go.tz</a></p>
                 <a class="btn btn-gold" href="https://www.google.com/maps/dir/?api=1&amp;destination=Namanga+Secondary+School%2C+Namanga%2C+Tanzania" target="_blank" rel="noopener">Get directions</a>
             </div>
