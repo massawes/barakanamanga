@@ -18,8 +18,33 @@ try {
     // hero_slides table not created yet (older installs) — fail quietly, school photos show instead.
 }
 
-// Latest announcements (admin/manage-announcements.php). The section is hidden when there are none.
-$announcements = latest_announcements($pdo, 4);
+// News & Announcements block at the bottom of the home page (like atc.ac.tz), from admin/manage-announcements.php:
+// left = Latest News (types News / Event, with a photo), right = Announcements (types Announcement / Admission).
+$latestNews = [];
+$latestNotices = [];
+try {
+    $latestNews = $pdo->query("SELECT * FROM announcements WHERE is_published = 1 AND category IN ('news','event') ORDER BY published_on DESC, id DESC LIMIT 3")->fetchAll();
+    $latestNotices = $pdo->query("SELECT * FROM announcements WHERE is_published = 1 AND category IN ('announcement','admission') ORDER BY published_on DESC, id DESC LIMIT 4")->fetchAll();
+} catch (Throwable $e) {
+    // Table not ready yet.
+}
+// Photo of a news card: its image attachment, otherwise one of the school photos.
+$newsPhoto = static function (array $item, int $i) use (&$base): string {
+    $path = (string) ($item['attachment_path'] ?? '');
+    if ($path !== '' && preg_match('/\.(jpe?g|png|webp)$/i', $path)) {
+        return $base . '/' . $path;
+    }
+    $fallback = ['students-red.jpg', 'assembly.jpg', 'ceremony.jpg'];
+    return $base . '/assets/images/school/' . $fallback[$i % count($fallback)];
+};
+// Always-current notice: the newest NECTA results the site knows about (updated automatically, see includes/necta-results.php).
+$nectaState = necta_state();
+$nectaLatest = [];
+foreach (NECTA_EXAMS as $form => $exam) {
+    if ($state = $nectaState[$form]) {
+        $nectaLatest[] = $exam['exam'] . ' ' . max($state);
+    }
+}
 
 // Latest photos from the Gallery.
 $latestPhotos = [];
@@ -155,27 +180,6 @@ document.addEventListener('DOMContentLoaded', function () {
     </div>
 </section>
 
-<?php if ($announcements): ?>
-<section class="home-news" aria-labelledby="home-news-title">
-    <div class="container">
-        <h2 class="section-title" id="home-news-title">News &amp; Announcements</h2>
-        <div class="news-grid">
-            <?php foreach ($announcements as $item): ?>
-                <article class="news-card">
-                    <div class="news-meta">
-                        <span class="news-cat"><?= e(announcement_category_label($item['category'])) ?></span>
-                        <time datetime="<?= e($item['published_on']) ?>"><?= e(date('d M Y', strtotime($item['published_on']))) ?></time>
-                    </div>
-                    <h3 class="news-title"><a href="<?= e(site_link('announcements.php?id=' . (int) $item['id'])) ?>"><?= e($item['title']) ?></a></h3>
-                    <p><?= e(announcement_excerpt($item['body'], 150)) ?></p>
-                    <a class="news-more" href="<?= e(site_link('announcements.php?id=' . (int) $item['id'])) ?>">Read more<?= $item['attachment_path'] ? ' &middot; attachment' : '' ?></a>
-                </article>
-            <?php endforeach; ?>
-        </div>
-        <p class="center-link"><a class="btn btn-outline" href="<?= e(site_link('announcements.php')) ?>">All news &amp; announcements</a></p>
-    </div>
-</section>
-<?php endif; ?>
 
 <section class="home-about">
     <div class="container">
@@ -235,6 +239,65 @@ document.addEventListener('DOMContentLoaded', function () {
             <div class="map-frame">
                 <iframe title="Map: Namanga Secondary School" src="https://www.google.com/maps?q=Namanga+Secondary+School,+Namanga,+Tanzania&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
             </div>
+        </div>
+    </div>
+</section>
+
+<section class="home-newsroom" aria-labelledby="home-newsroom-title">
+    <div class="container">
+        <h2 class="section-title" id="home-newsroom-title">News &amp; Announcements</h2>
+        <div class="newsroom-grid">
+            <div class="newsroom-news">
+                <h3 class="newsroom-head">Latest News</h3>
+                <?php if ($latestNews): ?>
+                    <div class="newsroom-cards">
+                        <?php foreach ($latestNews as $i => $item): ?>
+                            <?php $link = site_link('announcements.php?id=' . (int) $item['id']); ?>
+                            <article class="newsroom-card">
+                                <a href="<?= e($link) ?>" class="newsroom-card-img"><img src="<?= e($newsPhoto($item, $i)) ?>" alt="" loading="lazy"></a>
+                                <div class="newsroom-card-body">
+                                    <time datetime="<?= e($item['published_on']) ?>"><?= e(date('d M Y', strtotime($item['published_on']))) ?></time>
+                                    <h4><a href="<?= e($link) ?>"><?= e($item['title']) ?></a></h4>
+                                    <p><?= e(announcement_excerpt($item['body'], 110)) ?></p>
+                                    <a class="news-more" href="<?= e($link) ?>">Read more</a>
+                                </div>
+                            </article>
+                        <?php endforeach; ?>
+                    </div>
+                <?php else: ?>
+                    <p class="newsroom-empty">School news will appear here.</p>
+                <?php endif; ?>
+                <a class="btn btn-outline newsroom-all" href="<?= e(site_link('announcements.php?type=news')) ?>">More news</a>
+            </div>
+
+            <aside class="newsroom-notices" aria-label="Announcements">
+                <h3 class="newsroom-head">Announcements</h3>
+                <ul class="notice-list">
+                    <?php if ($nectaLatest): ?>
+                        <li>
+                            <a href="<?= e(site_link('results.php')) ?>">
+                                <span class="notice-date notice-date-icon"><?= svg_icon('results', 'icon-svg') ?></span>
+                                <span class="notice-text"><strong>NECTA results</strong> <?= e(implode(' and ', $nectaLatest)) ?> are available. New results appear here automatically.</span>
+                            </a>
+                        </li>
+                    <?php endif; ?>
+                    <?php foreach ($latestNotices as $item): ?>
+                        <li>
+                            <a href="<?= e(site_link('announcements.php?id=' . (int) $item['id'])) ?>">
+                                <span class="notice-date"><b><?= e(date('d', strtotime($item['published_on']))) ?></b><?= e(strtoupper(date('M', strtotime($item['published_on'])))) ?></span>
+                                <span class="notice-text"><?= e($item['title']) ?><?= $item['attachment_path'] ? ' <em>(download)</em>' : '' ?></span>
+                            </a>
+                        </li>
+                    <?php endforeach; ?>
+                    <li>
+                        <a href="https://results.namangasecondary.sc.tz">
+                            <span class="notice-date notice-date-icon"><?= svg_icon('students', 'icon-svg') ?></span>
+                            <span class="notice-text"><strong>Parents:</strong> check your child&rsquo;s term results in the Student Result System.</span>
+                        </a>
+                    </li>
+                </ul>
+                <a class="btn btn-outline newsroom-all" href="<?= e(site_link('announcements.php')) ?>">All announcements</a>
+            </aside>
         </div>
     </div>
 </section>
