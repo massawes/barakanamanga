@@ -51,3 +51,6 @@ config/ai.php
 
 # Raw video, far over GitHub (100 MB) and InfinityFree (10 MB) limits
 /four.mp4
+
+# Maintenance switch lives only on the server
+/config/maintenance.on

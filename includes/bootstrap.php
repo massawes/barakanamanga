@@ -18,6 +18,10 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+// Maintenance mode: visitors see a maintenance page while config/maintenance.on exists (see includes/maintenance.php).
+require_once __DIR__ . "/maintenance.php";
+maintenance_gate();
+
 require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/functions.php';
 require_once __DIR__ . '/auth.php';
