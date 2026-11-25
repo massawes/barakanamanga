@@ -19,18 +19,22 @@ function maintenance_gate(): void
     if (str_contains($script, '/admin/') || str_contains($script, '/api/') || basename($script) === 'sitemap.php') {
         return;
     }
-    if (!empty($_SESSION['admin_id'])) {
+    $code = trim((string) @file_get_contents($flag));
+    $signedInStaff = !empty($_SESSION['admin_id']);
+    if ($code !== '' && ($signedInStaff || hash_equals($code, (string) ($_GET['preview'] ?? '')))) {
+        // One preview works on both websites (school + masomo.): the cookie is shared by all
+        // *.namangasecondary.sc.tz addresses. Its name is unique, so the other systems ignore it.
+        // Signed-in staff get it too, so they can move between the two websites.
+        if (($_COOKIE['nss_preview'] ?? '') !== $code || isset($_GET['preview'])) {
+            $host = strtolower(preg_replace('/:\d+$/', '', (string) ($_SERVER['HTTP_HOST'] ?? '')));
+            $shared = $host === 'namangasecondary.sc.tz' || str_ends_with($host, '.namangasecondary.sc.tz');
+            setcookie('nss_preview', $code, ['expires' => time() + 30 * 86400, 'path' => '/', 'domain' => $shared ? '.namangasecondary.sc.tz' : '',
+                'secure' => true, 'httponly' => true, 'samesite' => 'Lax']);
+        }
         return;
     }
-    $code = trim((string) @file_get_contents($flag));
-    if ($code !== '') {
-        if (hash_equals($code, (string) ($_GET['preview'] ?? ''))) {
-            setcookie('nss_preview', $code, ['expires' => time() + 30 * 86400, 'path' => '/', 'secure' => true, 'httponly' => true, 'samesite' => 'Lax']);
-            return;
-        }
-        if (hash_equals($code, (string) ($_COOKIE['nss_preview'] ?? ''))) {
-            return;
-        }
+    if ($signedInStaff || ($code !== '' && hash_equals($code, (string) ($_COOKIE['nss_preview'] ?? '')))) {
+        return;
     }
 
     http_response_code(503);
