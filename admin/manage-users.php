@@ -69,19 +69,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'creat
     redirect(base_url() . '/admin/manage-users.php');
 }
 
-// ---- Reset a password back to the temporary one (first name) ----
+// ---- Reset a teacher's password to the default temporary password (12345678) ----
+const RESET_PASSWORD_DEFAULT = '12345678';
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'reset_password') {
     if (!csrf_verify()) {
         flash_set('error', 'Your session expired. Please try again.');
     } else {
         $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
-        $target = $pdo->prepare('SELECT username, full_name FROM admins WHERE id = :id');
+        $target = $pdo->prepare('SELECT username, full_name, role FROM admins WHERE id = :id');
         $target->execute(['id' => $id]);
         $row = $target->fetch();
         if (!$row || $id === (int) $_SESSION['admin_id']) {
             flash_set('error', 'You cannot reset that password here. To change your own password use "Change Password".');
+        } elseif ($row['role'] !== 'staff') {
+            // Owner 2026-11-26: the Admins (admin, second) reset teachers' passwords; an Admin account is not reset here.
+            flash_set('error', 'Only teacher (Staff) passwords can be reset here.');
         } else {
-            $temp = temporary_password_for((string) ($row['full_name'] ?: $row['username']));
+            $temp = RESET_PASSWORD_DEFAULT; // owner 2026-11-26: every reset password becomes 12345678
             $pdo->prepare('UPDATE admins SET password = :p, must_change_password = 1 WHERE id = :id')
                 ->execute(['p' => password_hash($temp, PASSWORD_DEFAULT), 'id' => $id]);
             flash_set('success', 'Password of ' . $row['username'] . ' is now the temporary password: ' . $temp . ' (must be changed on the next login).');
@@ -134,7 +138,8 @@ include __DIR__ . '/../includes/admin-header.php';
 <p class="muted">Only you (Super Admin) create accounts: there is no public register page. A new account gets
 username and temporary password = the teacher's first name in small letters (e.g. ERICK SOLOMON MAHOO &rarr; <strong>erick</strong> / <strong>erick</strong>).
 On the first login the teacher must choose a new password.
-Teachers (Staff) upload notes and exam papers only. Only the Super Admin uploads photos/videos, manages the slideshow and deletes.</p>
+<strong>Forgotten password:</strong> click <em>Reset Password</em>; the teacher's password becomes <strong>12345678</strong> and must be changed at the next login.
+Teachers (Staff) upload notes, theory papers and practicals only, and edit or delete only their own files.</p>
 
 <div class="adm-card">
     <div class="adm-card-head">Create a teacher account</div>
@@ -199,12 +204,14 @@ $missing = array_values(array_filter($listNames, fn ($n) => !in_array(username_f
                     <td data-label="Created"><?= e(format_date($account['created_at'])) ?></td>
                     <td data-label="Actions" class="actions-cell">
                         <?php if (!$isSelf): ?>
-                            <form method="post" action="" class="inline-form" onsubmit="return confirm('Reset this password to the temporary one (first name)?');">
+                            <?php if ($account['role'] === 'staff'): ?>
+                            <form method="post" action="" class="inline-form" onsubmit="return confirm('Reset this password to 12345678? The teacher must choose a new password at the next login.');">
                                 <input type="hidden" name="action" value="reset_password">
                                 <input type="hidden" name="id" value="<?= (int) $account['id'] ?>">
                                 <?= csrf_field() ?>
-                                <button type="submit" class="btn btn-outline btn-small">Reset Password</button>
+                                <button type="submit" class="btn btn-outline btn-small">Reset Password (12345678)</button>
                             </form>
+                            <?php endif; ?>
                             <form method="post" action="" class="inline-form" onsubmit="return confirm('Delete this account? This cannot be undone.');">
                                 <input type="hidden" name="action" value="delete_user">
                                 <input type="hidden" name="id" value="<?= (int) $account['id'] ?>">
