@@ -54,3 +54,6 @@ config/ai.php
 
 # Maintenance switch lives only on the server
 /config/maintenance.on
+
+# NECTA years found by cron/necta-check.php (server only)
+/uploads/.necta-results.json

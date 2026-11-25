@@ -2,30 +2,12 @@
 require_once __DIR__ . '/includes/bootstrap.php';
 
 // Official NECTA results pages for Namanga Secondary School (S2911).
-// Only links verified to open the school's page for that year belong here;
-// years missing from a list are shown as "not available".
-$resultsLinks = [
-    'form4' => [
-        ['year' => 2025, 'url' => 'https://onlinesys.necta.go.tz/results/2025/csee/results/s2911.htm'],
-        ['year' => 2024, 'url' => 'https://onlinesys.necta.go.tz/results/2024/csee/results/s2911.htm'],
-        ['year' => 2023, 'url' => 'https://onlinesys.necta.go.tz/results/2023/csee/results/s2911.htm'],
-        ['year' => 2022, 'url' => 'https://onlinesys.necta.go.tz/results/2022/csee/results/s2911.htm'],
-    ],
-    'form2' => [
-        ['year' => 2025, 'url' => 'https://onlinesys.necta.go.tz/results/2025/ftna/results/S2911.htm'],
-        ['year' => 2024, 'url' => 'https://onlinesys.necta.go.tz/results/2024/ftna/results/S2911.htm'],
-        ['year' => 2023, 'url' => 'https://onlinesys.necta.go.tz/results/2023/ftna/results/S2911.htm'],
-        ['year' => 2022, 'url' => 'https://onlinesys.necta.go.tz/results/2022/ftna/results/S2911.htm'],
-    ],
-];
-
-// Years listed on the page, newest first.
-const RESULTS_YEARS = [2025, 2024, 2023, 2022, 2021, 2020];
-
-$exams = [
-    'form4' => ['label' => 'Form 4', 'exam' => 'CSEE', 'name' => 'Certificate of Secondary Education Examination'],
-    'form2' => ['label' => 'Form 2', 'exam' => 'FTNA', 'name' => 'Form Two National Assessment'],
-];
+// The list of years updates itself: cron/necta-check.php asks NECTA every 3 hours and adds
+// a new year as soon as it is published (see includes/necta-results.php). No file to edit.
+$state = necta_state();
+$years = necta_years_to_show($state);
+$thisYear = (int) date('Y');
+$exams = NECTA_EXAMS;
 
 $selected = $_GET['form'] ?? '';
 $examSelected = isset($exams[$selected]);
@@ -34,11 +16,11 @@ $base = base_url();
 
 if ($examSelected) {
     $exam = $exams[$selected];
-    $linksByYear = array_column($resultsLinks[$selected], 'url', 'year');
-    $pageTitle = $exam['label'] . ' Results | Namanga Secondary School';
+    $pageTitle = $exam['label'] . ' (' . $exam['exam'] . ') Results | Namanga Secondary School';
+    $pageDescription = 'Namanga Secondary School (S2911) ' . $exam['exam'] . ' results by year, with direct links to the official NECTA pages.';
 } else {
-    $pageTitle = 'Results | Namanga Secondary School';
-    $pageDescription = 'Namanga Secondary School (S2911) NECTA results — Form 4 CSEE and Form 2 FTNA results by year, with direct links to the official NECTA pages.';
+    $pageTitle = 'NECTA Results | Namanga Secondary School';
+    $pageDescription = 'Namanga Secondary School (S2911) NECTA results: Form 4 CSEE and Form 2 FTNA results by year, with direct links to the official NECTA pages.';
 }
 
 include __DIR__ . '/includes/header.php';
@@ -46,7 +28,7 @@ include __DIR__ . '/includes/header.php';
 
 <section class="page-header">
     <div class="container">
-        <h1>Results</h1>
+        <h1>NECTA Results</h1>
         <p><?= $examSelected ? e($exam['label'] . ' (' . $exam['exam'] . ') — official NECTA results for Namanga Secondary School.') : 'Choose a Form to see official NECTA results.' ?></p>
     </div>
 </section>
@@ -59,9 +41,11 @@ include __DIR__ . '/includes/header.php';
             <div class="photo-cards-grid">
                 <?php foreach ($exams as $key => $info): ?>
                     <?= render_photo_card($base . '/results.php?form=' . $key, 'results-' . $key, $info['label'],
-                        $info['exam'] . ' — ' . $info['name'] . '.', count_label(count($resultsLinks[$key]), 'year'), 'View ' . $info['label'] . ' Results') ?>
+                        $info['exam'] . ' — ' . $info['name'] . '.', count_label(count($state[$key]), 'year'), 'View ' . $info['label'] . ' Results') ?>
                 <?php endforeach; ?>
             </div>
+            <p class="field-hint" style="text-align:center;margin-top:18px;">New results are added here automatically as soon as NECTA publishes them.
+                For term and school examination results, use the <a href="https://results.namangasecondary.sc.tz">Student Result System</a>.</p>
 
         <?php else: ?>
 
@@ -71,9 +55,9 @@ include __DIR__ . '/includes/header.php';
             </div>
 
             <div class="resource-link-list">
-                <?php foreach (RESULTS_YEARS as $year): ?>
-                    <?php if (isset($linksByYear[$year])): ?>
-                        <a class="resource-link-item" href="<?= e($linksByYear[$year]) ?>" target="_blank" rel="noopener">
+                <?php foreach ($years as $year): ?>
+                    <?php if (in_array($year, $state[$selected], true)): ?>
+                        <a class="resource-link-item" href="<?= e(necta_result_url($selected, $year)) ?>" target="_blank" rel="noopener">
                             <span class="resource-link-main">
                                 <span class="resource-link-title"><?= e($exam['exam']) ?> <?= $year ?> Results</span>
                                 <span class="resource-link-meta">
@@ -87,7 +71,9 @@ include __DIR__ . '/includes/header.php';
                             <span class="resource-link-main">
                                 <span class="resource-link-title"><?= e($exam['exam']) ?> <?= $year ?> Results</span>
                                 <span class="resource-link-meta">
-                                    <span class="file-size">Not available on the NECTA website</span>
+                                    <span class="file-size"><?= $year >= $thisYear - 1
+                                        ? 'Not out yet — will appear here automatically when NECTA publishes them'
+                                        : 'Not available on the NECTA website' ?></span>
                                 </span>
                             </span>
                         </div>

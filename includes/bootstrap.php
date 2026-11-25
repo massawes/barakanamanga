@@ -43,6 +43,7 @@ ensure_gallery_table_exists($pdo);
 // Announcements / News for the school website (auto-created table, see includes/announcements.php).
 require_once __DIR__ . '/announcements.php';
 require_once __DIR__ . '/school-info.php';
+require_once __DIR__ . '/necta-results.php'; // NECTA results, updated automatically by cron/necta-check.php
 ensure_announcements_table($pdo);
 
 // There is no file-size limit on this site — uploads of any size are
