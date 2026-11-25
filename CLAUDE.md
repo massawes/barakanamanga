@@ -62,3 +62,5 @@ so the owner can continue from any terminal. The owner writes Swahili: reply in 
   Mission & Vision page hidden (old text was invented) -> 301 to about.php until the school gives its official wording.
   Verified sources: girls dormitory + ICT room (LSF + CNS Luxembourg, Wanawake Tunaweza 2023-2024; Daily News, cns-asbl.org),
   subjects (Results System), NECTA S2911 results 2022-2025.
+- 2026-11-25 (night): OWNER asked: website Staff Login super admin (admins.id 1, username 'admin') password reset to the
+  owner's chosen password (not written here), must_change_password = 0. Backup: /root/backups/namanga-website_admins_kabla_reset_*.sql.
