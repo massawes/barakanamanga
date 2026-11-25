@@ -71,3 +71,5 @@ so the owner can continue from any terminal. The owner writes Swahili: reply in 
   (resources.uploaded_by, can_manage_resource(), admin/my-resources.php 'My Uploads'); no gallery, slideshow,
   announcements, all-resources list or staff accounts; can change their own password. Old files (uploaded_by NULL)
   are managed by Admins only. Tested locally with two test teachers (A cannot edit/delete B's files, and vice versa).
+- 2026-11-26: Reset Password (Manage Staff Accounts, admin + second): teacher password -> 12345678 + must change at next
+  login (RESET_PASSWORD_DEFAULT in admin/manage-users.php). Admin accounts cannot be reset there. Tested locally.
