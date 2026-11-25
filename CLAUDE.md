@@ -42,3 +42,17 @@ so the owner can continue from any terminal. The owner writes Swahili: reply in 
   Search Console (owner's Google account): new URL-prefix property https://namangasecondary.sc.tz/ (auto-verified by the
   HTML file), sitemap submitted, **Change of address** freepage.cc -> namangasecondary.sc.tz CONFIRMED.
   deploy.sh now sends only files changed since the last deploy (~20 s); `bash deploy.sh --full` for everything.
+- 2026-11-25 (night): **TWO WEBSITES, ONE CODEBASE** (owner: main site = promote the school; separate site for students).
+  includes/site.php decides by host: namangasecondary.sc.tz = school website, masomo.namangasecondary.sc.tz = Student
+  Portal (notes, theory, practical, search, Ask AI). Wrong-host pages 301 to the right host. Local test: ?site=portal|school.
+  New school pages: academics.php (18 subjects from the Results System, includes/school-info.php), admissions.php
+  (TAMISEMI selection; admission-type announcements listed), announcements.php, contact.php (map). New home page:
+  quick links, facts, latest announcements, latest photos, map. Admin: Manage > Announcements / News
+  (admin/manage-announcements.php, table announcements auto-created, attachments in uploads/announcements/).
+  Per-site navbar, footer, sitemap.php, robots.php (.htaccess rewrites robots.txt). Portal home: includes/portal-home.php.
+  VPS vhost sites-available/namanga-masomo.conf (+le-ssl), same folder. DNS A masomo -> 185.205.209.83 (Sakurahost).
+  Search Console: property https://masomo.namangasecondary.sc.tz/ added + sitemap submitted.
+  **MAINTENANCE MODE IS ON** (config/maintenance.on on the VPS, holds the preview code; includes/maintenance.php).
+  Visitors get 503 + maintenance page; staff signed in and ?preview=<code> see the site. Turn OFF:
+  ssh root@185.205.209.83 rm /var/www/namanga-website/config/maintenance.on   (do not leave it on for weeks: Google).
+  Preview code is in C:\Users\admin\Documents\NAMANGA BACKUP\website_preview_link.txt (not in git).
