@@ -56,3 +56,9 @@ so the owner can continue from any terminal. The owner writes Swahili: reply in 
   Visitors get 503 + maintenance page; staff signed in and ?preview=<code> see the site. Turn OFF:
   ssh root@185.205.209.83 rm /var/www/namanga-website/config/maintenance.on   (do not leave it on for weeks: Google).
   Preview code is in C:\Users\admin\Documents\NAMANGA BACKUP\website_preview_link.txt (not in git).
+- 2026-11-25 (late night): NECTA results automatic (includes/necta-results.php, cron/necta-check.php, /etc/cron.d/namanga-necta every 3 h,
+  log /var/log/namanga-necta.log, state uploads/.necta-results.json). OWNER RULE: ONLY VERIFIED FACTS, never invent.
+  Official contacts: email namanga@longido.dc.go.tz, P.O. Box 6560 Namanga (owner). Removed unverified 'founded 2007'.
+  Mission & Vision page hidden (old text was invented) -> 301 to about.php until the school gives its official wording.
+  Verified sources: girls dormitory + ICT room (LSF + CNS Luxembourg, Wanawake Tunaweza 2023-2024; Daily News, cns-asbl.org),
+  subjects (Results System), NECTA S2911 results 2022-2025.
