@@ -65,3 +65,9 @@ so the owner can continue from any terminal. The owner writes Swahili: reply in 
 - 2026-11-25 (night): OWNER asked: website Staff Login super admin (admins.id 1, username 'admin') password reset to the
   owner's chosen password (not written here), must_change_password = 0. Backup: /root/backups/namanga-website_admins_kabla_reset_*.sql.
 - 2026-11-26: MAINTENANCE TURNED OFF (owner rule: ON only while working on the site, OFF as soon as the work is done).
+- 2026-11-26: PERMISSIONS (owner). Admins = 'admin' (owner) and 'second' (Second Master, admins.id 64, is_super_admin 1,
+  temporary password must be changed at first login): both do everything. Teachers (role staff): upload notes, theory
+  papers and practicals only (upload-others/software/summary now Admin-only); edit/delete ONLY their own files
+  (resources.uploaded_by, can_manage_resource(), admin/my-resources.php 'My Uploads'); no gallery, slideshow,
+  announcements, all-resources list or staff accounts; can change their own password. Old files (uploaded_by NULL)
+  are managed by Admins only. Tested locally with two test teachers (A cannot edit/delete B's files, and vice versa).
