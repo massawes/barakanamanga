@@ -73,3 +73,10 @@ so the owner can continue from any terminal. The owner writes Swahili: reply in 
   are managed by Admins only. Tested locally with two test teachers (A cannot edit/delete B's files, and vice versa).
 - 2026-11-26: Reset Password (Manage Staff Accounts, admin + second): teacher password -> 12345678 + must change at next
   login (RESET_PASSWORD_DEFAULT in admin/manage-users.php). Admin accounts cannot be reset there. Tested locally.
+- 2026-11-26: Ideas from ilboru.ac.tz (owner chose): slideshow replaced by ONE big photo (first image of Manage > Homepage
+  Photo) + highlights (Best ICT Lab, Science Labs [icon until assets/images/school/science-lab.jpg exists], Skilled Teachers);
+  'What We Learn' flip tiles (table departments, admin/manage-departments.php; Head shown only when a name is entered);
+  Services (verified facts only); Alumni register alumni.php -> table alumni (private, admin/manage-alumni.php, CSV).
+  No 'Get Our App' button (owner). Red maintenance strip for staff/preview while maintenance is on.
+  Heads of Department: printable form for the Academic Master at
+  C:\Users\admin\Documents\ORODHA ZA WANAFUNZI 2026\Wakuu wa Idara - Fomu ya Kujaza 2026.pdf (owner will bring the names).
