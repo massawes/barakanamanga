@@ -34,6 +34,9 @@ if (is_admin_role()) {
         'manage-alumni'        => ['Alumni', 'manage-alumni.php'],
     ]];
 }
+if (is_admin_role()) {
+    $adminMenu['statistics'] = ['Visitor Statistics', 'dashboard', 'statistics.php'];
+}
 if (is_super_admin()) {
     $adminMenu['manage-users'] = ['Staff Accounts', 'users', 'manage-users.php'];
 }

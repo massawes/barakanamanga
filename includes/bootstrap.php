@@ -26,6 +26,10 @@ maintenance_gate();
 require_once __DIR__ . "/site.php";
 enforce_site_split();
 
+// Takwimu za wageni (owner 2026-11-26): kila ukurasa wa umma unahesabiwa (si /admin/, /api/). Ona admin/statistics.php.
+require_once __DIR__ . '/analytics.php';
+nva_track(is_portal() ? 'masomo' : 'website', ['skip' => '~/(admin|api|cron)/~']);
+
 require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/functions.php';
 require_once __DIR__ . '/auth.php';
