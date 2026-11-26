@@ -80,3 +80,8 @@ so the owner can continue from any terminal. The owner writes Swahili: reply in 
   No 'Get Our App' button (owner). Red maintenance strip for staff/preview while maintenance is on.
   Heads of Department: printable form for the Academic Master at
   C:\Users\admin\Documents\ORODHA ZA WANAFUNZI 2026\Wakuu wa Idara - Fomu ya Kujaza 2026.pdf (owner will bring the names).
+- 2026-11-26: **TAKWIMU ZA WAGENI** (visitor statistics) kwenye mifumo yote 4. Maktaba moja `analytics.php` (nakala SAWA kwenye
+  barakanamanga/includes, namanga-results/app, namanga-form1/app, namanga-ssms/includes: ukibadilisha moja, nakili kwa mingine).
+  Kila ukurasa (GET, HTML, si robot, si AJAX) -> database `site_analytics` jedwali `hits` (VPS: user `nva`, nenosiri /etc/namanga-analytics.php;
+  local: root, DB inajiunda). Hakuna IP inayohifadhiwa; cookie `nva` (mgeni, miaka 2) + `nva_s` (ziara, dakika 30). Data > miezi 26 inafutwa.
+  Kurasa: tovuti admin/statistics.php (Super Admin = mifumo YOTE), results staff/visitors.php (super), form1 visitors.php (admin), ssms pages/visitors.php (admin).
