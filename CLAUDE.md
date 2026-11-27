@@ -85,3 +85,7 @@ so the owner can continue from any terminal. The owner writes Swahili: reply in 
   Kila ukurasa (GET, HTML, si robot, si AJAX) -> database `site_analytics` jedwali `hits` (VPS: user `nva`, nenosiri /etc/namanga-analytics.php;
   local: root, DB inajiunda). Hakuna IP inayohifadhiwa; cookie `nva` (mgeni, miaka 2) + `nva_s` (ziara, dakika 30). Data > miezi 26 inafutwa.
   Kurasa: tovuti admin/statistics.php (Super Admin = mifumo YOTE), results staff/visitors.php (super), form1 visitors.php (admin), ssms pages/visitors.php (admin).
+- 2026-11-27: OWNER: Admissions page — "Transfers & enquiries" section REMOVED (and 'transfers' from the meta description).
+  Alumni register = Form Four leavers ONLY: 'Last class' select (Form Two) removed; last_form always 'Form Four';
+  label "Year you completed Form Four". Commit 001d35e, deployed (maintenance on/off around it), live checked.
+  Global memory for any terminal: C:\Users\admin\.claude\CLAUDE.md.
