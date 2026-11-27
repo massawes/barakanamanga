@@ -11,7 +11,7 @@ try {
 }
 
 $pageTitle = 'Admissions | Namanga Secondary School';
-$pageDescription = 'Joining Namanga Secondary School: Form One selection, joining instructions, reporting and transfers.';
+$pageDescription = 'Joining Namanga Secondary School: Form One selection, joining instructions and reporting.';
 $base = base_url();
 include __DIR__ . '/includes/header.php';
 ?>
@@ -75,25 +75,6 @@ include __DIR__ . '/includes/header.php';
                 <li><strong>Report to school</strong> on the reporting date with the documents asked for in the joining instructions.</li>
                 <li><strong>Registration.</strong> The school registers every new student, and parents receive information on following their child&rsquo;s progress.</li>
             </ol>
-        </div>
-
-        <div class="school-section split reverse">
-            <div>
-                <span class="eyebrow">Transfers &amp; enquiries</span>
-                <h2 class="school-h2">Questions about joining?</h2>
-                <p>For transfers from another school, or any question about admission, please contact the school
-                office. Transfers between government schools follow the procedures of the Ministry and TAMISEMI.</p>
-                <p><strong>Phone:</strong> <a href="tel:+255695389537">+255 695 389 537</a><br>
-                <strong>Email:</strong> <a href="mailto:namanga@longido.dc.go.tz">namanga@longido.dc.go.tz</a><br>
-                <strong>Address:</strong> P.O. Box 6560, Namanga, Arusha &ndash; Tanzania</p>
-                <a href="<?= e(site_link('contact.php')) ?>" class="btn btn-outline">Contact the school</a>
-            </div>
-            <div class="split-media">
-                <div class="photo-frame frame-green">
-                    <img src="<?= e($base) ?>/assets/images/school/ceremony.jpg" alt="A ceremony at Namanga Secondary School" loading="lazy">
-                    <span class="photo-caption">A school ceremony</span>
-                </div>
-            </div>
         </div>
     </div>
 </section>

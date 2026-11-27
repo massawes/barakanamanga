@@ -26,9 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($year !== null && ($year < 1990 || $year > (int) date('Y'))) {
             $errors[] = 'Please check the year you completed.';
         }
-        if (!in_array($form['last_form'], ['Form Two', 'Form Four'], true)) {
-            $form['last_form'] = 'Form Four';
-        }
+        $form['last_form'] = 'Form Four'; // Alumni = Form Four leavers only (owner 2026-11-27)
         if ($form['phone'] === '' && $form['email'] === '') {
             $errors[] = 'Please give a phone number or an email so the school can reach you.';
         }
@@ -85,20 +83,8 @@ include __DIR__ . '/includes/header.php';
                 <label for="full_name">Full name *</label>
                 <input type="text" id="full_name" name="full_name" maxlength="150" required value="<?= e($form['full_name']) ?>">
 
-                <div class="form-row-2">
-                    <div>
-                        <label for="last_form">Last class at Namanga</label>
-                        <select id="last_form" name="last_form">
-                            <?php foreach (['Form Four', 'Form Two'] as $f): ?>
-                                <option <?= $form['last_form'] === $f ? 'selected' : '' ?>><?= e($f) ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-                    <div>
-                        <label for="year_completed">Year completed</label>
-                        <input type="number" id="year_completed" name="year_completed" min="1990" max="<?= (int) date('Y') ?>" value="<?= e($form['year_completed']) ?>" placeholder="e.g. 2015">
-                    </div>
-                </div>
+                <label for="year_completed">Year you completed Form Four</label>
+                <input type="number" id="year_completed" name="year_completed" min="1990" max="<?= (int) date('Y') ?>" value="<?= e($form['year_completed']) ?>" placeholder="e.g. 2015">
 
                 <div class="form-row-2">
                     <div>
