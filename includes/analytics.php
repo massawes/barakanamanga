@@ -7,6 +7,7 @@
  *   namanga-results app/analytics.php                                -> staff/visitors.php
  *   namanga-form1   app/analytics.php                                -> visitors.php
  *   namanga-ssms    includes/analytics.php                           -> pages/visitors.php
+ *   vicoba (Kikoba) app/Support/analytics.php                        -> /kikoba/msimamizi/takwimu
  *
  * Kila mfumo unaandika kila ukurasa unaofunguliwa kwenye database MOJA `site_analytics`, jedwali `hits`.
  * VPS: nenosiri la database liko /etc/namanga-analytics.php (si kwenye git). Local XAMPP: root bila nenosiri.
@@ -21,6 +22,7 @@ const NVA_SITES = [
     'results' => 'Matokeo (Results)',
     'form1'   => 'Kidato cha Kwanza',
     'ssms'    => 'SSMS',
+    'kikoba'  => 'Kikoba (VICOBA)',
 ];
 
 function nva_db(): ?PDO
